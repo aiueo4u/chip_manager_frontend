@@ -9,9 +9,10 @@ class Room extends Component {
   }
 
   render() {
-    const { players } = this.props
+    const { players, tableId } = this.props
     return (
       <div>
+        <h2>Table {tableId}</h2>
         <ul>
           {players.map(player => (
             <li key={player.playerId}>{player.nickname}</li>
@@ -24,6 +25,7 @@ class Room extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    tableId: state.data.tables.id,
     players: state.data.tables.players,
   }
 }

@@ -49,7 +49,14 @@ function *handleRequestLogin(action) {
 function *handleRequestTables() {
   const { json, error } = yield call(tables);
   if (json && !error) {
-    let tables = json.map((table, index) => { return { tableId: table.table_id, key: index } });
+    let tables = json.tables.map(table => {
+      return {
+        id: table.table_id,
+        players: table.players.map(player => {
+          return { id: player.id, nickname: player.nickname };
+        }),
+      }
+    }) ;
     yield put({ type: 'LOADING_TABLES_DATA_ON_SUCCESS', tables: tables })
   } else {
     // TODO

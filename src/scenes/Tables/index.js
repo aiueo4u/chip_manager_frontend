@@ -34,7 +34,16 @@ class TableContainer extends Component {
           <Route exact path={`${match.url}`} render={() => (
             <ul>
               {tables.map(table => 
-                <li key={table.key}><Link to={`${match.url}/${table.tableId}`}>{table.tableId}</Link></li>
+                <li key={table.id}>
+                  <Link to={`${match.url}/${table.id}`}>
+                    {table.id}
+                  </Link>
+                  <ul>
+                    {table.players.map(player =>
+                      <li key={player.id}>{player.nickname}</li>
+                    )}
+                  </ul>
+                </li>
               )}
             </ul>
           )} />
