@@ -13,8 +13,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleSubmit: (event) => {
       event.preventDefault();
-      dispatch(submitCreateTableForm());
-      ownProps.history.push("/tables");
+      let tableName = event.target.tableNameTextField.value.trim();
+      dispatch(submitCreateTableForm(tableName));
     }
   }
 }

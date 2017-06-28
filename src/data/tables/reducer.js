@@ -9,11 +9,9 @@ const tables = (state = initialState, action) => {
     case 'CREATE_TABLE_FORM_ON_SUCCESS':
       return Object.assign({}, state, { isFetching: false });
     case 'LOADING_TABLES_DATA':
-      return Object.assign({}, state, { isFetching: true });
+      return Object.assign({}, state, { isPrepared: false });
     case 'LOADING_TABLES_DATA_ON_SUCCESS':
-      return Object.assign({}, state, { isFetching: false, tables: action.tables });
-    case 'ENTERED_ROOM':
-      return Object.assign({}, state, { isFetching: false, players: action.players });
+      return Object.assign({}, state, { isPrepared: true, tables: action.tables });
     default:
       return state
   }

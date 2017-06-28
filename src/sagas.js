@@ -6,13 +6,15 @@ import {
   enteringRoom,
   roomPlayers,
   initialLogin,
+  actionToGameDealer,
 } from './api';
 
 function *handleRequestRoomPlayers(action) {
   const { json, error } = yield call(roomPlayers, action.tableId);
   if (json && !error) {
-    let players = json.map(obj => { return { playerId: obj.player_id, nickname: obj.nickname } });
-    yield put({ type: 'ENTERED_ROOM', players: players })
+    let table = { id: json.table_id, name: json.table_name };
+    let pot = json.pot
+    yield put({ type: 'ENTERED_ROOM', players: json.players, table: table, pot: pot, gameHandState: json.game_hand_state, currentSeatNo: json.current_seat_no })
   } else {
     // TODO
   }
@@ -27,8 +29,8 @@ function *handleRequestEnteringRoom(action) {
   }
 }
 
-function *handleRequestTableCreate() {
-  const { json, error } = yield call(tableCreate);
+function *handleRequestTableCreate(action) {
+  const { json, error } = yield call(tableCreate, action.tableName);
   if (json && !error) {
     yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId: json.table_id })
   } else {
@@ -51,7 +53,8 @@ function *handleRequestTables() {
   if (json && !error) {
     let tables = json.tables.map(table => {
       return {
-        id: table.table_id,
+        id: table.id,
+        name: table.name,
         players: table.players.map(player => {
           return { id: player.id, nickname: player.nickname };
         }),
@@ -60,6 +63,98 @@ function *handleRequestTables() {
     yield put({ type: 'LOADING_TABLES_DATA_ON_SUCCESS', tables: tables })
   } else {
     // TODO
+  }
+}
+
+function *handleCheckAction(action) {
+  let params = {
+    type: "PLAYER_ACTION_CHECK",
+    table_id: action.tableId,
+    player_id: action.playerId,
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "CHECK_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: "CHECK_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId });
+  }
+}
+
+function *handleFoldAction(action) {
+  let params = {
+    type: "PLAYER_ACTION_FOLD",
+    table_id: action.tableId,
+    player_id: action.playerId,
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "FOLD_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId })
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "FOLD_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+  }
+}
+
+function *handleCallAction(action) {
+  let params = {
+    type: "PLAYER_ACTION_CALL",
+    table_id: action.tableId,
+    player_id: action.playerId,
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "CALL_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId })
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "CALL_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+  }
+}
+
+function *handleBetAction(action) {
+  let params = {
+    type: "PLAYER_ACTION_BET_CHIPS",
+    table_id: action.tableId,
+    player_id: action.playerId,
+    amount: action.amount,
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "BET_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId, amount: action.amount, pot: json.pot });
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "BET_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+  }
+}
+
+function *handleTakePot(action) {
+  let params = {
+    type: "PLAYER_ACTION_TAKE_POT",
+    table_id: action.tableId,
+    player_id: action.playerId,
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "TAKE_POT_COMPLETED", tableId: action.tableId, playerId: action.playerId, pot: json.pot, playerStack: json.player_stack });
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "TAKE_POT_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+  }
+}
+
+function *handleAddChip(action) {
+  let params = {
+    type: "PLAYER_ACTION_ADD_CHIPS",
+    table_id: action.tableId,
+    player_id: action.playerId,
+    amount: action.amount,
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "ADD_CHIP_COMPLETED", tableId: action.tableId, playerId: action.playerId, amount: action.amount, pot: json.pot });
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "ADD_CHIP_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
   }
 }
 
@@ -77,11 +172,32 @@ function *handleInitialLogin() {
   }
 }
 
+function *handleGameStartButtonClicked(action) {
+  let params = {
+    type: "GAME_START",
+    table_id: action.tableId
+  }
+  try {
+    const json = yield call(actionToGameDealer, params);
+    yield put({ type: "GAME_START_COMPLETED", tableId: action.tableId });
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "GAME_START_FAILED", tableId: action.tableId });
+  }
+}
+
 export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
   yield takeEvery("CREATE_TABLE_FORM_ON_SUBMIT", handleRequestTableCreate);
   yield takeEvery("ENTERING_ROOM", handleRequestEnteringRoom);
-  yield takeEvery("ENTERING_ROOM_NEXT", handleRequestRoomPlayers);
+  // yield takeEvery("ENTERING_ROOM_NEXT", handleRequestRoomPlayers);
   yield takeEvery("INITIAL_LOGIN", handleInitialLogin);
+  yield takeEvery("ADD_CHIP", handleAddChip);
+  yield takeEvery("BET_ACTION", handleBetAction);
+  yield takeEvery("CALL_ACTION", handleCallAction);
+  yield takeEvery("FOLD_ACTION", handleFoldAction);
+  yield takeEvery("CHECK_ACTION", handleCheckAction);
+  yield takeEvery("TAKE_POT", handleTakePot);
+  yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked)
 }

@@ -3,10 +3,20 @@ import { connect } from 'react-redux';
 import { loadingTablesData } from './data/actions.js';
 import { Link, Route } from 'react-router-dom';
 import Room from './components/Room/index.js';
+import RaisedButton from 'material-ui/RaisedButton';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isFetching: state.data.tables.isFetching,
+    isPrepared: state.data.tables.isPrepared,
     tables: state.data.tables.tables,
   }
 }
@@ -26,34 +36,44 @@ class TableContainer extends Component {
   }
 
   render() {
-    const { match, tables, isFetching } = this.props;
+    const { match, tables, isPrepared } = this.props;
 
-    if (tables) {
+    if (!isPrepared) {
+      return (
+        <div>
+          <CircularProgress />
+        </div>
+      )
+    } else {
       return (
         <div>
           <Route exact path={`${match.url}`} render={() => (
-            <ul>
-              {tables.map(table => 
-                <li key={table.id}>
-                  <Link to={`${match.url}/${table.id}`}>
-                    {table.id}
-                  </Link>
-                  <ul>
-                    {table.players.map(player =>
-                      <li key={player.id}>{player.nickname}</li>
-                    )}
-                  </ul>
-                </li>
-              )}
-            </ul>
+            <Table selectable={false}>
+              <TableHeader displaySelectAll={false}>
+                <TableRow>
+                  <TableHeaderColumn>テーブル名</TableHeaderColumn>
+                  <TableHeaderColumn>プレイヤー</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false}>
+                {tables.map(table =>
+                  <TableRow key={table.id}>
+                    <TableRowColumn>
+                      <Link to={`${match.url}/${table.id}`}>
+                        <RaisedButton label={table.name || table.id} />
+                      </Link>
+                    </TableRowColumn>
+                    <TableRowColumn>
+                      {table.players.length} / 10 名
+                    </TableRowColumn>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           )} />
           <Route path={`${match.url}/:id`} component={Room} />
         </div>
       );
-    } else if (isFetching) {
-      return (<div>loading...</div>);
-    } else {
-      return (<div>init</div>);
     }
   }
 }

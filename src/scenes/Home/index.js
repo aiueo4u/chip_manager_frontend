@@ -1,22 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import logo from './logo.svg';
 import { Link } from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const Home = ({ nickname }) => (
   <div>
-    <ul>
-      <li><Link to="/lobby">Lobby</Link></li>
-      <li><Link to="/tables">Tables</Link></li>
-    </ul>
-    <div className="App">
-      <div className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h2>Welcome to React, {nickname}!</h2>
-      </div>
-      <p className="App-intro">
-        To get started, edit <code>src/App.js</code> and save to reload.
-      </p>
+    <div>
+      <Link to="/newTable">
+        <RaisedButton label="新規テーブルを作成" />
+      </Link>
+    </div>
+    <div>
+      <Link to="/tables">
+        <RaisedButton label="既存テーブルに参加" />
+      </Link>
     </div>
   </div>
 )

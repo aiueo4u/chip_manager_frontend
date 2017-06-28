@@ -12,7 +12,7 @@ const send = (path, method, headers = {}, body = '') => {
 
   let options = { method: method, headers: headers };
 
-  if (method === 'POST') {
+  if (method === 'POST' || method === 'PUT') {
     options['body'] = body
   }
 
@@ -29,8 +29,29 @@ const get = (path) => {
   return send(path, 'GET')
 }
 
+const put = (path, headers = {}, body = '') => {
+  return send(path, 'PUT', {}, body)
+}
+
 const post = (path, headers = {}, body = '') => {
   return send(path, 'POST', {}, body)
+}
+
+export const updateChip = (tableId, playerId, amount) => {
+  let body = new FormData();
+  body.append('amount', amount);
+  return put(`/tables/${tableId}/players/@me`, {}, body)
+    .then(json => {
+      return { json };
+    })
+}
+
+export const actionToGameDealer = (action) => {
+  let body = new FormData();
+  for (let key in action) {
+    body.append(key, action[key])
+  }
+  return post('/game_dealer', {}, body)
 }
 
 export const initialLogin = () => {
@@ -54,8 +75,10 @@ export const enteringRoom = (tableId) => {
   return post(`/tables/${tableId}/players`).then(json => { return { json } })
 }
 
-export const tableCreate = () => {
-  return post('/tables').then(json => { return { json } })
+export const tableCreate = (tableName) => {
+  let body = new FormData();
+  body.append('table_name', tableName);
+  return post('/tables', {}, body).then(json => { return { json } })
 }
 
 export const submitLogin = (nickname) => {

@@ -10,6 +10,25 @@ import Home from './scenes/Home/index.js';
 import Login from './scenes/Login';
 import Lobby from './scenes/Lobby';
 import Tables from './scenes/Tables';
+import AppBar from 'material-ui/AppBar';
+import CircularProgress from 'material-ui/CircularProgress';
+
+class InnerAppBar extends Component {
+  render() {
+    const { match, history, location, staticContext, ...rest } = this.props
+    return (
+      <AppBar {...rest} onTitleTouchTap={() => { history.push("/") }} />
+    )
+  }
+}
+
+class CustomAppBar extends Component {
+  render() {
+    return (
+      <Route path="/" render={(props) => <InnerAppBar {...props} {...this.props} />} />
+    )
+  }
+}
 
 class App extends Component {
   componentWillMount() {
@@ -17,19 +36,25 @@ class App extends Component {
   }
 
   render() {
-    const { isPrepared } = this.props;
+    const { isPrepared, nickname } = this.props;
 
     return isPrepared ? (
-      <Router>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Route path="/login" component={Login} />
-          <PrivateRoute path="/lobby" component={Lobby} />
-          <PrivateRoute path="/tables" component={Tables} />
-        </div>
-      </Router>
+      <div>
+        <Router>
+          <div>
+            <CustomAppBar title="Brave call" iconElementRight={<span>Hello, {nickname}!</span>} />
+            <Route exact path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <PrivateRoute path="/newTable" component={Lobby} />
+            <PrivateRoute path="/tables" component={Tables} />
+          </div>
+        </Router>
+      </div>
     ) : (
-      <div>Initializing...</div>
+      <div>
+        <AppBar title="Brave call" iconElementRight={<span>Hello, {nickname}!</span>} />
+        <CircularProgress />
+      </div>
     );
   }
 }
@@ -37,6 +62,7 @@ class App extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     isPrepared: state.data.playerSession.isPrepared,
+    nickname: state.data.playerSession.nickname,
   }
 }
 

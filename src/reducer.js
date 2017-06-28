@@ -1,10 +1,10 @@
 import data from './data/reducer.js';
-import tableReducer from './scenes/Tables/data/reducer.js';
+import scenesReducer from './scenes/reducer.js';
 
 const rootReducer = (state = {}, action) => {
   return {
     data: data(state.data, action),
-    // Tables: tableReducer(state.Tables, action),
+    scenes: scenesReducer(state.scenes, action),
   }
 }
 

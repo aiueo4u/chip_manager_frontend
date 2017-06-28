@@ -1,5 +1,20 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import CircularProgress from 'material-ui/CircularProgress';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
+const styles = {
+  submitInput: { // デフォルトのサブミットボタンは見えなくする
+    cursor: 'pointer',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    opacity: 0,
+  }
+}
 
 class LoginForm extends Component {
   render() {
@@ -9,16 +24,22 @@ class LoginForm extends Component {
       return (<Redirect to="/" />)
     }
 
-    return (
+    return isFetching ? (
+      <div>
+        <CircularProgress />
+      </div>
+    ) : (
       <form onSubmit={handleSubmit}>
         <div>
-          <label>
-            Your nickname: 
-            <input type="text" name="nickname" placeholder="your nickname" />
-          </label>
-          <input type="submit" value="login" />
+          <div>
+            <TextField name="playerNicknameTextField" hintText="Your nickname" />
+          </div>
+          <div>
+            <RaisedButton label="ログイン" labelPosition="before" containerElement="label">
+              <input type="submit" style={styles.submitInput} />
+            </RaisedButton>
+          </div>
         </div>
-        {isFetching ? <div>now loading...</div> : <div></div>}
       </form>
     )
   }

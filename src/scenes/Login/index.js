@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleSubmit: (event) => {
       event.preventDefault();
-      dispatch(submitLoginForm(event.target.nickname.value.trim()));
+      dispatch(submitLoginForm(event.target.playerNicknameTextField.value.trim()));
     }
   }
 }
