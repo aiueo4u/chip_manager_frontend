@@ -7,20 +7,18 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-const Player = ({ foldAction, callAction, checkAction, yourTurn, player, add, bet, incrementBetSize, takePot }) => (
+const Player = ({ foldAction, callAction, checkAction, yourTurn, player, add, bet, incrementBetSize }) => (
   <Card>
     <CardText>
       {yourTurn ? (<div>YourTurn</div>) : (<div></div>)}
       <div>
         [Seat {player.seat_no}][Pos {player.position}] {player.nickname},{player.stack}
-        <RaisedButton label="追加" primary={true} onTouchTap={add} />
+        <RaisedButton label="チップ追加" primary={true} onTouchTap={add} />
         <RaisedButton label="Check" primary={true} onTouchTap={checkAction} />
         <RaisedButton label="Bet" primary={true} onTouchTap={bet} />
         <RaisedButton label="BetSize++" primary={true} onTouchTap={incrementBetSize} />
         <RaisedButton label="Call" primary={true} onTouchTap={callAction} />
         <RaisedButton label="Fold" primary={true} onTouchTap={foldAction} />
-
-        <RaisedButton label="Take pot" primary={true} onTouchTap={takePot} />
         <div>
           State: {player.state}
         </div>
@@ -72,9 +70,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     incrementBetSize: () => {
       let amount = 10; // TODO
       dispatch({ type: "INCREMENT_BET_SIZE", playerId: player.id, amount: amount })
-    },
-    takePot: () => {
-      dispatch(ownProps.onTakePotAction(player.id));
     }
   }
 }

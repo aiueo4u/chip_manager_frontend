@@ -9,11 +9,13 @@ import {
   callAction,
   foldAction,
   checkAction,
-  takePotAction,
   playerActionReceived,
+  gameHandActionReceived,
+  gameHandFinishedReceived,
 } from './data/actions.js';
 import CircularProgress from 'material-ui/CircularProgress';
 import Information from './components/Information';
+import GameDialog from './components/GameDialog';
 
 import ActionCable from 'actioncable';
 
@@ -23,7 +25,7 @@ const gameStartButtonClicked = (tableId) => {
 
 class Room extends Component {
   componentDidMount() {
-    const { match, onEnteredRoom, onPlayerActionReceived } = this.props;
+    const { match, onEnteredRoom, onGameHandFinishedReceived, onGameHandActionReceived, onPlayerActionReceived } = this.props;
 
     // action cable setup
     this.App = {}
@@ -40,7 +42,13 @@ class Room extends Component {
       disconnected() { console.log("Chip Channel disconnected") },
       received(data) {
         console.log("Chip Channel received", data)
-        onPlayerActionReceived(data);
+        if (data.type === 'player_action') {
+          onPlayerActionReceived(data);
+        } else if (data.type === 'game_hand') {
+          onGameHandActionReceived(data);
+        } else if (data.type === 'game_hand_finished') {
+          onGameHandFinishedReceived(data)
+        }
       },
       rejected(data) { console.log("Chip Channel rejected", data) },
     });
@@ -51,7 +59,7 @@ class Room extends Component {
   }
 
   render() {
-    const { onFoldAction, onCheckAction, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onTakePotAction, onAddChip, onCallAction, onBetAction, pot, isReady, informationItems } = this.props
+    const { playerSession, onFoldAction, onCheckAction, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction, pot, isReady, informationItems } = this.props
 
     return (!isReady) ? (
       <div>
@@ -59,6 +67,9 @@ class Room extends Component {
       </div>
     ) : (
       <div>
+        <GameDialog
+          tableId={tableId}
+        />
         <GameTable
           tableName={tableName}
           tableId={tableId}
@@ -66,20 +77,21 @@ class Room extends Component {
           onGameStart={onGameStart}
           gameHandState={gameHandState}
         />
+        {players.map(player => {
+          return playerSession.nickname === player.nickname ? (
+            <Player
+              key={player.id}
+              player={player}
+              onAddChip={onAddChip}
+              onCheckAction={onCheckAction}
+              onBetAction={onBetAction}
+              onCallAction={onCallAction}
+              onFoldAction={onFoldAction}
+              yourTurn={currentSeatNo === player.seat_no}
+            />
+          ) : (<div key={player.id}></div>)
+        })}
         <Information informationItems={informationItems} tableId={tableId} />
-        {players.map(player => (
-          <Player
-            key={player.id}
-            player={player}
-            onAddChip={onAddChip}
-            onCheckAction={onCheckAction}
-            onBetAction={onBetAction}
-            onCallAction={onCallAction}
-            onFoldAction={onFoldAction}
-            onTakePotAction={onTakePotAction}
-            yourTurn={currentSeatNo == player.seat_no}
-          />
-        ))}
       </div>
     )
   }
@@ -112,9 +124,6 @@ const mapStateToProps = (state, ownProps) => {
     onBetAction: (playerId, amount) => {
       return betAction(tableId, playerId, amount);
     },
-    onTakePotAction: (playerId) => {
-      return takePotAction(tableId, playerId);
-    },
     gameHandState: Room.GameTable.gameHandState,
     currentSeatNo: Room.GameTable.currentSeatNo,
   }
@@ -127,6 +136,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onEnteredRoom: () => {
       let tableId = ownProps.match.params.id;
       dispatch(enteringRoom(tableId));
+    },
+    onGameHandFinishedReceived: (data) => {
+      dispatch(gameHandFinishedReceived());
+    },
+    onGameHandActionReceived: (data) => {
+      dispatch(gameHandActionReceived(data.pot, data.players));
     },
     onPlayerActionReceived: (data) => {
        dispatch(playerActionReceived(data.pot, data.game_hand_state, data.players, data.current_seat_no));

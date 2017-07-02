@@ -4,21 +4,9 @@ import {
   submitLogin,
   tables,
   enteringRoom,
-  roomPlayers,
   initialLogin,
   actionToGameDealer,
 } from './api';
-
-function *handleRequestRoomPlayers(action) {
-  const { json, error } = yield call(roomPlayers, action.tableId);
-  if (json && !error) {
-    let table = { id: json.table_id, name: json.table_name };
-    let pot = json.pot
-    yield put({ type: 'ENTERED_ROOM', players: json.players, table: table, pot: pot, gameHandState: json.game_hand_state, currentSeatNo: json.current_seat_no })
-  } else {
-    // TODO
-  }
-}
 
 function *handleRequestEnteringRoom(action) {
   const { json, error } = yield call(enteringRoom, action.tableId);
@@ -73,7 +61,7 @@ function *handleCheckAction(action) {
     player_id: action.playerId,
   }
   try {
-    const json = yield call(actionToGameDealer, params)
+    yield call(actionToGameDealer, params)
     yield put({ type: "CHECK_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId });
   } catch (error) {
     console.log(error);
@@ -88,7 +76,7 @@ function *handleFoldAction(action) {
     player_id: action.playerId,
   }
   try {
-    const json = yield call(actionToGameDealer, params)
+    yield call(actionToGameDealer, params)
     yield put({ type: "FOLD_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId })
   } catch(error) {
     console.log(error)
@@ -103,7 +91,7 @@ function *handleCallAction(action) {
     player_id: action.playerId,
   }
   try {
-    const json = yield call(actionToGameDealer, params)
+    yield call(actionToGameDealer, params)
     yield put({ type: "CALL_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId })
   } catch(error) {
     console.log(error)
@@ -127,18 +115,18 @@ function *handleBetAction(action) {
   }
 }
 
-function *handleTakePot(action) {
+function *handleTakePotAction(action) {
   let params = {
-    type: "PLAYER_ACTION_TAKE_POT",
+    type: "GAME_HAND_TAKE_POT",
     table_id: action.tableId,
     player_id: action.playerId,
   }
   try {
     const json = yield call(actionToGameDealer, params)
-    yield put({ type: "TAKE_POT_COMPLETED", tableId: action.tableId, playerId: action.playerId, pot: json.pot, playerStack: json.player_stack });
+    yield put({ type: "TAKE_POT_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId, pot: json.pot, playerStack: json.player_stack });
   } catch(error) {
     console.log(error)
-    yield put({ type: "TAKE_POT_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+    yield put({ type: "TAKE_POT_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
   }
 }
 
@@ -178,7 +166,7 @@ function *handleGameStartButtonClicked(action) {
     table_id: action.tableId
   }
   try {
-    const json = yield call(actionToGameDealer, params);
+    yield call(actionToGameDealer, params);
     yield put({ type: "GAME_START_COMPLETED", tableId: action.tableId });
   } catch(error) {
     console.log(error)
@@ -191,13 +179,12 @@ export default function *rootSage() {
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
   yield takeEvery("CREATE_TABLE_FORM_ON_SUBMIT", handleRequestTableCreate);
   yield takeEvery("ENTERING_ROOM", handleRequestEnteringRoom);
-  // yield takeEvery("ENTERING_ROOM_NEXT", handleRequestRoomPlayers);
   yield takeEvery("INITIAL_LOGIN", handleInitialLogin);
   yield takeEvery("ADD_CHIP", handleAddChip);
   yield takeEvery("BET_ACTION", handleBetAction);
   yield takeEvery("CALL_ACTION", handleCallAction);
   yield takeEvery("FOLD_ACTION", handleFoldAction);
   yield takeEvery("CHECK_ACTION", handleCheckAction);
-  yield takeEvery("TAKE_POT", handleTakePot);
-  yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked)
+  yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked);
+  yield takeEvery("TAKE_POT_ACTION", handleTakePotAction);
 }

@@ -5,9 +5,9 @@ const initialState = {
 const InformationReducer = (state = initialState, action) => {
   let informationItems = [].concat(state.informationItems);
 
-  // 要素数を2つに保つ
-  if (informationItems.length >= 2) {
-    informationItems.shift()
+  // 要素数を5つに保つ
+  if (informationItems.length >= 5) {
+    informationItems.pop()
   }
 
   switch(action.type) {
@@ -16,7 +16,7 @@ const InformationReducer = (state = initialState, action) => {
       return Object.assign({}, state, { informationItems: [] })
     // 着席ログ
     case 'ROOM_INFORMATION_PLAYER_ENTERED':
-      informationItems.push({
+      informationItems.unshift({
         time: action.time,
         nickname: action.nickname,
         type: 'ENTER',
@@ -24,7 +24,7 @@ const InformationReducer = (state = initialState, action) => {
       return Object.assign({}, state, { informationItems })
     // 退出ログ
     case 'ROOM_INFORMATION_PLAYER_LEFT':
-      informationItems.push({
+      informationItems.unshift({
         time: action.time,
         nickname: action.nickname,
         type: 'LEAVE',
@@ -32,11 +32,12 @@ const InformationReducer = (state = initialState, action) => {
       return Object.assign({}, state, { informationItems })
     // アクションログ
     case 'ROOM_INFORMATION_PLAYER_ACTION':
-      informationItems.push({
+      informationItems.unshift({
         time: action.time,
         nickname: action.nickname,
         type: action.playerActionType,
         amount: action.amount,
+        pot: action.pot
       })
       return Object.assign({}, state, { informationItems })
     default:

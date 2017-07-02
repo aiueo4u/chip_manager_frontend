@@ -67,10 +67,6 @@ export const initialLogin = () => {
     })
 }
 
-export const roomPlayers = (tableId) => {
-  return get(`/tables/${tableId}/players`).then(json => { return { json } })
-}
-
 export const enteringRoom = (tableId) => {
   return post(`/tables/${tableId}/players`).then(json => { return { json } })
 }

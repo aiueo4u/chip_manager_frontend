@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InformationLine = ({ type, time, nickname, amount }) => {
+const InformationLine = ({ type, time, nickname, amount, pot }) => {
   let content = '';
 
   switch (type) {
@@ -20,10 +20,16 @@ const InformationLine = ({ type, time, nickname, amount }) => {
       content = `${nickname}はチェックしました。`;
       break;
     case 'PLAYER_ACTION_BET_CHIPS':
-      content = `${nickname}が${amount}をベットしました。`;
+      content = `${nickname}が${amount}をベットしました。ポット: ${pot}`;
       break;
-    case 'PLAYER_ACTION_TAKE_POT':
-      content = `${nickname}がポットを獲得しました。`;
+    case 'PLAYER_ACTION_CALL':
+      content = `${nickname}が${amount}をコールしました。ポット: ${pot}`;
+      break;
+    case 'PLAYER_ACTION_FOLD':
+      content = `${nickname}がフォールドしました。`;
+      break;
+    case 'GAME_HAND_TAKE_POT':
+      content = `${nickname}がポット${amount}を獲得しました。`;
       break;
     default:
       break;

@@ -23,8 +23,8 @@ export const leftRoom = (data) => {
 }
 
 export const informationPlayerAction = (data) => {
-  const { nickname, time, player_action_type, amount } = data;
-  return { type: 'ROOM_INFORMATION_PLAYER_ACTION', time: time, nickname: nickname, playerActionType: player_action_type, amount: amount };
+  const { nickname, time, player_action_type, amount, pot } = data;
+  return { type: 'ROOM_INFORMATION_PLAYER_ACTION', time: time, nickname: nickname, playerActionType: player_action_type, amount: amount, pot: pot };
 }
 
 const clearInformationItems = () => {

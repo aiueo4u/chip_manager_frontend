@@ -2,10 +2,6 @@ export const enteringRoom = (tableId) => {
   return { type: "ENTERING_ROOM", tableId: tableId };
 }
 
-export const takePotAction = (tableId, playerId) => {
-  return { type: "TAKE_POT", tableId: tableId, playerId: playerId };
-}
-
 export const addChip = (tableId, playerId, amount) => {
   return { type: "ADD_CHIP", tableId: tableId, playerId: playerId, amount: amount };
 }
@@ -28,4 +24,12 @@ export const betAction = (tableId, playerId, amount) => {
 
 export const playerActionReceived = (pot, game_hand_state, players, current_seat_no) => {
   return { type: "PLAYER_ACTION_RECEIVED", pot: pot, gameHandState: game_hand_state, currentSeatNo: current_seat_no, players: players };
+}
+
+export const gameHandFinishedReceived = () => {
+  return { type: "GAME_HAND_FINISHED_RECEIVED" };
+}
+
+export const gameHandActionReceived = (pot, players) => {
+  return { type: "GAME_HAND_ACTION_RECEIVED", pot: pot, players: players };
 }

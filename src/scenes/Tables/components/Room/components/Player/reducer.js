@@ -31,8 +31,6 @@ const PlayerReducer = (state = {}, action) => {
 
 const PlayersReducer = (state = [], action) => {
   switch (action.type) {
-    case 'ENTERED_ROOM':
-      return action.players;
     case 'PLAYER_ACTION_RECEIVED':
       return action.players;
     case 'INCREMENT_BET_SIZE':
@@ -43,8 +41,6 @@ const PlayersReducer = (state = [], action) => {
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'ADD_CHIP_FAILED':
       return state.map((player) => { return PlayerReducer(player, action) });
-    case 'TAKE_POT_COMPLETED':
-      return state;
     case 'CHECK_ACTION':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'CHECK_ACTION_COMPLETED':
