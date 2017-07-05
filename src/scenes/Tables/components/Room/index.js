@@ -88,6 +88,7 @@ class Room extends Component {
               onCallAction={onCallAction}
               onFoldAction={onFoldAction}
               yourTurn={currentSeatNo === player.seat_no}
+              pot={pot}
             />
           ) : (<div key={player.id}></div>)
         })}

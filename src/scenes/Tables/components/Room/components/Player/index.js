@@ -6,8 +6,19 @@ import {
 } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import BetControlField from './components/BetControlField';
 
-const Player = ({ foldAction, callAction, checkAction, yourTurn, player, add, bet, incrementBetSize }) => (
+const Player = (
+    {
+      foldAction,
+      callAction,
+      checkAction,
+      onBetAction,
+      yourTurn,
+      player,
+      add,
+      pot
+    }) => (
   <Card>
     <CardText>
       {yourTurn ? (<div>YourTurn</div>) : (<div></div>)}
@@ -15,15 +26,11 @@ const Player = ({ foldAction, callAction, checkAction, yourTurn, player, add, be
         [Seat {player.seat_no}][Pos {player.position}] {player.nickname},{player.stack}
         <RaisedButton label="チップ追加" primary={true} onTouchTap={add} />
         <RaisedButton label="Check" primary={true} onTouchTap={checkAction} />
-        <RaisedButton label="Bet" primary={true} onTouchTap={bet} />
-        <RaisedButton label="BetSize++" primary={true} onTouchTap={incrementBetSize} />
         <RaisedButton label="Call" primary={true} onTouchTap={callAction} />
         <RaisedButton label="Fold" primary={true} onTouchTap={foldAction} />
+        <BetControlField player={player} pot={pot} onBetAction={onBetAction} />
         <div>
           State: {player.state}
-        </div>
-        <div>
-          Bet size: {player.betSize}
         </div>
         <div>
           Bet size in this state: {player.bet_amount_in_state}
@@ -63,14 +70,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     checkAction: () => {
       dispatch(ownProps.onCheckAction(player.id));
     },
-    bet: () => {
-      let amount = player.betSize;
-      dispatch(ownProps.onBetAction(player.id, amount));
-    },
-    incrementBetSize: () => {
-      let amount = 10; // TODO
-      dispatch({ type: "INCREMENT_BET_SIZE", playerId: player.id, amount: amount })
-    }
   }
 }
 

@@ -1,12 +1,32 @@
-const PlayerReducer = (state = {}, action) => {
+const initialState = {
+  betSize: 0
+}
+
+const PlayerReducer = (state = initialState, action) => {
   const player = state;
   if (player.id !== action.playerId) {
     return player;
   }
-    
+
+  let betSize = 0;
+
   switch (action.type) {
+    case 'CHANGE_BET_AMOUNT':
+      return Object.assign({}, player, { betSize: action.amount });
+    case 'SET_BET_SIZE':
+      betSize = action.amount;
+      return Object.assign({}, player, { betSize: betSize });
     case 'INCREMENT_BET_SIZE':
-      let betSize = (player.betSize || 0) + action.amount;
+      betSize = (player.betSize || 0) + action.amount;
+      if (action.playerStack < betSize) {
+        betSize = action.playerStack;
+      }
+      return Object.assign({}, player, { betSize: betSize });
+    case 'DECREMENT_BET_SIZE':
+      betSize = (player.betSize || 0) - action.amount;
+      if (betSize < 0) {
+        betSize = 0;
+      }
       return Object.assign({}, player, { betSize: betSize });
     case 'ADD_CHIP':
       return Object.assign({}, player, { isFetching: true });
@@ -33,7 +53,13 @@ const PlayersReducer = (state = [], action) => {
   switch (action.type) {
     case 'PLAYER_ACTION_RECEIVED':
       return action.players;
+    case 'CHANGE_BET_AMOUNT':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'SET_BET_SIZE':
+      return state.map((player) => { return PlayerReducer(player, action) });
     case 'INCREMENT_BET_SIZE':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'DECREMENT_BET_SIZE':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'ADD_CHIP':
       return state.map((player) => { return PlayerReducer(player, action) });
