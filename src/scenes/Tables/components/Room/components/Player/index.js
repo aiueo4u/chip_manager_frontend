@@ -7,6 +7,7 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import BetControlField from './components/BetControlField';
+import Dialog from 'material-ui/Dialog';
 
 const Player = (
     {
@@ -21,9 +22,8 @@ const Player = (
     }) => (
   <Card>
     <CardText>
-      {yourTurn ? (<div>YourTurn</div>) : (<div></div>)}
       <div>
-        [Seat {player.seat_no}][Pos {player.position}] {player.nickname},{player.stack}
+        <div>{player.stack}</div>
         <RaisedButton label="チップ追加" primary={true} onTouchTap={add} />
         <RaisedButton label="Check" primary={true} onTouchTap={checkAction} />
         <RaisedButton label="Call" primary={true} onTouchTap={callAction} />

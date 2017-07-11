@@ -10,6 +10,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import InformationLine from './components/InformationLine';
+import { WEBSOCKET_ENDPOINT } from './../../../../../../Configuration.js'; // TODO: 何とか良い感じに参照したい。。
 
 // Action Creators
 export const enteredRoom = (data) => {
@@ -38,7 +39,7 @@ class Information extends Component {
     this.App = {}
     const jwt = localStorage.getItem('playerSession.jwt');
     // TODO: 冗長？
-    this.App.cable = ActionCable.createConsumer(`ws://localhost:3001/cable?jwt=${jwt}`);
+    this.App.cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
 
     this.App.ChipChannel = this.App.cable.subscriptions.create({ channel: 'InformationChannel', tableId: tableId }, {
       connected() { console.log("Information Channel connected") },

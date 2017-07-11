@@ -1,9 +1,8 @@
 import fetch from 'isomorphic-fetch'
-
-const base_url = 'http://localhost:3001';
+import { API_ENDPOINT } from './Configuration.js';
 
 const send = (path, method, headers = {}, body = '') => {
-  let url = `${base_url}${path}`;
+  let url = `${API_ENDPOINT}${path}`;
 
   const jwt = localStorage.getItem('playerSession.jwt');
   if (jwt) {

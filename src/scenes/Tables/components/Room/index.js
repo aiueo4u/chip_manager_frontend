@@ -16,8 +16,8 @@ import {
 import CircularProgress from 'material-ui/CircularProgress';
 import Information from './components/Information';
 import GameDialog from './components/GameDialog';
-
 import ActionCable from 'actioncable';
+import { WEBSOCKET_ENDPOINT } from './../../../../Configuration.js'; // TODO: 何とか良い感じに参照したい。。
 
 const gameStartButtonClicked = (tableId) => {
   return { type: "GAME_START_BUTTON_CLICKED", tableId: tableId };
@@ -30,7 +30,7 @@ class Room extends Component {
     // action cable setup
     this.App = {}
     const jwt = localStorage.getItem('playerSession.jwt');
-    this.App.cable = ActionCable.createConsumer(`ws://localhost:3001/cable?jwt=${jwt}`);
+    this.App.cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
 
     let tableId = match.params.id;
 
@@ -76,6 +76,9 @@ class Room extends Component {
           pot={pot}
           onGameStart={onGameStart}
           gameHandState={gameHandState}
+          players={players}
+          playerSession={playerSession}
+          currentSeatNo={currentSeatNo}
         />
         {players.map(player => {
           return playerSession.nickname === player.nickname ? (
