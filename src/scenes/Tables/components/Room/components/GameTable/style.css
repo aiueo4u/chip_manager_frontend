@@ -1,26 +1,26 @@
 .flex-container {
   width: 80%;
   height: 50vh;
-  background-color: #bbbbbb;
+  background-color: #88aa88;
   margin: auto;
   display: flex;
-  -webkit-flex-direction: column;
   flex-direction: column;
   justify-content: space-around;
 }
 
 .flex-up-container {
-  background-color: #cccccc;
   display: flex;
-  -webkit-flex-direction: row;
   flex-direction: row;
   justify-content: space-around;
 }
 
-.flex-down-container {
-  background-color: #cccccc;
+.flex-center-container {
   display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.flex-down-container {
+  display: flex;
+  flex-direction: row;
   justify-content: space-around;
 }

@@ -3,19 +3,9 @@ import {
   tableCreate,
   submitLogin,
   tables,
-  enteringRoom,
   initialLogin,
   actionToGameDealer,
 } from './api';
-
-function *handleRequestEnteringRoom(action) {
-  const { json, error } = yield call(enteringRoom, action.tableId);
-  if (json && !error) {
-    yield put({ type: 'ENTERING_ROOM_NEXT', tableId: action.tableId })
-  } else {
-    // TODO
-  }
-}
 
 function *handleRequestTableCreate(action) {
   const { json, error } = yield call(tableCreate, action.tableName);
@@ -30,7 +20,7 @@ function *handleRequestLogin(action) {
   const { json, error } = yield call(submitLogin, action.nickname);
   if (json && !error) {
     localStorage.setItem('playerSession.jwt', json.jwt)
-    yield put({ type: 'LOGIN_FORM_ON_SUCCESS', nickname: json.nickname })
+    yield put({ type: 'LOGIN_FORM_ON_SUCCESS', nickname: json.nickname, playerId: json.player_id })
   } else {
     // TODO
   }
@@ -130,6 +120,22 @@ function *handleTakePotAction(action) {
   }
 }
 
+function *handlePlayerTakeSeat(action) {
+  let params = {
+    type: "PLAYER_ACTION_TAKE_SEAT",
+    table_id: action.tableId,
+    player_id: action.playerId,
+    seat_no: action.seatNo
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "PLAYER_ACTION_TAKE_SEAT_COMPLETED", tableId: action.tableId, playerId: action.playerId, amount: action.amount, pot: json.pot });
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "PLAYER_ACTION_TAKE_SEAT_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+  }
+}
+
 function *handleAddChip(action) {
   let params = {
     type: "PLAYER_ACTION_ADD_CHIPS",
@@ -150,11 +156,7 @@ function *handleInitialLogin() {
   const { json, error } = yield call(initialLogin);
 
   if (json && !error) {
-    let nickname = undefined;
-    if (json.isLoggedIn) {
-      nickname = json.nickname;
-    }
-    yield put({ type: "INITIAL_LOGIN_COMPLETED", nickname: nickname, isLoggedIn: json.isLoggedIn });
+    yield put({ type: "INITIAL_LOGIN_COMPLETED", nickname: json.nickname, isLoggedIn: json.isLoggedIn, playerId: json.playerId });
   } else {
     // TODO
   }
@@ -178,7 +180,6 @@ export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
   yield takeEvery("CREATE_TABLE_FORM_ON_SUBMIT", handleRequestTableCreate);
-  yield takeEvery("ENTERING_ROOM", handleRequestEnteringRoom);
   yield takeEvery("INITIAL_LOGIN", handleInitialLogin);
   yield takeEvery("ADD_CHIP", handleAddChip);
   yield takeEvery("BET_ACTION", handleBetAction);
@@ -187,4 +188,5 @@ export default function *rootSage() {
   yield takeEvery("CHECK_ACTION", handleCheckAction);
   yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked);
   yield takeEvery("TAKE_POT_ACTION", handleTakePotAction);
+  yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);
 }

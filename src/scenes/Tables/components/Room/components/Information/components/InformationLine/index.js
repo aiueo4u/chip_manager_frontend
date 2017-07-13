@@ -5,10 +5,10 @@ const InformationLine = ({ type, time, nickname, amount, pot }) => {
 
   switch (type) {
     case 'ENTER':
-      content = `${nickname}が着席しました。`;
+      content = `${nickname}が入室しました。`;
       break;
     case 'LEAVE':
-      content = `${nickname}が退席しました。`;
+      content = `${nickname}が退室しました。`;
       break;
     case 'GAME_START':
       content = `${nickname}がゲームを開始させました。`;

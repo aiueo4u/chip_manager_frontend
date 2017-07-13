@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import GameTable from './components/GameTable';
 import Player from './components/Player';
 import {
-  enteringRoom,
   addChip,
   betAction,
   callAction,
@@ -25,7 +24,7 @@ const gameStartButtonClicked = (tableId) => {
 
 class Room extends Component {
   componentDidMount() {
-    const { match, onEnteredRoom, onGameHandFinishedReceived, onGameHandActionReceived, onPlayerActionReceived } = this.props;
+    const { match, onGameHandFinishedReceived, onGameHandActionReceived, onPlayerActionReceived } = this.props;
 
     // action cable setup
     this.App = {}
@@ -35,10 +34,7 @@ class Room extends Component {
     let tableId = match.params.id;
 
     this.App.ChipChannel = this.App.cable.subscriptions.create({ channel: 'ChipChannel', tableId: tableId }, {
-      connected() {
-        console.log("Chip Channel connected")
-        onEnteredRoom();
-      },
+      connected() { console.log("Chip Channel connected") },
       disconnected() { console.log("Chip Channel disconnected") },
       received(data) {
         console.log("Chip Channel received", data)
@@ -59,7 +55,9 @@ class Room extends Component {
   }
 
   render() {
-    const { playerSession, onFoldAction, onCheckAction, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction, pot, isReady, informationItems } = this.props
+    const { playerSession, onFoldAction, onCheckAction, buttonSeatNo, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction, pot, isReady, informationItems } = this.props
+
+    let isSeated = players.find(player => player.id === playerSession.playerId) ? true : false
 
     return (!isReady) ? (
       <div>
@@ -67,9 +65,7 @@ class Room extends Component {
       </div>
     ) : (
       <div>
-        <GameDialog
-          tableId={tableId}
-        />
+        <GameDialog tableId={tableId} />
         <GameTable
           tableName={tableName}
           tableId={tableId}
@@ -79,9 +75,11 @@ class Room extends Component {
           players={players}
           playerSession={playerSession}
           currentSeatNo={currentSeatNo}
+          buttonSeatNo={buttonSeatNo}
+          isSeated={isSeated}
         />
         {players.map(player => {
-          return playerSession.nickname === player.nickname ? (
+          return playerSession.playerId === player.id ? (
             <Player
               key={player.id}
               player={player}
@@ -130,6 +128,7 @@ const mapStateToProps = (state, ownProps) => {
     },
     gameHandState: Room.GameTable.gameHandState,
     currentSeatNo: Room.GameTable.currentSeatNo,
+    buttonSeatNo: Room.GameTable.buttonSeatNo,
   }
 }
 
@@ -137,10 +136,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const tableId = ownProps.match.params.id;
 
   return {
-    onEnteredRoom: () => {
-      let tableId = ownProps.match.params.id;
-      dispatch(enteringRoom(tableId));
-    },
     onGameHandFinishedReceived: (data) => {
       dispatch(gameHandFinishedReceived());
     },
@@ -148,7 +143,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(gameHandActionReceived(data.pot, data.players));
     },
     onPlayerActionReceived: (data) => {
-       dispatch(playerActionReceived(data.pot, data.game_hand_state, data.players, data.current_seat_no));
+       dispatch(playerActionReceived(data.pot, data.game_hand_state, data.players, data.current_seat_no, data.button_seat_no));
     },
     onGameStart: () => {
        dispatch(gameStartButtonClicked(tableId));

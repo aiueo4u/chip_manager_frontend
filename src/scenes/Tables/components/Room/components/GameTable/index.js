@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import PlayerPanel from './components/PlayerPanel';
+import PlayerChipBetArea from './components/PlayerChipBetArea';
 import './style.css';
 
 const gameHandStateToReadable = (gameHandState) => {
@@ -20,50 +22,96 @@ const gameHandStateToReadable = (gameHandState) => {
   }
 }
 
+const gameStartable = (gameHandState) => {
+  return !gameHandState || gameHandState === 'finished' || gameHandState === 'init'
+}
+
 class GameTable extends Component {
   render() {
-    const { playerSession, players, gameHandState, onGameStart, currentSeatNo, tableName, tableId, pot = 0 } = this.props
+    const { isSeated, playerSession, players, onTakeSeat, gameHandState, buttonSeatNo, onGameStart, currentSeatNo, pot = 0 } = this.props
 
     // TODO: リファクタしたい。。。自分を中心に並び替えてる
-    let currentPlayer = players.find(e => e.nickname == playerSession.nickname)
+    let currentPlayer = players.find(e => e.nickname === playerSession.nickname)
     let sortedPlayers = []
+
     for (let i = 0; i < 10; i++) {
-      let player = players.find(e => e.seat_no == i + 1)
+      let player = players.find(e => e.seat_no === i + 1)
       if (player) {
         sortedPlayers.push(player)
       } else {
         sortedPlayers.push({ 'seat_no': i + 1 })
       }
     }
-    sortedPlayers = sortedPlayers.slice(currentPlayer.seat_no - 1, 10).concat(sortedPlayers.slice(0, currentPlayer.seat_no - 1))
+    if (currentPlayer) {
+      sortedPlayers = sortedPlayers.slice(currentPlayer.seat_no - 1, 10).concat(sortedPlayers.slice(0, currentPlayer.seat_no - 1))
+    }
+
+    let inGame = !gameStartable(gameHandState);
 
     return (
       <div>
         <div className="flex-container">
           <div className="flex-up-container">
-            <PlayerPanel seatNo={sortedPlayers[3].seat_no} player={sortedPlayers[3]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[4].seat_no} player={sortedPlayers[4]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[5].seat_no} player={sortedPlayers[5]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[6].seat_no} player={sortedPlayers[6]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[7].seat_no} player={sortedPlayers[7]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[3]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[4]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[5]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[6]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[7]} currentSeatNo={currentSeatNo} />
           </div>
-          <div>
-            <div>Pot: {pot} {gameHandStateToReadable(gameHandState)}</div>
+          <div className="flex-up-container">
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[3]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[4]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[5]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[6]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[7]} />
+          </div>
+          <div className="flex-center-container">
+            {
+              gameStartable(gameHandState) ? (
+                <div>
+                  <RaisedButton label="Game Start" primary={true} onTouchTap={onGameStart} />
+                </div>
+              ) : (
+                <div>
+                  <div>
+                    フェーズ: {gameHandStateToReadable(gameHandState)}
+                  </div>
+                  <div>
+                    ポット: {pot}
+                  </div>
+                </div>
+              )
+            }
           </div>
           <div className="flex-down-container">
-            <PlayerPanel seatNo={sortedPlayers[8].seat_no} player={sortedPlayers[8]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[9].seat_no} player={sortedPlayers[9]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[0].seat_no} player={sortedPlayers[0]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[1].seat_no} player={sortedPlayers[1]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
-            <PlayerPanel seatNo={sortedPlayers[2].seat_no} player={sortedPlayers[2]} currentSeatNo={currentSeatNo} playerSession={playerSession} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[2]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[1]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[0]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[9]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[8]} />
           </div>
-        </div>
-        <div>
-          <RaisedButton label="Game Start" primary={true} onTouchTap={onGameStart} />
+          <div className="flex-down-container">
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[2]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[1]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[0]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[9]} currentSeatNo={currentSeatNo} />
+            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[8]} currentSeatNo={currentSeatNo} />
+          </div>
         </div>
       </div>
     )
   }
 }
 
-export default GameTable;
+const mapStateToProps = (state, ownProps) => { return {} }
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { tableId, playerSession } = ownProps;
+
+  return {
+    onTakeSeat: (seatNo) => {
+      dispatch({ type: 'PLAYER_TAKE_SEAT', tableId: tableId, playerId: playerSession.playerId, seatNo: seatNo })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameTable);

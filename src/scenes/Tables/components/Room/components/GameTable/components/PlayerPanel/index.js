@@ -1,33 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Avatar from 'material-ui/Avatar';
+import RaisedButton from 'material-ui/RaisedButton';
 import './style.css';
 
 class PlayerPanel extends Component {
   render() {
-    const { seatNo, player, currentSeatNo, playerSession } = this.props;
+    const { isSeated, player, inGame, currentSeatNo, onTakeSeat } = this.props;
 
-    // TODO: nicknameがID代わりになっているのなんとかしたい。。
-    if (!player.nickname) {
-      // TODO: empty panel
+    if (!player.id) {
       return (
         <div>
-          <div>---</div>
-          <div>Seat {seatNo}</div>
+          <Avatar>空{player.seat_no}</Avatar>
+          {isSeated ? (<div></div>) : (<RaisedButton label="着席" onTouchTap={onTakeSeat} />)}
         </div>
       );
     }
 
     let myTurn = currentSeatNo === player.seat_no;
-    let isMe = playerSession.nickname === player.nickname;
 
     return (
-      <div className={myTurn ? 'my-turn' : ''}>
-        <div className={isMe ? 'is-me' : ''}>{player.nickname}</div>
-        <div>Seat {seatNo}</div>
-        <div>Stack {player.stack}</div>
-        <div>Chip {player.bet_amount_in_state}</div>
+      <div>
+        <Avatar size={myTurn && inGame ? 80 : 40} src="https://pbs.twimg.com/profile_images/802939485017079808/NdbKiaEp_400x400.jpg" />
+        <div className='nickname'>{player.nickname}</div>
+        <div className='player-stack'>{player.stack}</div>
       </div>
     )
   }
 }
 
-export default PlayerPanel;
+const mapStateToProps = (state, ownProps) => { return {} }
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { player } = ownProps;
+  return {
+    onTakeSeat: () => {
+      ownProps.onTakeSeat(player.seat_no)
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerPanel);

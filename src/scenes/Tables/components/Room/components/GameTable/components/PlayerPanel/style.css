@@ -1,6 +1,15 @@
 .my-turn {
   background-color: #dddddd;
 }
+
 .is-me {
-  background-color: #888888;
+  background-color: #aaaaaa;
+}
+
+.nickname {
+  font-size: 10pt
+}
+
+.player-stack {
+  font-size: 10pt
 }

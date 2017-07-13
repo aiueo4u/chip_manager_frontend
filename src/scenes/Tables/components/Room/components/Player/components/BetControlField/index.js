@@ -16,7 +16,6 @@ const BetControlField = (
     }
   ) => (
   <div>
-    <span>ベットサイズ: {player.betSize}</span>
     <Slider
       min={0}
       max={player.stack}

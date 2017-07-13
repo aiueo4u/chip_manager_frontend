@@ -56,18 +56,13 @@ export const actionToGameDealer = (action) => {
 export const initialLogin = () => {
   return get('/players/@me')
     .then(json => {
-      let nickname = json.nickname
-      let playerSession = { isLoggedIn: true, nickname: nickname }
+      let playerSession = { isLoggedIn: true, nickname: json.nickname, playerId: json.player_id }
       return { json: playerSession };
     })
     .catch(error => {
       let playerSession = { isLoggedIn: false };
       return { json: playerSession };
     })
-}
-
-export const enteringRoom = (tableId) => {
-  return post(`/tables/${tableId}/players`).then(json => { return { json } })
 }
 
 export const tableCreate = (tableName) => {
