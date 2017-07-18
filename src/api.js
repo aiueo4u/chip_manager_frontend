@@ -65,9 +65,11 @@ export const initialLogin = () => {
     })
 }
 
-export const tableCreate = (tableName) => {
+export const tableCreate = (tableName, sb, bb) => {
   let body = new FormData();
   body.append('table_name', tableName);
+  body.append('sb', sb);
+  body.append('bb', bb);
   return post('/tables', {}, body).then(json => { return { json } })
 }
 

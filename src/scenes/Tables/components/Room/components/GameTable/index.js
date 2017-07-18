@@ -28,7 +28,7 @@ const gameStartable = (gameHandState) => {
 
 class GameTable extends Component {
   render() {
-    const { isSeated, playerSession, players, onTakeSeat, gameHandState, buttonSeatNo, onGameStart, currentSeatNo, pot = 0 } = this.props
+    const { isSeated, playerSession, players, onTakeSeat, inGame, gameHandState, buttonSeatNo, onGameStart, currentSeatNo, pot = 0 } = this.props
 
     // TODO: リファクタしたい。。。自分を中心に並び替えてる
     let currentPlayer = players.find(e => e.nickname === playerSession.nickname)
@@ -45,8 +45,6 @@ class GameTable extends Component {
     if (currentPlayer) {
       sortedPlayers = sortedPlayers.slice(currentPlayer.seat_no - 1, 10).concat(sortedPlayers.slice(0, currentPlayer.seat_no - 1))
     }
-
-    let inGame = !gameStartable(gameHandState);
 
     return (
       <div>
@@ -67,7 +65,7 @@ class GameTable extends Component {
           </div>
           <div className="flex-center-container">
             {
-              gameStartable(gameHandState) ? (
+              !inGame ? (
                 <div>
                   <RaisedButton label="Game Start" primary={true} onTouchTap={onGameStart} />
                 </div>

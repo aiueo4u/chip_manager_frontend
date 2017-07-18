@@ -11,13 +11,26 @@ import Login from './scenes/Login';
 import Lobby from './scenes/Lobby';
 import Tables from './scenes/Tables';
 import AppBar from 'material-ui/AppBar';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import CircularProgress from 'material-ui/CircularProgress';
 
 class InnerAppBar extends Component {
   render() {
     const { match, history, location, staticContext, ...rest } = this.props
     return (
-      <AppBar {...rest} onTitleTouchTap={() => { history.push("/") }} />
+      <AppBar
+        {...rest}
+        iconElementLeft={
+          <IconMenu
+            iconButtonElement={<IconButton><MenuIcon /></IconButton>}
+          >
+            <MenuItem primaryText="ホーム" onTouchTap={() => { history.push("/") }} />
+          </IconMenu>
+        }
+      />
     )
   }
 }
@@ -42,7 +55,7 @@ class App extends Component {
       <div>
         <Router>
           <div>
-            <CustomAppBar title="Brave call" iconElementRight={<span>Hello, {nickname}!</span>} />
+            <CustomAppBar title="Poker Chip Manager" />
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/newTable" component={Lobby} />

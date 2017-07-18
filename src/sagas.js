@@ -8,11 +8,12 @@ import {
 } from './api';
 
 function *handleRequestTableCreate(action) {
-  const { json, error } = yield call(tableCreate, action.tableName);
-  if (json && !error) {
+  try {
+    const { json, error } = yield call(tableCreate, action.tableName, action.sb, action.bb);
     yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId: json.table_id })
-  } else {
-    // TODO
+  } catch (error) {
+    console.log(error);
+    yield put({ type: "CREATE_TABLE_FORM_ON_FAILURE" });
   }
 }
 

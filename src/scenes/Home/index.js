@@ -10,11 +10,6 @@ const Home = ({ nickname }) => (
         <RaisedButton label="新規テーブルを作成" />
       </Link>
     </div>
-    <div>
-      <Link to="/tables">
-        <RaisedButton label="既存テーブルに参加" />
-      </Link>
-    </div>
   </div>
 )
 

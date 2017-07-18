@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
+import { Redirect } from 'react-router-dom';
 
 const styles = {
   submitInput: { // デフォルトのサブミットボタンは見えなくする
@@ -16,26 +17,42 @@ const styles = {
 }
 
 class CreateTableForm extends Component {
+  componentWillUnmount() {
+    this.props.clearForm()
+  }
+
   render() {
-    const { isFetching, handleSubmit } = this.props;
+    const { tableId, isTableCreated, isFetching, handleSubmit } = this.props;
+
+    if (isTableCreated) {
+      return (<Redirect to={`/tables/${tableId}`} />)
+    }
 
     return isFetching ? (
       <div>
         <CircularProgress />
       </div>
     ) : (
-      <form onSubmit={handleSubmit}>
-        <div>
+      <div>
+        <form onSubmit={handleSubmit}>
           <div>
-            <TextField name="tableNameTextField" hintText="テーブル名を入力してください" />
+            <div>
+              <TextField name="tableNameTextField" hintText="テーブル名を入力してください" />
+            </div>
+            <div>
+              <TextField name="smallBlindTextField" hintText="SB" />
+            </div>
+            <div>
+              <TextField name="bigBlindTextField" hintText="BB" />
+            </div>
+            <div>
+              <RaisedButton label="テーブル作成" labelPosition="before" containerElement="label">
+                <input type="submit" style={styles.submitInput} />
+              </RaisedButton>
+            </div>
           </div>
-          <div>
-            <RaisedButton label="テーブル作成" labelPosition="before" containerElement="label">
-              <input type="submit" style={styles.submitInput} />
-            </RaisedButton>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     )
   }
 }

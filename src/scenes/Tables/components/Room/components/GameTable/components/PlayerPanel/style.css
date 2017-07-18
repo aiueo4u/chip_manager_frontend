@@ -13,3 +13,12 @@
 .player-stack {
   font-size: 10pt
 }
+
+.active-avatar {
+  border: 2px solid #FFFFFF;
+}
+
+.folded-avatar {
+  filter: grayscale(100%);
+  border: 2px solid #888888;
+}

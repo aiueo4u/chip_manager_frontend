@@ -3,6 +3,12 @@ import { connect } from 'react-redux';
 import Slider from 'material-ui/Slider';
 import RaisedButton from 'material-ui/RaisedButton';
 
+const buttonStyle = {
+  width: '40px',
+  height: '50px',
+  margin: '5px',
+}
+
 const BetControlField = (
     {
       player,
@@ -24,20 +30,12 @@ const BetControlField = (
       value={player.betSize}
       onChange={handleBetAmountSliderChange}
     />
-    <table>
-      <tbody>
-        <tr>
-          <td><RaisedButton label="1/2ベット" onTouchTap={setBetSizeHalfPot} /></td>
-          <td><RaisedButton label="ポットベット" onTouchTap={setBetSizePot} /></td>
-          <td><RaisedButton label="オールイン" onTouchTap={setBetSizeAllIn} /></td>
-          <td><RaisedButton label="+10" onTouchTap={incrementBetSize10} /></td>
-          <td><RaisedButton label="-10" onTouchTap={decrementBetSize10} /></td>
-        </tr>
-        <tr>
-          <td><RaisedButton label="実行" primary={true} onTouchTap={bet} /></td>
-        </tr>
-      </tbody>
-    </table>
+    <RaisedButton style={buttonStyle} label="1/2" onTouchTap={setBetSizeHalfPot} />
+    <RaisedButton style={buttonStyle} label="1/1" onTouchTap={setBetSizePot} />
+    <RaisedButton style={buttonStyle} label="all-in" onTouchTap={setBetSizeAllIn} />
+    <RaisedButton style={buttonStyle} label="+10" onTouchTap={incrementBetSize10} />
+    <RaisedButton style={buttonStyle} label="-10" onTouchTap={decrementBetSize10} />
+    {player.betSize ? <RaisedButton style={buttonStyle} label={`${player.betSize} Bet`} primary={true} onTouchTap={bet} /> : ''}
   </div>
 )
 

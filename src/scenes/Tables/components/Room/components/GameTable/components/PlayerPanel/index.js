@@ -19,9 +19,11 @@ class PlayerPanel extends Component {
 
     let myTurn = currentSeatNo === player.seat_no;
 
+    let className = `${player.state}-avatar`
+
     return (
       <div>
-        <Avatar size={myTurn && inGame ? 80 : 40} src="https://pbs.twimg.com/profile_images/802939485017079808/NdbKiaEp_400x400.jpg" />
+        <Avatar className={className} src="https://pbs.twimg.com/profile_images/802939485017079808/NdbKiaEp_400x400.jpg" />
         <div className='nickname'>{player.nickname}</div>
         <div className='player-stack'>{player.stack}</div>
       </div>

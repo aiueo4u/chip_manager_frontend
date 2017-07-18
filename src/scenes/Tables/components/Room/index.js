@@ -13,13 +13,17 @@ import {
   gameHandFinishedReceived,
 } from './data/actions.js';
 import CircularProgress from 'material-ui/CircularProgress';
-import Information from './components/Information';
+// import Information from './components/Information';
 import GameDialog from './components/GameDialog';
 import ActionCable from 'actioncable';
 import { WEBSOCKET_ENDPOINT } from './../../../../Configuration.js'; // TODO: 何とか良い感じに参照したい。。
 
 const gameStartButtonClicked = (tableId) => {
   return { type: "GAME_START_BUTTON_CLICKED", tableId: tableId };
+}
+
+const gameStartable = (gameHandState) => {
+  return !gameHandState || gameHandState === 'finished' || gameHandState === 'init'
 }
 
 class Room extends Component {
@@ -55,9 +59,10 @@ class Room extends Component {
   }
 
   render() {
-    const { playerSession, onFoldAction, onCheckAction, buttonSeatNo, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction, pot, isReady, informationItems } = this.props
+    const { playerSession, onFoldAction, onCheckAction, buttonSeatNo, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction, pot, isReady } = this.props
 
     let isSeated = players.find(player => player.id === playerSession.playerId) ? true : false
+    const inGame = !gameStartable(gameHandState);
 
     return (!isReady) ? (
       <div>
@@ -77,6 +82,7 @@ class Room extends Component {
           currentSeatNo={currentSeatNo}
           buttonSeatNo={buttonSeatNo}
           isSeated={isSeated}
+          inGame={inGame}
         />
         {players.map(player => {
           return playerSession.playerId === player.id ? (
@@ -90,10 +96,11 @@ class Room extends Component {
               onFoldAction={onFoldAction}
               yourTurn={currentSeatNo === player.seat_no}
               pot={pot}
+              inGame={inGame}
             />
           ) : (<div key={player.id}></div>)
         })}
-        <Information informationItems={informationItems} tableId={tableId} />
+        {/* <Information informationItems={informationItems} tableId={tableId} /> */}
       </div>
     )
   }
@@ -143,7 +150,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(gameHandActionReceived(data.pot, data.players));
     },
     onPlayerActionReceived: (data) => {
-       dispatch(playerActionReceived(data.pot, data.game_hand_state, data.players, data.current_seat_no, data.button_seat_no));
+       dispatch(playerActionReceived(data.pot, data.game_hand_state, data.players, data.current_seat_no, data.button_seat_no, data.last_aggressive_seat_no));
     },
     onGameStart: () => {
        dispatch(gameStartButtonClicked(tableId));

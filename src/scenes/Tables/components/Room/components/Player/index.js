@@ -1,12 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+/*
 import {
   Card,
   CardText,
 } from 'material-ui/Card';
+*/
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import BetControlField from './components/BetControlField';
+
+const buttonStyle = {
+  width: '30px',
+  height: '30px',
+  margin: '5px',
+}
 
 const Player = (
     {
@@ -17,37 +25,34 @@ const Player = (
       yourTurn,
       player,
       add,
-      pot
+      pot,
+      inGame,
+      aggressivePlayerExist
     }) => (
-  <Card>
-    <CardText>
-      <div>
-        <RaisedButton label="チップ追加" primary={true} onTouchTap={add} />
-        <RaisedButton label="Check" primary={true} onTouchTap={checkAction} />
-        <RaisedButton label="Call" primary={true} onTouchTap={callAction} />
-        <RaisedButton label="Fold" primary={true} onTouchTap={foldAction} />
-        {player.stack > 0 ? (<BetControlField player={player} pot={pot} onBetAction={onBetAction} />) : (<div></div>)}
+  <div>
+    <div>
+      {yourTurn ? (
         <div>
-          State: {player.state}
+          <RaisedButton style={buttonStyle} label="チップ追加" primary={true} onTouchTap={add} />
+          <RaisedButton style={buttonStyle} label="Check" primary={true} onTouchTap={checkAction} />
+          <RaisedButton style={buttonStyle} label="Call" primary={true} onTouchTap={callAction} />
+          <RaisedButton style={buttonStyle} label="Fold" primary={true} onTouchTap={foldAction} />
+          {player.stack > 0 ? (<BetControlField player={player} pot={pot} onBetAction={onBetAction} />) : (<div></div>)}
         </div>
-        <div>
-          Bet size in this state: {player.bet_amount_in_state}
-        </div>
-        <div>
-          Total Bet size: {player.total_bet_amount}
-        </div>
-      </div>
-    </CardText>
+      ) : (<div></div>)
+      }
     {player.isFetching ? (
       <div>
         <CircularProgress />
       </div>
     ) : (<div></div>)}
-  </Card>
+    </div>
+  </div>
 )
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    aggressivePlayerExist: state.scenes.Tables.Room.GameTable.lastAggressiveSeatNo ? true : false
   }
 }
 

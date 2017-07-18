@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import TwitterLoginButton from './components/TwitterLoginButton';
 
 const styles = {
   submitInput: { // デフォルトのサブミットボタンは見えなくする
@@ -29,18 +30,21 @@ class LoginForm extends Component {
         <CircularProgress />
       </div>
     ) : (
-      <form onSubmit={handleSubmit}>
-        <div>
+      <div>
+        <TwitterLoginButton />
+        <form onSubmit={handleSubmit}>
           <div>
-            <TextField name="playerNicknameTextField" hintText="Your nickname" />
+            <div>
+              <TextField name="playerNicknameTextField" hintText="Your nickname" />
+            </div>
+            <div>
+              <RaisedButton label="ログイン" labelPosition="before" containerElement="label">
+                <input type="submit" style={styles.submitInput} />
+              </RaisedButton>
+            </div>
           </div>
-          <div>
-            <RaisedButton label="ログイン" labelPosition="before" containerElement="label">
-              <input type="submit" style={styles.submitInput} />
-            </RaisedButton>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     )
   }
 }
