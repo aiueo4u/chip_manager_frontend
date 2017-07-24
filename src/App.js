@@ -55,7 +55,7 @@ class App extends Component {
       <div>
         <Router>
           <div>
-            <CustomAppBar title="Poker Chip Manager" />
+            <CustomAppBar title="PPPoker Chip Manager" />
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/newTable" component={Lobby} />
