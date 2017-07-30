@@ -43,14 +43,44 @@ class CustomAppBar extends Component {
   }
 }
 
+function parse_query_string(query) {
+  if (!query) {
+    return {}
+  }
+  var vars = query.split("&");
+  var query_string = {};
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+      query_string[pair[0]] = arr;
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  }
+  return query_string;
+}
+
 class App extends Component {
   componentWillMount() {
     let url = new URL(window.location.href);
-    let jwt = url.searchParams.get('jwt')
-    if (jwt) {
-      localStorage.setItem('playerSession.jwt', jwt)
-      // ブラウザのアドレスバーからJWTパラメータを削除する
-      window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
+
+    if (url.searchParams) {
+      let jwt = url.searchParams.get('jwt')
+      if (jwt) {
+        localStorage.setItem('playerSession.jwt', jwt)
+        // ブラウザのアドレスバーからJWTパラメータを削除する
+        window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
+      }
+    } else {
+      let parsed = parse_query_string(window.location.href.split('?')[1])
+      if (parsed.jwt) {
+        localStorage.setItem('playerSession.jwt', parsed.jwt)
+        // ブラウザのアドレスバーからJWTパラメータを削除する
+        window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
+      }
     }
 
     // ログイン前のページへとリダイレクトさせる
