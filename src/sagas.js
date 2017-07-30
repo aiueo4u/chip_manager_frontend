@@ -9,10 +9,9 @@ import {
 
 function *handleRequestTableCreate(action) {
   try {
-    const { json, error } = yield call(tableCreate, action.tableName, action.sb, action.bb);
+    const { json } = yield call(tableCreate, action.tableName, action.sb, action.bb);
     yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId: json.table_id })
   } catch (error) {
-    console.log(error);
     yield put({ type: "CREATE_TABLE_FORM_ON_FAILURE" });
   }
 }
@@ -126,7 +125,8 @@ function *handlePlayerTakeSeat(action) {
     type: "PLAYER_ACTION_TAKE_SEAT",
     table_id: action.tableId,
     player_id: action.playerId,
-    seat_no: action.seatNo
+    seat_no: action.seatNo,
+    buy_in_amount: action.buyInAmount,
   }
   try {
     const json = yield call(actionToGameDealer, params)
@@ -153,13 +153,13 @@ function *handleAddChip(action) {
   }
 }
 
-function *handleInitialLogin() {
-  const { json, error } = yield call(initialLogin);
-
-  if (json && !error) {
-    yield put({ type: "INITIAL_LOGIN_COMPLETED", nickname: json.nickname, isLoggedIn: json.isLoggedIn, playerId: json.playerId });
-  } else {
-    // TODO
+function *handleFetchPlayer() {
+  try {
+    const json = yield call(initialLogin);
+    yield put({ type: "FETCH_PLAYER_SUCCEEDED", imageUrl: json.image_url, nickname: json.nickname, playerId: json.player_id });
+  } catch(error) {
+    console.error(error)
+    yield put({ type: "FETCH_PLAYER_FAILED" });
   }
 }
 
@@ -181,7 +181,7 @@ export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
   yield takeEvery("CREATE_TABLE_FORM_ON_SUBMIT", handleRequestTableCreate);
-  yield takeEvery("INITIAL_LOGIN", handleInitialLogin);
+  yield takeEvery("FETCH_PLAYER", handleFetchPlayer);
   yield takeEvery("ADD_CHIP", handleAddChip);
   yield takeEvery("BET_ACTION", handleBetAction);
   yield takeEvery("CALL_ACTION", handleCallAction);

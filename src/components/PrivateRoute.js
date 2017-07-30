@@ -6,6 +6,14 @@ import {
 } from 'react-router-dom';
 
 class PrivateRouteContent extends Component {
+  componentWillMount() {
+    const { isLoggedIn } = this.props
+    if (!isLoggedIn) {
+      // ログイン成功後のリダイレクト先を保存
+      sessionStorage.setItem('redirectTo', window.location.href);
+    }
+  }
+
   render() {
     const { component: PrivateComponent, isLoggedIn, ...rest } = this.props
     if (isLoggedIn) {

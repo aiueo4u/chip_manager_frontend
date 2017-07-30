@@ -11,11 +11,11 @@ class GameDialog extends Component {
     return (
       <div>
         <Dialog
-          title="Game Dialog"
+          title="勝利プレイヤーを選択してください"
           modal={false}
           open={open}
         >
-          <div>pot: {pot}</div>
+          <div>ポット {pot}</div>
           {players.map(player => (
             <Candidate
               key={player.id}

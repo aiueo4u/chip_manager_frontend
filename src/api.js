@@ -18,9 +18,9 @@ const send = (path, method, headers = {}, body = '') => {
   return fetch(url, options)
     .then(response => {
       if (!response.ok) {
-        throw Error(response.statusText);
+        throw response;
       }
-      return response.json();
+      return response.json(); // TODO: .json()を消す？
     })
 }
 
@@ -55,14 +55,6 @@ export const actionToGameDealer = (action) => {
 
 export const initialLogin = () => {
   return get('/players/@me')
-    .then(json => {
-      let playerSession = { isLoggedIn: true, nickname: json.nickname, playerId: json.player_id }
-      return { json: playerSession };
-    })
-    .catch(error => {
-      let playerSession = { isLoggedIn: false };
-      return { json: playerSession };
-    })
 }
 
 export const tableCreate = (tableName, sb, bb) => {

@@ -45,18 +45,33 @@ class CustomAppBar extends Component {
 
 class App extends Component {
   componentWillMount() {
-    this.props.dispatch({ type: "INITIAL_LOGIN" });
+    let url = new URL(window.location.href);
+    let jwt = url.searchParams.get('jwt')
+    if (jwt) {
+      localStorage.setItem('playerSession.jwt', jwt)
+      // ブラウザのアドレスバーからJWTパラメータを削除する
+      window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
+    }
+
+    // ログイン前のページへとリダイレクトさせる
+    let redirectTo = sessionStorage.getItem('redirectTo')
+    if (redirectTo) {
+      sessionStorage.removeItem('redirectTo');
+      window.location = redirectTo;
+    }
+
+    this.props.dispatch({ type: "FETCH_PLAYER" });
   }
 
   render() {
-    const { isPrepared, nickname } = this.props;
+    const { isPrepared } = this.props;
 
     return isPrepared ? (
       <div>
         <Router>
           <div>
-            <CustomAppBar title="PPPoker Chip Manager" />
-            <Route exact path="/" component={Home} />
+            <CustomAppBar title="Poker Chip Manager" />
+            <PrivateRoute exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/newTable" component={Lobby} />
             <PrivateRoute path="/tables" component={Tables} />
@@ -65,7 +80,6 @@ class App extends Component {
       </div>
     ) : (
       <div>
-        <AppBar title="Brave call" iconElementRight={<span>Hello, {nickname}!</span>} />
         <CircularProgress />
       </div>
     );
@@ -75,7 +89,6 @@ class App extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     isPrepared: state.data.playerSession.isPrepared,
-    nickname: state.data.playerSession.nickname,
   }
 }
 

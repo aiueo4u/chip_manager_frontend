@@ -37,6 +37,7 @@ class Room extends Component {
 
     let tableId = match.params.id;
 
+    // TODO: create失敗のエラーハンドリングはどうやるんだろう。。
     this.App.ChipChannel = this.App.cable.subscriptions.create({ channel: 'ChipChannel', tableId: tableId }, {
       connected() { console.log("Chip Channel connected") },
       disconnected() { console.log("Chip Channel disconnected") },
@@ -59,7 +60,7 @@ class Room extends Component {
   }
 
   render() {
-    const { playerSession, onFoldAction, onCheckAction, buttonSeatNo, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction, pot, isReady } = this.props
+    const { gameTable, playerSession, onFoldAction, onCheckAction, buttonSeatNo, currentSeatNo, gameHandState, onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction, pot, isReady } = this.props
 
     let isSeated = players.find(player => player.id === playerSession.playerId) ? true : false
     const inGame = !gameStartable(gameHandState);
@@ -83,6 +84,7 @@ class Room extends Component {
           buttonSeatNo={buttonSeatNo}
           isSeated={isSeated}
           inGame={inGame}
+          gameTable={gameTable}
         />
         {players.map(player => {
           return playerSession.playerId === player.id ? (
@@ -136,6 +138,7 @@ const mapStateToProps = (state, ownProps) => {
     gameHandState: Room.GameTable.gameHandState,
     currentSeatNo: Room.GameTable.currentSeatNo,
     buttonSeatNo: Room.GameTable.buttonSeatNo,
+    gameTable: Room.GameTable,
   }
 }
 

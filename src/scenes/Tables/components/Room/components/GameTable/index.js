@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import PlayerPanel from './components/PlayerPanel';
 import PlayerChipBetArea from './components/PlayerChipBetArea';
+import BuyInDialog from './components/BuyInDialog';
 import './style.css';
 
 const gameHandStateToReadable = (gameHandState) => {
@@ -22,13 +23,9 @@ const gameHandStateToReadable = (gameHandState) => {
   }
 }
 
-const gameStartable = (gameHandState) => {
-  return !gameHandState || gameHandState === 'finished' || gameHandState === 'init'
-}
-
 class GameTable extends Component {
   render() {
-    const { isSeated, playerSession, players, onTakeSeat, inGame, gameHandState, buttonSeatNo, onGameStart, currentSeatNo, pot = 0 } = this.props
+    const { tableId, openBuyInDialog, gameTable, isSeated, playerSession, players, inGame, gameHandState, buttonSeatNo, onGameStart, currentSeatNo, pot = 0 } = this.props
 
     // TODO: リファクタしたい。。。自分を中心に並び替えてる
     let currentPlayer = players.find(e => e.nickname === playerSession.nickname)
@@ -48,13 +45,24 @@ class GameTable extends Component {
 
     return (
       <div>
+        <BuyInDialog
+          tableId={tableId}
+          gameTable={gameTable}
+          playerSession={playerSession}
+        />
         <div className="flex-container">
           <div className="flex-up-container">
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[3]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[4]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[5]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[6]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[7]} currentSeatNo={currentSeatNo} />
+            {[3,4,5,6,7].map(playerIndex => (
+              <PlayerPanel
+                key={playerIndex}
+                isOpenedBuyInDialog={gameTable.isOpenedBuyInDialog}
+                isSeated={isSeated}
+                inGame={inGame}
+                player={sortedPlayers[playerIndex]}
+                currentSeatNo={currentSeatNo}
+                openBuyInDialog={openBuyInDialog}
+              />
+            ))}
           </div>
           <div className="flex-up-container">
             <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[3]} />
@@ -89,11 +97,17 @@ class GameTable extends Component {
             <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[8]} />
           </div>
           <div className="flex-down-container">
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[2]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[1]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[0]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[9]} currentSeatNo={currentSeatNo} />
-            <PlayerPanel onTakeSeat={onTakeSeat} isSeated={isSeated} inGame={inGame} player={sortedPlayers[8]} currentSeatNo={currentSeatNo} />
+            {[2,1,0,9,8].map(playerIndex => (
+              <PlayerPanel
+                key={playerIndex}
+                isOpenedBuyInDialog={gameTable.isOpenedBuyInDialog}
+                isSeated={isSeated}
+                inGame={inGame}
+                player={sortedPlayers[playerIndex]}
+                currentSeatNo={currentSeatNo}
+                openBuyInDialog={openBuyInDialog}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -106,9 +120,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const { tableId, playerSession } = ownProps;
 
   return {
-    onTakeSeat: (seatNo) => {
-      dispatch({ type: 'PLAYER_TAKE_SEAT', tableId: tableId, playerId: playerSession.playerId, seatNo: seatNo })
-    }
+    openBuyInDialog: (seatNo) => {
+      dispatch({ type: "OPEN_BUY_IN_DIALOG", tableId: tableId, playerId: playerSession.playerId, seatNo: seatNo })
+    },
   }
 }
 

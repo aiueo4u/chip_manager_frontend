@@ -4,6 +4,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import TwitterLoginButton from './components/TwitterLoginButton';
+import FacebookLoginButton from './components/FacebookLoginButton';
 
 const styles = {
   submitInput: { // デフォルトのサブミットボタンは見えなくする
@@ -32,6 +33,7 @@ class LoginForm extends Component {
     ) : (
       <div>
         <TwitterLoginButton />
+        <FacebookLoginButton />
         <form onSubmit={handleSubmit}>
           <div>
             <div>

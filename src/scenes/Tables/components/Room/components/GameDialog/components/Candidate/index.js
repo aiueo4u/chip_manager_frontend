@@ -8,8 +8,13 @@ class Candidate extends Component {
 
     return (
       <div>
-        player: {player.nickname}
-        <FlatButton label="Winner" primary={true} onTouchTap={handleTakePot} />
+        <img src={player.image_url} alt="プレイヤー画像" />
+        {player.nickname}
+        <FlatButton
+          label="選択"
+          primary={true}
+          onTouchTap={handleTakePot}
+        />
       </div>
     );
   }
