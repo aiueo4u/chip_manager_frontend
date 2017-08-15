@@ -6,8 +6,8 @@ import PlayerChipBetArea from './components/PlayerChipBetArea';
 import BuyInDialog from './components/BuyInDialog';
 import './style.css';
 
-const gameHandStateToReadable = (gameHandState) => {
-  switch (gameHandState) {
+const roundToReadable = (round) => {
+  switch (round) {
     case 'preflop':
       return "プリフロップ";
     case 'flop':
@@ -16,16 +16,24 @@ const gameHandStateToReadable = (gameHandState) => {
       return "ターン";
     case 'river':
       return "リバー";
-    case 'finished':
-      return "終了しました。";
     default:
-      return gameHandState;
+      return round;
   }
 }
 
 class GameTable extends Component {
   render() {
-    const { tableId, openBuyInDialog, gameTable, isSeated, playerSession, players, inGame, gameHandState, buttonSeatNo, onGameStart, currentSeatNo, pot = 0 } = this.props
+    const {
+      undoPlayerAction,
+      tableId,
+      openBuyInDialog,
+      gameTable,
+      isSeated,
+      playerSession,
+      players,
+      inGame,
+      onGameStart
+    } = this.props
 
     // TODO: リファクタしたい。。。自分を中心に並び替えてる
     let currentPlayer = players.find(e => e.nickname === playerSession.nickname)
@@ -59,17 +67,17 @@ class GameTable extends Component {
                 isSeated={isSeated}
                 inGame={inGame}
                 player={sortedPlayers[playerIndex]}
-                currentSeatNo={currentSeatNo}
+                currentSeatNo={gameTable.currentSeatNo}
                 openBuyInDialog={openBuyInDialog}
               />
             ))}
           </div>
           <div className="flex-up-container">
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[3]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[4]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[5]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[6]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[7]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[3]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[4]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[5]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[6]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[7]} />
           </div>
           <div className="flex-center-container">
             {
@@ -80,21 +88,24 @@ class GameTable extends Component {
               ) : (
                 <div>
                   <div>
-                    フェーズ: {gameHandStateToReadable(gameHandState)}
+                    フェーズ: {roundToReadable(gameTable.round)}
                   </div>
                   <div>
-                    ポット: {pot}
+                    ポット: {gameTable.pot}
+                  </div>
+                  <div>
+                    <RaisedButton label="Undo" primary={true} onTouchTap={undoPlayerAction} />
                   </div>
                 </div>
               )
             }
           </div>
           <div className="flex-down-container">
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[2]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[1]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[0]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[9]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={buttonSeatNo} player={sortedPlayers[8]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[2]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[1]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[0]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[9]} />
+            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[8]} />
           </div>
           <div className="flex-down-container">
             {[2,1,0,9,8].map(playerIndex => (
@@ -104,7 +115,7 @@ class GameTable extends Component {
                 isSeated={isSeated}
                 inGame={inGame}
                 player={sortedPlayers[playerIndex]}
-                currentSeatNo={currentSeatNo}
+                currentSeatNo={gameTable.currentSeatNo}
                 openBuyInDialog={openBuyInDialog}
               />
             ))}
@@ -123,6 +134,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     openBuyInDialog: (seatNo) => {
       dispatch({ type: "OPEN_BUY_IN_DIALOG", tableId: tableId, playerId: playerSession.playerId, seatNo: seatNo })
     },
+    undoPlayerAction: () => {
+      dispatch({ type: 'UNDO_PLAYER_ACTION', tableId: tableId });
+    }
   }
 }
 

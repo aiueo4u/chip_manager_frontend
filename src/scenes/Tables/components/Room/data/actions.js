@@ -18,8 +18,18 @@ export const betAction = (tableId, playerId, amount) => {
   return { type: "BET_ACTION", tableId: tableId, playerId: playerId, amount: amount };
 }
 
-export const playerActionReceived = (pot, game_hand_state, players, current_seat_no, button_seat_no, last_aggressive_seat_no) => {
-  return { type: "PLAYER_ACTION_RECEIVED", pot: pot, gameHandState: game_hand_state, currentSeatNo: current_seat_no, players: players, buttonSeatNo: button_seat_no, lastAggressiveSeatNo: last_aggressive_seat_no };
+export const playerActionReceived = (data) => {
+  const { pot, round, game_hand_state, players, current_seat_no, button_seat_no, last_aggressive_seat_no } = data;
+  return {
+    type: "PLAYER_ACTION_RECEIVED",
+    pot: pot,
+    gameHandState: game_hand_state,
+    round: game_hand_state, // TODO,
+    currentSeatNo: current_seat_no,
+    players: players,
+    buttonSeatNo: button_seat_no,
+    lastAggressiveSeatNo: last_aggressive_seat_no,
+  };
 }
 
 export const gameHandFinishedReceived = () => {

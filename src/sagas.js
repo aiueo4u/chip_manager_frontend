@@ -5,6 +5,8 @@ import {
   tables,
   initialLogin,
   actionToGameDealer,
+  startToGameDealer,
+  takeSeatToGameDealer,
 } from './api';
 
 function *handleRequestTableCreate(action) {
@@ -120,6 +122,20 @@ function *handleTakePotAction(action) {
   }
 }
 
+function *handleUndoPlayerAction(action) {
+  let params = {
+    type: "UNDO_PLAYER_ACTION",
+    table_id: action.tableId,
+  }
+  try {
+    const json = yield call(actionToGameDealer, params)
+    yield put({ type: "UNDO_PLAYER_ACTION_COMPLETED", tableId: action.tableId });
+  } catch(error) {
+    console.log(error)
+    yield put({ type: "UNDO_PLAYER_ACTION_FAILED", tableId: action.tableId });
+  }
+}
+
 function *handlePlayerTakeSeat(action) {
   let params = {
     type: "PLAYER_ACTION_TAKE_SEAT",
@@ -129,7 +145,7 @@ function *handlePlayerTakeSeat(action) {
     buy_in_amount: action.buyInAmount,
   }
   try {
-    const json = yield call(actionToGameDealer, params)
+    const json = yield call(takeSeatToGameDealer, params)
     yield put({ type: "PLAYER_ACTION_TAKE_SEAT_COMPLETED", tableId: action.tableId, playerId: action.playerId, amount: action.amount, pot: json.pot });
   } catch(error) {
     console.log(error)
@@ -165,11 +181,10 @@ function *handleFetchPlayer() {
 
 function *handleGameStartButtonClicked(action) {
   let params = {
-    type: "GAME_START",
     table_id: action.tableId
   }
   try {
-    yield call(actionToGameDealer, params);
+    yield call(startToGameDealer, params);
     yield put({ type: "GAME_START_COMPLETED", tableId: action.tableId });
   } catch(error) {
     console.log(error)
@@ -190,4 +205,5 @@ export default function *rootSage() {
   yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked);
   yield takeEvery("TAKE_POT_ACTION", handleTakePotAction);
   yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);
+  yield takeEvery("UNDO_PLAYER_ACTION", handleUndoPlayerAction);
 }

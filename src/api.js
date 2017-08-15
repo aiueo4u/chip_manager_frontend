@@ -45,12 +45,28 @@ export const updateChip = (tableId, playerId, amount) => {
     })
 }
 
+export const takeSeatToGameDealer = (action) => {
+  let body = new FormData();
+  for (let key in action) {
+    body.append(key, action[key])
+  }
+  return post('/game_dealer/take_seat', {}, body)
+}
+
 export const actionToGameDealer = (action) => {
   let body = new FormData();
   for (let key in action) {
     body.append(key, action[key])
   }
   return post('/game_dealer', {}, body)
+}
+
+export const startToGameDealer = (action) => {
+  let body = new FormData();
+  for (let key in action) {
+    body.append(key, action[key])
+  }
+  return post('/game_dealer/start', {}, body)
 }
 
 export const initialLogin = () => {
