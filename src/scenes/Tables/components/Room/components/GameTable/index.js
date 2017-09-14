@@ -9,16 +9,20 @@ import './style.css';
 const roundToReadable = (round) => {
   switch (round) {
     case 'preflop':
-      return "プリフロップ";
+      return "Preflop";
     case 'flop':
-      return "フロップ";
+      return "Flop";
     case 'turn':
-      return "ターン";
+      return "Turn";
     case 'river':
-      return "リバー";
+      return "River";
     default:
       return round;
   }
+}
+
+const buttonStyle = {
+  'backgroundColor': '#bb4444',
 }
 
 class GameTable extends Component {
@@ -32,7 +36,7 @@ class GameTable extends Component {
       playerSession,
       players,
       inGame,
-      onGameStart
+      onGameStart,
     } = this.props
 
     // TODO: リファクタしたい。。。自分を中心に並び替えてる
@@ -51,74 +55,122 @@ class GameTable extends Component {
       sortedPlayers = sortedPlayers.slice(currentPlayer.seat_no - 1, 10).concat(sortedPlayers.slice(0, currentPlayer.seat_no - 1))
     }
 
+    let playerPanelProps = (index) => {
+      return {
+        isOpenedBuyInDialog: gameTable.isOpenedBuyInDialog,
+        isSeated: isSeated,
+        inGame: inGame,
+        player: sortedPlayers[index],
+        currentSeatNo: gameTable.currentSeatNo,
+        openBuyInDialog: openBuyInDialog,
+        tableId: tableId,
+      };
+    };
+
+    let playerChipBetAreaProps = (index) => {
+      return {
+        inGame: inGame,
+        buttonSeatNo: gameTable.buttonSeatNo,
+        player: sortedPlayers[index],
+      };
+    }
+
     return (
-      <div>
+      <div style={{ 'height': '100%' }}>
         <BuyInDialog
           tableId={tableId}
           gameTable={gameTable}
           playerSession={playerSession}
         />
         <div className="flex-container">
-          <div className="flex-up-container">
-            {[3,4,5,6,7].map(playerIndex => (
-              <PlayerPanel
-                key={playerIndex}
-                isOpenedBuyInDialog={gameTable.isOpenedBuyInDialog}
-                isSeated={isSeated}
-                inGame={inGame}
-                player={sortedPlayers[playerIndex]}
-                currentSeatNo={gameTable.currentSeatNo}
-                openBuyInDialog={openBuyInDialog}
-              />
-            ))}
-          </div>
-          <div className="flex-up-container">
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[3]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[4]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[5]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[6]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[7]} />
-          </div>
-          <div className="flex-center-container">
-            {
-              !inGame ? (
-                <div>
-                  <RaisedButton label="Game Start" primary={true} onTouchTap={onGameStart} />
+          <div className="game-table">
+
+            <div className="topPlayerContainer">
+              <div className="flex-column-container">
+                <PlayerPanel {...playerPanelProps(5)} />
+                <PlayerChipBetArea {...playerChipBetAreaProps(5) } />
+              </div>
+            </div>
+
+            <div className="middlePlayerContainer">
+              <div className="flex-column-container" style={{ 'width': '25vw' }}>
+                <div className="flex-row-container">
+                  <PlayerPanel {...playerPanelProps(4)} />
+                  <PlayerChipBetArea {...playerChipBetAreaProps(4) } />
                 </div>
-              ) : (
-                <div>
-                  <div>
-                    フェーズ: {roundToReadable(gameTable.round)}
-                  </div>
-                  <div>
-                    ポット: {gameTable.pot}
-                  </div>
-                  <div>
-                    <RaisedButton label="Undo" primary={true} onTouchTap={undoPlayerAction} />
-                  </div>
+                <div className="flex-row-container">
+                  <PlayerPanel {...playerPanelProps(3)} />
+                  <PlayerChipBetArea {...playerChipBetAreaProps(3) } />
                 </div>
-              )
-            }
-          </div>
-          <div className="flex-down-container">
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[2]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[1]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[0]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[9]} />
-            <PlayerChipBetArea inGame={inGame} buttonSeatNo={gameTable.buttonSeatNo} player={sortedPlayers[8]} />
-          </div>
-          <div className="flex-down-container">
-            {[2,1,0,9,8].map(playerIndex => (
-              <PlayerPanel
-                key={playerIndex}
-                isOpenedBuyInDialog={gameTable.isOpenedBuyInDialog}
-                isSeated={isSeated}
-                inGame={inGame}
-                player={sortedPlayers[playerIndex]}
-                currentSeatNo={gameTable.currentSeatNo}
-                openBuyInDialog={openBuyInDialog}
-              />
-            ))}
+                <div className="flex-row-container">
+                  <PlayerPanel {...playerPanelProps(2)} />
+                  <PlayerChipBetArea {...playerChipBetAreaProps(2) } />
+                </div>
+                <div className="flex-row-container">
+                  <PlayerPanel {...playerPanelProps(1)} />
+                  <PlayerChipBetArea {...playerChipBetAreaProps(1) } />
+                </div>
+              </div>
+              <div
+                className="flex-center-container"
+                style={{ 'width': '40vw' }}
+              >
+                {
+                  !inGame && (players.length >= 2) ? (
+                    <div>
+                      <RaisedButton
+                        label="Game Start"
+                        onTouchTap={onGameStart}
+                      />
+                      {gameTable.undoable ? (
+                        <div>
+                          <RaisedButton label="Undo" primary={true} onTouchTap={undoPlayerAction} buttonStyle={buttonStyle} />
+                        </div>
+                        ) : (<div></div>)
+                      }
+                    </div>
+                  ) : !inGame ? (
+                    <div></div>
+                  ) : (
+                    <div className="currentStateArea">
+                      <div>
+                        {roundToReadable(gameTable.round)}
+                      </div>
+                      <div>
+                        {gameTable.pot}
+                      </div>
+                      <div>
+                        <RaisedButton label="Undo" primary={true} onTouchTap={undoPlayerAction} buttonStyle={buttonStyle} />
+                      </div>
+                    </div>
+                  )
+                }
+              </div>
+              <div className="flex-column-container" style={{ 'width': '25vw' }}>
+                <div className="flex-row-container">
+                  <PlayerChipBetArea {...playerChipBetAreaProps(6) } />
+                  <PlayerPanel {...playerPanelProps(6)} />
+                </div>
+                <div className="flex-row-container">
+                  <PlayerChipBetArea {...playerChipBetAreaProps(7) } />
+                  <PlayerPanel {...playerPanelProps(7)} />
+                </div>
+                <div className="flex-row-container">
+                  <PlayerChipBetArea {...playerChipBetAreaProps(8) } />
+                  <PlayerPanel {...playerPanelProps(8)} />
+                </div>
+                <div className="flex-row-container">
+                  <PlayerChipBetArea {...playerChipBetAreaProps(9) } />
+                  <PlayerPanel {...playerPanelProps(9)} />
+                </div>
+              </div>
+            </div>
+            <div className="lowPlayerContainer">
+              <div className="test">
+                <PlayerChipBetArea {...playerChipBetAreaProps(0) } />
+                <PlayerPanel {...playerPanelProps(0)} currentPlayer={currentPlayer} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -135,7 +187,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({ type: "OPEN_BUY_IN_DIALOG", tableId: tableId, playerId: playerSession.playerId, seatNo: seatNo })
     },
     undoPlayerAction: () => {
-      dispatch({ type: 'UNDO_PLAYER_ACTION', tableId: tableId });
+      dispatch({ type: 'UNDO_PLAYER_ACTION', tableId: tableId, playerId: playerSession.playerId });
     }
   }
 }

@@ -14,22 +14,6 @@ const InformationReducer = (state = initialState, action) => {
     // 退出時にログをクリアする
     case 'ROOM_INFORMATION_CLEAR':
       return Object.assign({}, state, { informationItems: [] })
-    // 着席ログ
-    case 'ROOM_INFORMATION_PLAYER_ENTERED':
-      informationItems.unshift({
-        time: action.time,
-        nickname: action.nickname,
-        type: 'ENTER',
-      })
-      return Object.assign({}, state, { informationItems })
-    // 退出ログ
-    case 'ROOM_INFORMATION_PLAYER_LEFT':
-      informationItems.unshift({
-        time: action.time,
-        nickname: action.nickname,
-        type: 'LEAVE',
-      })
-      return Object.assign({}, state, { informationItems })
     // アクションログ
     case 'ROOM_INFORMATION_PLAYER_ACTION':
       informationItems.unshift({
@@ -37,7 +21,8 @@ const InformationReducer = (state = initialState, action) => {
         nickname: action.nickname,
         type: action.playerActionType,
         amount: action.amount,
-        pot: action.pot
+        pot: action.pot,
+        round: action.round,
       })
       return Object.assign({}, state, { informationItems })
     default:

@@ -1,10 +1,19 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
+import './style.css';
 
 const PlayerChipBetArea = ({ player, buttonSeatNo, seatNo, inGame }) => (
-  <div>
-    {inGame && player.seat_no === buttonSeatNo ? (<Paper circle={true}>B</Paper>) : (<div></div>)}
-    {inGame && player.bet_amount_in_state > 0 ? (<Paper circle={true}>{player.bet_amount_in_state}</Paper>) : (<div></div>)}
+  <div className="playerChipBetArea">
+    {inGame && player.seat_no === buttonSeatNo ? (
+      <div className="buttonPlateWrapper">
+        <Paper circle={true} className="buttonPlate">B</Paper>
+      </div>
+    ) : (<div></div>)}
+    {inGame && player.bet_amount_in_state > 0 ? (
+      <div className="betArea">
+        {player.bet_amount_in_state}
+      </div>
+    ) : (<div></div>)}
   </div>
 )
 

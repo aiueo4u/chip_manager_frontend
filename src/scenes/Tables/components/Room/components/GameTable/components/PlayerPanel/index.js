@@ -9,11 +9,12 @@ class PlayerPanel extends Component {
   render() {
     const { isSeated, player, openBuyInDialog } = this.props;
 
+    const { currentPlayer } = this.props;
+
     if (!player.id) {
       return (
         <div>
-          <Avatar>空{player.seat_no}</Avatar>
-          {isSeated ? (<div></div>) : (<RaisedButton label="着席" onTouchTap={openBuyInDialog} />)}
+          {isSeated ? (<div></div>) : (<RaisedButton label={`Seat ${player.seat_no}`} onTouchTap={openBuyInDialog} />)}
           <Dialog
             title="Buy-in"
             modal={false}
@@ -25,13 +26,29 @@ class PlayerPanel extends Component {
       );
     }
 
-    let className = `${player.state}-avatar`
+    let className = `avatar-${player.state}`
+
+    let panelClass;
+    if (player.state == 1) {
+      panelClass = 'foldedPanel';
+    } else {
+      panelClass = 'activePanel';
+    }
 
     return (
-      <div>
-        <Avatar className={className} src={player.image_url} />
-        <div className='nickname'>{player.nickname}</div>
-        <div className='player-stack'>{player.stack}</div>
+      <div className={panelClass}>
+        <div style={{ 'display': 'flex', 'flexDirection': 'column', 'justifyContent': 'spaceAround', 'marginRight': '10px' }}>
+          <Avatar className={className} src={player.image_url} style={{ 'boxShadow': '1px 1px 4px 2px #000000' }} />
+        </div>
+        <div style={{ 'display': 'flex', 'flexDirection': 'column', 'justifyContent': 'spaceAround' }}>
+          <div className='nickname'>{player.nickname}</div>
+          <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+        </div>
+        {currentPlayer && currentPlayer.betSize ? (
+          <div>
+            {currentPlayer.betSize}
+          </div>
+        ) : (<div></div>)}
       </div>
     )
   }
@@ -43,7 +60,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     openBuyInDialog: () => {
       ownProps.openBuyInDialog(player.seat_no)
-    }
+    },
   }
 }
 

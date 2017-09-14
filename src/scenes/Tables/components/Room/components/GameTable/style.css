@@ -1,26 +1,82 @@
 .flex-container {
   width: 100%;
-  height: 60vh;
-  background-color: #88aa88;
+  height: 100%;
   margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-.flex-up-container {
+.topPlayerContainer {
+  height: 15%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
 
+.middlePlayerContainer {
+  height: 60%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.lowPlayerContainer {
+  height: 25%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.test {
+  max-width: 50%;
+  margin: auto;
+}
+
+.flex-column-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 .flex-center-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  text-align: center;
+  width: 100%;
+  border-radius: 3em;
 }
 
 .flex-down-container {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.game-table {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background: radial-gradient(#00dd00, #008800);
+  border-radius: 7em;
+  box-shadow: 0 0 0 5px black,
+              0 0 10px 5px #006600 inset;
+  margin: 20px;
+  padding: 0px;
+}
+
+.currentStateArea {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

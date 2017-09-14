@@ -126,9 +126,10 @@ function *handleUndoPlayerAction(action) {
   let params = {
     type: "UNDO_PLAYER_ACTION",
     table_id: action.tableId,
+    player_id: action.playerId
   }
   try {
-    const json = yield call(actionToGameDealer, params)
+    yield call(actionToGameDealer, params)
     yield put({ type: "UNDO_PLAYER_ACTION_COMPLETED", tableId: action.tableId });
   } catch(error) {
     console.log(error)

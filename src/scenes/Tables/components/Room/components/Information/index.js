@@ -13,19 +13,9 @@ import InformationLine from './components/InformationLine';
 import { WEBSOCKET_ENDPOINT } from './../../../../../../Configuration.js'; // TODO: 何とか良い感じに参照したい。。
 
 // Action Creators
-export const enteredRoom = (data) => {
-  const { nickname, time } = data;
-  return { type: 'ROOM_INFORMATION_PLAYER_ENTERED', nickname: nickname, time: time }
-}
-
-export const leftRoom = (data) => {
-  const { nickname, time } = data;
-  return { type: 'ROOM_INFORMATION_PLAYER_LEFT', nickname: nickname, time: time }
-}
-
 export const informationPlayerAction = (data) => {
-  const { nickname, time, player_action_type, amount, pot } = data;
-  return { type: 'ROOM_INFORMATION_PLAYER_ACTION', time: time, nickname: nickname, playerActionType: player_action_type, amount: amount, pot: pot };
+  const { nickname, time, player_action_type, amount, pot, round } = data;
+  return { type: 'ROOM_INFORMATION_PLAYER_ACTION', time: time, round: round, nickname: nickname, playerActionType: player_action_type, amount: amount, pot: pot };
 }
 
 const clearInformationItems = () => {
@@ -88,12 +78,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onInformationReceived: (data) => {
       switch (data.info_type) {
-        case 'entered':
-          dispatch(enteredRoom(data));
-          break;
-        case 'leaving':
-          dispatch(leftRoom(data));
-          break;
         case 'player_action':
           dispatch(informationPlayerAction(data));
           break;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import GameTable from './components/GameTable';
-import Player from './components/Player';
+import PlayerActionArea from './components/PlayerActionArea';
 import {
   addChip,
   betAction,
@@ -13,7 +13,7 @@ import {
   gameHandFinishedReceived,
 } from './data/actions.js';
 import CircularProgress from 'material-ui/CircularProgress';
-import Information from './components/Information';
+// import Information from './components/Information';
 import GameDialog from './components/GameDialog';
 import Dialog from 'material-ui/Dialog';
 import ActionCable from 'actioncable';
@@ -79,18 +79,23 @@ class Room extends Component {
       playerSession,
       onFoldAction,
       onCheckAction,
-      informationItems,
+      // informationItems,
       onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction } = this.props
 
     let isSeated = players.find(player => player.id === playerSession.playerId) ? true : false
     const inGame = !gameStartable(gameTable.gameHandState);
+
+    let currentPlayer = players.find(player => player.id === playerSession.playerId)
 
     return (!gameTable.isReady) ? (
       <div>
         <CircularProgress />
       </div>
     ) : (
-      <div>
+      <div style={{
+          'background': '#005500',
+          'height': '100vh'
+      }}>
         <Dialog
           title="ネットワーク再接続中・・・"
           modal={false}
@@ -98,39 +103,43 @@ class Room extends Component {
         >
           <CircularProgress />
         </Dialog>
-        <GameDialog tableId={tableId} />
-        <GameTable
-          tableName={tableName}
+        <GameDialog
           tableId={tableId}
-          onGameStart={onGameStart}
-          players={players}
-          playerSession={playerSession}
-          isSeated={isSeated}
-          inGame={inGame}
-          gameTable={gameTable}
         />
-        <div style={{ 'display': 'flex', 'flexDirection': 'row' }}>
-          <div style={{ 'display': 'flex', width: '50%' }}>
-            {players.map(player => {
-              return playerSession.playerId === player.id ? (
-                <Player
-                  key={player.id}
-                  player={player}
-                  onAddChip={onAddChip}
-                  onCheckAction={onCheckAction}
-                  onBetAction={onBetAction}
-                  onCallAction={onCallAction}
-                  onFoldAction={onFoldAction}
-                  yourTurn={gameTable.currentSeatNo === player.seat_no}
-                  pot={gameTable.pot}
-                  inGame={inGame}
-                />
-              ) : (<div key={player.id}></div>)
-            })}
-          </div>
-          <div style={{ 'display': 'flex', width: '50%' }}>
-            <Information informationItems={informationItems} tableId={tableId} />
-          </div>
+        <div
+          style={{ 'height': '80vh' }}
+        >
+          <GameTable
+            tableName={tableName}
+            tableId={tableId}
+            onGameStart={onGameStart}
+            players={players}
+            playerSession={playerSession}
+            isSeated={isSeated}
+            inGame={inGame}
+            gameTable={gameTable}
+            onBetAction={onBetAction}
+          />
+        </div>
+        {/* プレイヤーのアクション操作エリア */}
+        <div style={{ 'height': '20vh' }}>
+          {currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ? (
+            <PlayerActionArea
+              key={currentPlayer.id}
+              tableId={tableId}
+              player={currentPlayer}
+              onAddChip={onAddChip}
+              onCheckAction={onCheckAction}
+              onBetAction={onBetAction}
+              onCallAction={onCallAction}
+              onFoldAction={onFoldAction}
+              yourTurn={gameTable.currentSeatNo === currentPlayer.seat_no}
+              pot={gameTable.pot}
+              inGame={inGame}
+            />
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     )
@@ -146,7 +155,7 @@ const mapStateToProps = (state, ownProps) => {
     tableName: tableId, // TODO
     players: Room.Players,
     playerSession: state.data.playerSession,
-    informationItems: state.scenes.Tables.Room.Information.informationItems,
+    // informationItems: state.scenes.Tables.Room.Information.informationItems,
     gameTable: Room.GameTable,
     onAddChip: (playerId, amount) => {
       return addChip(tableId, playerId, amount);

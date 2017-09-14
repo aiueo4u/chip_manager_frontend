@@ -10,13 +10,16 @@ import Home from './scenes/Home/index.js';
 import Login from './scenes/Login';
 import Lobby from './scenes/Lobby';
 import Tables from './scenes/Tables';
-import AppBar from 'material-ui/AppBar';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+// import AppBar from 'material-ui/AppBar';
+// import IconMenu from 'material-ui/IconMenu';
+// import MenuItem from 'material-ui/MenuItem';
+// import IconButton from 'material-ui/IconButton';
+// import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import CircularProgress from 'material-ui/CircularProgress';
+import { DragDropContext } from 'react-dnd';
+import TouchBackend from 'react-dnd-touch-backend';
 
+/*
 class InnerAppBar extends Component {
   render() {
     const { match, history, location, staticContext, ...rest } = this.props
@@ -34,7 +37,9 @@ class InnerAppBar extends Component {
     )
   }
 }
+*/
 
+/*
 class CustomAppBar extends Component {
   render() {
     return (
@@ -42,6 +47,7 @@ class CustomAppBar extends Component {
     )
   }
 }
+*/
 
 function parse_query_string(query) {
   if (!query) {
@@ -97,10 +103,16 @@ class App extends Component {
     const { isPrepared } = this.props;
 
     return isPrepared ? (
-      <div>
+      <div style={{
+        'position': 'fixed',
+        'display': 'flex',
+        'flexDirection': 'column',
+        'width': '100%',
+        'height': '100%',
+        'margin': 0,
+      }}>
         <Router>
-          <div>
-            <CustomAppBar title="Poker Chip Manager" />
+          <div style={{ 'background': '#884444' }}>
             <PrivateRoute exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/newTable" component={Lobby} />
@@ -122,4 +134,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default DragDropContext(TouchBackend)(connect(mapStateToProps)(App));

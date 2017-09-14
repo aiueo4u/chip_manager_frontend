@@ -16,6 +16,8 @@ const PlayerReducer = (state = initialState, action) => {
     case 'SET_BET_SIZE':
       betSize = action.amount;
       return Object.assign({}, player, { betSize: betSize });
+    case 'RESET_BET_SIZE':
+      return Object.assign({}, player, { betSize: 0 });
     case 'INCREMENT_BET_SIZE':
       betSize = (player.betSize || 0) + action.amount;
       if (action.playerStack < betSize) {
@@ -56,6 +58,8 @@ const PlayersReducer = (state = [], action) => {
     case 'CHANGE_BET_AMOUNT':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'SET_BET_SIZE':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'RESET_BET_SIZE':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'INCREMENT_BET_SIZE':
       return state.map((player) => { return PlayerReducer(player, action) });

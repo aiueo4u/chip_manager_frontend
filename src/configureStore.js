@@ -4,7 +4,10 @@ import rootReducer from './reducer.js';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 
-const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger({
+  duration: true,
+  collapsed: true,
+})
 
 export default function configureStore(preloadedState = {}) {
   const sagaMiddleware = createSagaMiddleware();

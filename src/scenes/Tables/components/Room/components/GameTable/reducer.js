@@ -14,7 +14,8 @@ const GameTableReducer = (state = initialState, action) => {
         round: action.round,
         currentSeatNo: action.currentSeatNo,
         buttonSeatNo: action.buttonSeatNo,
-        lastAggressiveSeatNo: action.lastAggressiveSeatNo
+        lastAggressiveSeatNo: action.lastAggressiveSeatNo,
+        undoable: action.undoable,
       });
     case 'OPEN_BUY_IN_DIALOG':
       return Object.assign({}, state, { isOpenedBuyInDialog: true, selectingSeatNo: action.seatNo });

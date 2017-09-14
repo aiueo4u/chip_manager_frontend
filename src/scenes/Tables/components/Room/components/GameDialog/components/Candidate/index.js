@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
 
 class Candidate extends Component {
   render() {
     const { player, handleTakePot } = this.props;
 
     return (
-      <div>
-        <img src={player.image_url} alt="プレイヤー画像" />
+      <ListItem
+        leftAvatar={
+          <Avatar src={player.image_url} />
+        }
+        onTouchTap={handleTakePot}
+      >
         {player.nickname}
-        <FlatButton
-          label="選択"
-          primary={true}
-          onTouchTap={handleTakePot}
-        />
-      </div>
+      </ListItem>
     );
   }
 }

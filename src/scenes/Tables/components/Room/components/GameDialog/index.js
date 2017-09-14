@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import Candidate from './components/Candidate/index.js';
+import List from 'material-ui/List/List';
 
 class GameDialog extends Component {
 
@@ -11,18 +12,20 @@ class GameDialog extends Component {
     return (
       <div>
         <Dialog
-          title="勝利プレイヤーを選択してください"
+          title="Hand open!"
           modal={false}
           open={open}
         >
-          <div>ポット {pot}</div>
-          {players.map(player => (
-            <Candidate
-              key={player.id}
-              player={player}
-              takePotAction={takePotAction}
-            />
-          ))}
+          <div>Choose the winning player for {pot} points.</div>
+          <List>
+            {players.map(player => (
+              <Candidate
+                key={player.id}
+                player={player}
+                takePotAction={takePotAction}
+              />
+            ))}
+          </List>
         </Dialog>
       </div>
     );
