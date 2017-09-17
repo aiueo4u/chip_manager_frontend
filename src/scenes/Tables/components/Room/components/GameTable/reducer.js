@@ -1,4 +1,5 @@
 const initialState = {
+  openingPlayerMenuDialogPlayerId: null,
   isReady: false,
   pot: 0,
   reconnectingActionCable: false,
@@ -17,8 +18,16 @@ const GameTableReducer = (state = initialState, action) => {
         lastAggressiveSeatNo: action.lastAggressiveSeatNo,
         undoable: action.undoable,
       });
+    case 'OPEN_PLAYER_MENU_DIALOG':
+      return Object.assign({}, state, { openingPlayerMenuDialogPlayerId: action.playerId });
+    case 'CLOSE_PLAYER_MENU_DIALOG':
+      return Object.assign({}, state, { openingPlayerMenuDialogPlayerId: null });
     case 'OPEN_BUY_IN_DIALOG':
-      return Object.assign({}, state, { isOpenedBuyInDialog: true, selectingSeatNo: action.seatNo });
+      return Object.assign({}, state, {
+        isOpenedBuyInDialog: true,
+        selectingSeatNo: action.seatNo,
+        buyInPlayerId: action.playerId,
+      });
     case 'CLOSE_BUY_IN_DIALOG':
       return Object.assign({}, state, { isOpenedBuyInDialog: false, selectingSeatNo: null });
     case 'PLAYER_ACTION_TAKE_SEAT_COMPLETED':

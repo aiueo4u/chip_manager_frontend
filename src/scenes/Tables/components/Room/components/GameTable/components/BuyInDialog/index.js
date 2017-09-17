@@ -55,8 +55,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onSubmitTakeSeat: (event) => {
       event.preventDefault();
       let seatNo = gameTable.selectingSeatNo;
+      let buyInPlayerId = gameTable.buyInPlayerId;
       let buyInAmount = event.target.buyInAmount.value.trim();;
-      dispatch({ type: 'PLAYER_TAKE_SEAT', tableId: tableId, playerId: playerSession.playerId, seatNo: seatNo, buyInAmount: buyInAmount })
+      dispatch({ type: 'PLAYER_TAKE_SEAT', tableId: tableId, playerId: buyInPlayerId, seatNo: seatNo, buyInAmount: buyInAmount })
     },
     onRequestClose: () => {
       dispatch({ type: "CLOSE_BUY_IN_DIALOG" })

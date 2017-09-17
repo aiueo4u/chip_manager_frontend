@@ -17,7 +17,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import GameDialog from './components/GameDialog';
 import Dialog from 'material-ui/Dialog';
 import ActionCable from 'actioncable';
-import { WEBSOCKET_ENDPOINT } from './../../../../Configuration.js'; // TODO: 何とか良い感じに参照したい。。
+import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
 const gameStartButtonClicked = (tableId) => {
   return { type: "GAME_START_BUTTON_CLICKED", tableId: tableId };

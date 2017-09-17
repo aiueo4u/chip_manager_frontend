@@ -31,6 +31,7 @@ class GameTable extends Component {
       undoPlayerAction,
       tableId,
       openBuyInDialog,
+      openPlayerMenuDialog,
       gameTable,
       isSeated,
       playerSession,
@@ -58,11 +59,13 @@ class GameTable extends Component {
     let playerPanelProps = (index) => {
       return {
         isOpenedBuyInDialog: gameTable.isOpenedBuyInDialog,
+        openingPlayerMenuDialogPlayerId: gameTable.openingPlayerMenuDialogPlayerId,
         isSeated: isSeated,
         inGame: inGame,
         player: sortedPlayers[index],
         currentSeatNo: gameTable.currentSeatNo,
         openBuyInDialog: openBuyInDialog,
+        openPlayerMenuDialog: openPlayerMenuDialog,
         tableId: tableId,
       };
     };
@@ -116,13 +119,13 @@ class GameTable extends Component {
                 style={{ 'width': '40vw' }}
               >
                 {
-                  !inGame && (players.length >= 2) ? (
+                  !inGame && (players.length >= 2) && isSeated ? (
                     <div>
                       <RaisedButton
                         label="Game Start"
                         onTouchTap={onGameStart}
                       />
-                      {gameTable.undoable ? (
+                      {gameTable.undoable && isSeated ? (
                         <div>
                           <RaisedButton label="Undo" primary={true} onTouchTap={undoPlayerAction} buttonStyle={buttonStyle} />
                         </div>
@@ -130,7 +133,13 @@ class GameTable extends Component {
                       }
                     </div>
                   ) : !inGame ? (
-                    <div></div>
+                    <div>
+                      {isSeated ? (
+                        'Wait for other player...'
+                      ) : (
+                        'Touch your seat!'
+                      )}
+                    </div>
                   ) : (
                     <div className="currentStateArea">
                       <div>
@@ -183,8 +192,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const { tableId, playerSession } = ownProps;
 
   return {
-    openBuyInDialog: (seatNo) => {
-      dispatch({ type: "OPEN_BUY_IN_DIALOG", tableId: tableId, playerId: playerSession.playerId, seatNo: seatNo })
+    openBuyInDialog: (seatNo, playerId) => {
+      dispatch({ type: "OPEN_BUY_IN_DIALOG", tableId: tableId, seatNo: seatNo, playerId: playerId })
+    },
+    openPlayerMenuDialog: (playerId) => {
+      dispatch({ type: "OPEN_PLAYER_MENU_DIALOG", tableId: tableId, playerId: playerId })
     },
     undoPlayerAction: () => {
       dispatch({ type: 'UNDO_PLAYER_ACTION', tableId: tableId, playerId: playerSession.playerId });

@@ -78,7 +78,7 @@ const mapStateToProps = (state, ownProps) => {
   const gameTable = state.scenes.Tables.Room.GameTable
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false
   //const checkable = !aggressivePlayerExist || player.bb_option_usable
-  const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo == player.seat_no
+  const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seat_no
   const callable = !checkable
   return {
     aggressivePlayerExist: aggressivePlayerExist,
