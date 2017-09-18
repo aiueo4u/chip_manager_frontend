@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
 import chipImage from './chip.png';
+import Paper from 'material-ui/Paper';
+
+const chipStyle = {
+  height: 80,
+  width: '20vw',
+  textAlign: 'center',
+}
 
 class ChipImage extends Component {
   render() {
     const {
       layer_index,
       chipSize,
+      onTouchTap,
     } = this.props;
 
     return (
-      <img
-        src={chipImage}
-        style={{ 'position': 'absolute', 'top': layer_index * -5 + 'px', 'width': '12vw' }}
-        alt={'chip' + chipSize}
-      />
+      <Paper
+        style={chipStyle}
+        circle={true}
+        onTouchTap={onTouchTap}
+        zDepth={3}
+      >
+        {chipSize}
+      </Paper>
     )
   }
 }

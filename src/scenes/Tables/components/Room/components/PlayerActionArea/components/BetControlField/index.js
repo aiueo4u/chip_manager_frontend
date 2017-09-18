@@ -6,7 +6,6 @@ const fieldStyle = {
   'display': 'flex',
   'flexDirection': 'row',
   'justifyContent': 'space-around',
-  'background': 'yellow',
 }
 
 class BetControlField extends Component {

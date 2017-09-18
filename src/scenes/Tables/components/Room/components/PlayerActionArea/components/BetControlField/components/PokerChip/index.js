@@ -30,12 +30,10 @@ class PokerChip extends Component {
     }
 
     return (
-      <div
-        style={{ 'position': 'relative', 'background': 'red', 'width': '5vw' }}
+      <ChipImage
+        chipSize={chipSize}
         onTouchTap={onIncrementBetSize}
-      >
-        {images}
-      </div>
+      />
     );
   }
 }
