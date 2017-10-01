@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import chipImage from './chip.png';
 import Paper from 'material-ui/Paper';
 
 const chipStyle = {
@@ -11,7 +10,6 @@ const chipStyle = {
 class ChipImage extends Component {
   render() {
     const {
-      layer_index,
       chipSize,
       onTouchTap,
     } = this.props;

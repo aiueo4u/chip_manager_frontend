@@ -91,7 +91,7 @@ class App extends Component {
 
     // ログイン前のページへとリダイレクトさせる
     let redirectTo = sessionStorage.getItem('redirectTo')
-    if (redirectTo) {
+    if (redirectTo && url.pathname !== '/login') {
       sessionStorage.removeItem('redirectTo');
       window.location = redirectTo;
     }

@@ -1,13 +1,17 @@
-if (process.env.NODE_ENV == 'production') {
-  var websocket_endpoint = 'ws://chipmanager-180306.appspot.com/admin';
-  var api_endpoint = 'https://chipmanager-180306.appspot.com/api';
-  var twitter_login_endpoint = 'https://chipmanager-180306.appspot.com/auth/twitter';
-  var facebook_login_endpoint = 'https://chipmanager-180306.appspot.com/auth/facebook';
+var websocket_endpoint;
+var api_endpoint;
+var twitter_login_endpoint;
+var facebook_login_endpoint;
+if (process.env.NODE_ENV === 'production') {
+  websocket_endpoint = 'ws://chipmanager-180306.appspot.com/admin';
+  api_endpoint = 'https://chipmanager-180306.appspot.com/api';
+  twitter_login_endpoint = 'https://chipmanager-180306.appspot.com/auth/twitter';
+  facebook_login_endpoint = 'https://chipmanager-180306.appspot.com/auth/facebook';
 } else {
-  var websocket_endpoint = 'ws://192.168.100.100:3001';
-  var api_endpoint = 'http://192.168.100.100:3001/api';
-  var twitter_login_endpoint = 'http://192.168.100.100:3001/auth/twitter';
-  var facebook_login_endpoint = 'http://192.168.100.100:3001/auth/facebook';
+   websocket_endpoint = 'ws://192.168.100.100:3001';
+   api_endpoint = 'http://192.168.100.100:3001/api';
+   twitter_login_endpoint = 'http://192.168.100.100:3001/auth/twitter';
+   facebook_login_endpoint = 'http://192.168.100.100:3001/auth/facebook';
 }
 
 export const WEBSOCKET_ENDPOINT = websocket_endpoint;

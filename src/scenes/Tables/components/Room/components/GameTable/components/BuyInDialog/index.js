@@ -49,7 +49,7 @@ class BuyInDialog extends Component {
 
 const mapStateToProps = (state, ownProps) => { return {} }
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { tableId, playerSession, gameTable } = ownProps;
+  const { tableId, gameTable } = ownProps;
 
   return {
     onSubmitTakeSeat: (event) => {

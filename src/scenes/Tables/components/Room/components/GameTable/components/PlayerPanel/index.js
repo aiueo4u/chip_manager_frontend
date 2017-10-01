@@ -56,7 +56,7 @@ class PlayerPanel extends Component {
           </div>
         ) : (<div></div>)}
         <PlayerMenuDialog
-          dialogOpen={openingPlayerMenuDialogPlayerId == player.id}
+          dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
           player={player}
           openBuyInDialog={openBuyInDialog}
         />
