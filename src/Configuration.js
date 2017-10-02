@@ -3,7 +3,7 @@ var api_endpoint;
 var twitter_login_endpoint;
 var facebook_login_endpoint;
 if (process.env.NODE_ENV === 'production') {
-  websocket_endpoint = 'ws://safe-fortress-96782.herokuapp.com';
+  websocket_endpoint = 'wss://safe-fortress-96782.herokuapp.com';
   api_endpoint = 'https://safe-fortress-96782.herokuapp.com/api';
   twitter_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/auth/twitter';
   facebook_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/auth/facebook';
