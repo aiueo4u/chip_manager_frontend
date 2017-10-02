@@ -3,10 +3,10 @@ var api_endpoint;
 var twitter_login_endpoint;
 var facebook_login_endpoint;
 if (process.env.NODE_ENV === 'production') {
-  websocket_endpoint = 'ws://chipmanager-180306.appspot.com/admin';
-  api_endpoint = 'https://chipmanager-180306.appspot.com/api';
-  twitter_login_endpoint = 'https://chipmanager-180306.appspot.com/auth/twitter';
-  facebook_login_endpoint = 'https://chipmanager-180306.appspot.com/auth/facebook';
+  websocket_endpoint = 'ws://safe-fortress-96782.herokuapp.com';
+  api_endpoint = 'https://safe-fortress-96782.herokuapp.com/admin/api';
+  twitter_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/admin/auth/twitter';
+  facebook_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/admin/auth/facebook';
 } else {
   websocket_endpoint = 'ws://localhost:3001';
   api_endpoint = 'http://localhost:3001/api';
