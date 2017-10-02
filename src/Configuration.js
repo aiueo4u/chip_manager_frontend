@@ -4,9 +4,9 @@ var twitter_login_endpoint;
 var facebook_login_endpoint;
 if (process.env.NODE_ENV === 'production') {
   websocket_endpoint = 'ws://safe-fortress-96782.herokuapp.com';
-  api_endpoint = 'https://safe-fortress-96782.herokuapp.com/admin/api';
-  twitter_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/admin/auth/twitter';
-  facebook_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/admin/auth/facebook';
+  api_endpoint = 'https://safe-fortress-96782.herokuapp.com/api';
+  twitter_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/auth/twitter';
+  facebook_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/auth/facebook';
 } else {
   websocket_endpoint = 'ws://localhost:3001';
   api_endpoint = 'http://localhost:3001/api';
