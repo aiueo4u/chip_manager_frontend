@@ -17,6 +17,11 @@ const Home = ({ nickname }) => (
       </Link>
     </div>
     <div>
+      <Link to="/tables">
+        <RaisedButton label="Table list" />
+      </Link>
+    </div>
+    <div>
       <RaisedButton label="Log out" onTouchTap={clearAllData} />
     </div>
   </div>
