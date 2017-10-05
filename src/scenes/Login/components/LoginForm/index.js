@@ -23,7 +23,7 @@ class LoginForm extends Component {
     const { isFetching, isLoggedIn, handleSubmit } = this.props
 
     if (isLoggedIn) {
-      return (<Redirect to="/" />)
+      window.location = '/'
     }
 
     return isFetching ? (

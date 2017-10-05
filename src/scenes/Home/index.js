@@ -3,12 +3,21 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 
+const clearAllData = () => {
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location = '/';
+}
+
 const Home = ({ nickname }) => (
   <div>
     <div>
       <Link to="/newTable">
-        <RaisedButton label="新規テーブルを作成" />
+        <RaisedButton label="Create new table" />
       </Link>
+    </div>
+    <div>
+      <RaisedButton label="Log out" onTouchTap={clearAllData} />
     </div>
   </div>
 )
