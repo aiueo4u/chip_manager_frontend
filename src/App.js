@@ -90,13 +90,14 @@ class App extends Component {
     }
 
     // ログイン前のページへとリダイレクトさせる
+    let jwt = localStorage.getItem('playerSession.jwt')
     let redirectTo = sessionStorage.getItem('redirectTo')
-    if (redirectTo) {
-      sessionStorage.removeItem('redirectTo');
+    sessionStorage.removeItem('redirectTo');
+    if (jwt && redirectTo) {
       window.location = redirectTo;
+    } else {
+      this.props.dispatch({ type: "FETCH_PLAYER" });
     }
-
-    this.props.dispatch({ type: "FETCH_PLAYER" });
   }
 
   render() {
