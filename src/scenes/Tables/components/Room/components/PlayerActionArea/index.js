@@ -60,6 +60,7 @@ const PlayerActionArea = (
           </div>
         ) : (
           <div style={{ 'display': 'flex', 'flexDirection': 'row', 'justifyContent': 'space-around' }}>
+            <RaisedButton style={buttonStyle} label="Fold" primary={true} onTouchTap={foldAction} />
             <RaisedButton
               disabled={!checkable}
               style={buttonStyle}
@@ -74,7 +75,6 @@ const PlayerActionArea = (
               primary={true}
               onTouchTap={callAction}
             />
-            <RaisedButton style={buttonStyle} label="Fold" primary={true} onTouchTap={foldAction} />
           </div>
         )}
       </div>
