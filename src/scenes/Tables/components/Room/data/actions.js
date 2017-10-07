@@ -1,7 +1,3 @@
-export const addChip = (tableId, playerId, amount) => {
-  return { type: "ADD_CHIP", tableId: tableId, playerId: playerId, amount: amount };
-}
-
 export const checkAction = (tableId, playerId) => {
   return { type: "CHECK_ACTION", tableId: tableId, playerId: playerId };
 }

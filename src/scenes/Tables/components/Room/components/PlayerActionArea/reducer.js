@@ -30,12 +30,6 @@ const PlayerReducer = (state = initialState, action) => {
         betSize = 0;
       }
       return Object.assign({}, player, { betSize: betSize });
-    case 'ADD_CHIP':
-      return Object.assign({}, player, { isFetching: true });
-    case 'ADD_CHIP_COMPLETED':
-      return Object.assign({}, player, { isFetching: false });
-    case 'ADD_CHIP_FAILED':
-      return Object.assign({}, player, { isFetching: false });
     case 'CHECK_ACTION':
       return Object.assign({}, player, { isFetching: true });
     case 'CHECK_ACTION_COMPLETED':
@@ -45,6 +39,18 @@ const PlayerReducer = (state = initialState, action) => {
     case 'BET_ACTION':
       return Object.assign({}, player, { isFetching: true });
     case 'BET_ACTION_FAILED':
+      return Object.assign({}, player, { isFetching: false });
+    case 'CALL_ACTION':
+      return Object.assign({}, player, { isFetching: true });
+    case 'CALL_ACTION_FAILED':
+      return Object.assign({}, player, { isFetching: false });
+    case 'FOLD_ACTION':
+      return Object.assign({}, player, { isFetching: true });
+    case 'FOLD_ACTION_FAILED':
+      return Object.assign({}, player, { isFetching: false });
+    case 'UNDO_PLAYER_ACTION':
+      return Object.assign({}, player, { isFetching: true });
+    case 'UNDO_PLAYER_ACTION_FAILED':
       return Object.assign({}, player, { isFetching: false });
     default:
       return player;
@@ -65,12 +71,6 @@ const PlayersReducer = (state = [], action) => {
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'DECREMENT_BET_SIZE':
       return state.map((player) => { return PlayerReducer(player, action) });
-    case 'ADD_CHIP':
-      return state.map((player) => { return PlayerReducer(player, action) });
-    case 'ADD_CHIP_COMPLETED':
-      return state.map((player) => { return PlayerReducer(player, action) });
-    case 'ADD_CHIP_FAILED':
-      return state.map((player) => { return PlayerReducer(player, action) });
     case 'CHECK_ACTION':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'CHECK_ACTION_COMPLETED':
@@ -82,6 +82,18 @@ const PlayersReducer = (state = [], action) => {
     case 'BET_ACTION_COMPLETED':
       return state;
     case 'BET_ACTION_FAILED':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'CALL_ACTION':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'CALL_ACTION_FAILED':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'FOLD_ACTION':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'FOLD_ACTION_FAILED':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'UNDO_PLAYER_ACTION':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'UNDO_PLAYER_ACTION_FAILED':
       return state.map((player) => { return PlayerReducer(player, action) });
     default:
       return state;

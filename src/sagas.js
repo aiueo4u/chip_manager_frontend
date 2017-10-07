@@ -154,22 +154,6 @@ function *handlePlayerTakeSeat(action) {
   }
 }
 
-function *handleAddChip(action) {
-  let params = {
-    type: "PLAYER_ACTION_ADD_CHIPS",
-    table_id: action.tableId,
-    player_id: action.playerId,
-    amount: action.amount,
-  }
-  try {
-    const json = yield call(actionToGameDealer, params)
-    yield put({ type: "ADD_CHIP_COMPLETED", tableId: action.tableId, playerId: action.playerId, amount: action.amount, pot: json.pot });
-  } catch(error) {
-    console.log(error)
-    yield put({ type: "ADD_CHIP_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
-  }
-}
-
 function *handleFetchPlayer() {
   try {
     const json = yield call(initialLogin);
@@ -198,7 +182,6 @@ export default function *rootSage() {
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
   yield takeEvery("CREATE_TABLE_FORM_ON_SUBMIT", handleRequestTableCreate);
   yield takeEvery("FETCH_PLAYER", handleFetchPlayer);
-  yield takeEvery("ADD_CHIP", handleAddChip);
   yield takeEvery("BET_ACTION", handleBetAction);
   yield takeEvery("CALL_ACTION", handleCallAction);
   yield takeEvery("FOLD_ACTION", handleFoldAction);

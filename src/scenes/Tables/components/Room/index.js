@@ -80,7 +80,7 @@ class Room extends Component {
       onFoldAction,
       onCheckAction,
       // informationItems,
-      onGameStart, players, tableId, tableName, onAddChip, onCallAction, onBetAction } = this.props
+      onGameStart, players, tableId, tableName, onCallAction, onBetAction } = this.props
 
     let isSeated = players.find(player => player.id === playerSession.playerId) ? true : false
     const inGame = !gameStartable(gameTable.gameHandState);
@@ -141,7 +141,6 @@ class Room extends Component {
               key={currentPlayer.id}
               tableId={tableId}
               player={currentPlayer}
-              onAddChip={onAddChip}
               onCheckAction={onCheckAction}
               onBetAction={onBetAction}
               onCallAction={onCallAction}
@@ -170,9 +169,6 @@ const mapStateToProps = (state, ownProps) => {
     playerSession: state.data.playerSession,
     // informationItems: state.scenes.Tables.Room.Information.informationItems,
     gameTable: Room.GameTable,
-    onAddChip: (playerId, amount) => {
-      return addChip(tableId, playerId, amount);
-    },
     onCheckAction: (playerId) => {
       return checkAction(tableId, playerId);
     },
