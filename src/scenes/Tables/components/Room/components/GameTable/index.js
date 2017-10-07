@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import PlayerPanel from './components/PlayerPanel';
 import PlayerChipBetArea from './components/PlayerChipBetArea';
 import BuyInDialog from './components/BuyInDialog';
+import UndoDialog from './components/UndoDialog';
 import './style.css';
 
 const roundToReadable = (round) => {
@@ -28,9 +29,9 @@ const buttonStyle = {
 class GameTable extends Component {
   render() {
     const {
-      undoPlayerAction,
       tableId,
       openBuyInDialog,
+      openUndoDialog,
       openPlayerMenuDialog,
       gameTable,
       isSeated,
@@ -85,6 +86,11 @@ class GameTable extends Component {
           gameTable={gameTable}
           playerSession={playerSession}
         />
+        <UndoDialog
+          tableId={tableId}
+          gameTable={gameTable}
+          playerSession={playerSession}
+        />
         <div className="flex-container">
           <div className="game-table">
 
@@ -127,7 +133,7 @@ class GameTable extends Component {
                       />
                       {gameTable.undoable && isSeated ? (
                         <div>
-                          <RaisedButton label="Undo" primary={true} onTouchTap={undoPlayerAction} buttonStyle={buttonStyle} />
+                          <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
                         </div>
                         ) : (<div></div>)
                       }
@@ -149,7 +155,7 @@ class GameTable extends Component {
                         {gameTable.pot}
                       </div>
                       <div>
-                        <RaisedButton label="Undo" primary={true} onTouchTap={undoPlayerAction} buttonStyle={buttonStyle} />
+                        <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
                       </div>
                     </div>
                   )
@@ -192,15 +198,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const { tableId, playerSession } = ownProps;
 
   return {
+    openUndoDialog: () => {
+      dispatch({ type: "OPEN_UNDO_DIALOG", tableId: tableId, playerId: playerSession.playerId })
+    },
     openBuyInDialog: (seatNo, playerId) => {
       dispatch({ type: "OPEN_BUY_IN_DIALOG", tableId: tableId, seatNo: seatNo, playerId: playerId })
     },
     openPlayerMenuDialog: (playerId) => {
       dispatch({ type: "OPEN_PLAYER_MENU_DIALOG", tableId: tableId, playerId: playerId })
     },
-    undoPlayerAction: () => {
-      dispatch({ type: 'UNDO_PLAYER_ACTION', tableId: tableId, playerId: playerSession.playerId });
-    }
   }
 }
 
