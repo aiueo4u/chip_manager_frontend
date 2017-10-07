@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
-import wallpaperImage from './wallpaper_001.jpg';
+import wallpaperImage from 'assets/wallpaper_001.jpg';
 
 const clearAllData = () => {
   localStorage.clear();

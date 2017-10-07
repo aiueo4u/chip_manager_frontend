@@ -4,6 +4,24 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import TwitterLoginButton from './components/TwitterLoginButton';
 import FacebookLoginButton from './components/FacebookLoginButton';
+import wallpaperImage from 'assets/wallpaper_001.jpg';
+
+const loginPageStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  position: 'fixed',
+  height: '50%',
+  width: '80%',
+  textAlign: 'center',
+  margin: 'auto',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  background: 'rgba(200, 200, 200, 0.3)',
+  borderRadius: '30px',
+}
 
 const styles = {
   submitInput: { // デフォルトのサブミットボタンは見えなくする
@@ -31,20 +49,20 @@ class LoginForm extends Component {
       </div>
     ) : (
       <div>
-        <TwitterLoginButton />
-        <FacebookLoginButton />
-        <form onSubmit={handleSubmit}>
-          <div>
-            <div>
-              <TextField name="playerNicknameTextField" hintText="Your nickname" />
-            </div>
-            <div>
-              <RaisedButton label="ログイン" labelPosition="before" containerElement="label">
-                <input type="submit" style={styles.submitInput} />
-              </RaisedButton>
-            </div>
-          </div>
-        </form>
+        <img src={wallpaperImage} style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }} />
+        <div style={loginPageStyle}>
+          <TwitterLoginButton />
+          <FacebookLoginButton />
+          <br />
+          <div>or</div>
+          <br />
+          <form onSubmit={handleSubmit}>
+            <TextField name="playerNicknameTextField" hintText="Your nickname" />
+            <RaisedButton label="Debug Login" labelPosition="before" containerElement="label">
+              <input type="submit" style={styles.submitInput} />
+            </RaisedButton>
+          </form>
+        </div>
       </div>
     )
   }

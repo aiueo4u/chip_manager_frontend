@@ -137,7 +137,7 @@ class GameTable extends Component {
                       {isSeated ? (
                         'Wait for other player...'
                       ) : (
-                        'Touch your seat!'
+                        'Touch any seat'
                       )}
                     </div>
                   ) : (

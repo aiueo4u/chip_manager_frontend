@@ -14,19 +14,19 @@ class BuyInDialog extends Component {
 
     return (
       <Dialog
-        title="バイイン額を設定してください。"
+        title="Buy-In"
         modal={false}
         open={gameTable.isOpenedBuyInDialog || false}
         onRequestClose={onRequestClose}
       >
-        <div>シート番号: {gameTable.selectingSeatNo}</div>
+        <div>Seat {gameTable.selectingSeatNo}</div>
         <form name="BuyInForm" onSubmit={onSubmitTakeSeat}>
           <div>
             <TextField
               name="buyInAmount"
               hintText="10000"
               floatingLabelFixed={true}
-              floatingLabelText="バイイン額"
+              floatingLabelText="Buy-In amount"
             />
           </div>
           <div style={{ textAlign: 'right' }}>
