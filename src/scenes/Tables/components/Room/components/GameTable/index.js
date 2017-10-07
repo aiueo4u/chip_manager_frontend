@@ -148,6 +148,7 @@ class GameTable extends Component {
                     </div>
                   ) : (
                     <div className="currentStateArea">
+                      <div>Game {gameTable.gameHandCount}</div>
                       <div>
                         {roundToReadable(gameTable.round)}
                       </div>

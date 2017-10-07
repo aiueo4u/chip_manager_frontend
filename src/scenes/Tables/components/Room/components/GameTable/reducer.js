@@ -18,6 +18,7 @@ const GameTableReducer = (state = initialState, action) => {
         buttonSeatNo: action.buttonSeatNo,
         lastAggressiveSeatNo: action.lastAggressiveSeatNo,
         undoable: action.undoable,
+        gameHandCount: action.gameHandCount,
       });
     case 'OPEN_PLAYER_MENU_DIALOG':
       return Object.assign({}, state, { openingPlayerMenuDialogPlayerId: action.playerId });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 class PlayerMenuDialog extends Component {
   render() {
@@ -19,7 +20,7 @@ class PlayerMenuDialog extends Component {
         onRequestClose={onRequestClose}
       >
         <div>Stack {player.stack}</div>
-        <div onTouchTap={switchToBuyInDialog}>Need Chips?</div>
+        <FlatButton label="Adjust chips" onTouchTap={switchToBuyInDialog} primary={true} />
       </Dialog>
     );
   }

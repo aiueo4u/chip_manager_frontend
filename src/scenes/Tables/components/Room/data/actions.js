@@ -17,9 +17,13 @@ export const betAction = (tableId, playerId, amount) => {
 export const playerActionReceived = (data) => {
   const {
     pot,
-    game_hand_state, players, current_seat_no, button_seat_no,
+    game_hand_state,
+    players,
+    current_seat_no,
+    button_seat_no,
     last_aggressive_seat_no,
     undoable,
+    game_hand_count,
   } = data;
 
   return {
@@ -32,6 +36,7 @@ export const playerActionReceived = (data) => {
     buttonSeatNo: button_seat_no,
     lastAggressiveSeatNo: last_aggressive_seat_no,
     undoable: undoable,
+    gameHandCount: game_hand_count,
   };
 }
 
