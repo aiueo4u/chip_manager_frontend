@@ -89,7 +89,20 @@ class Room extends Component {
 
     return (!gameTable.isReady) ? (
       <div>
-        <CircularProgress />
+        <div style={{
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '80%',
+          height: '30%',
+          position: 'fixed',
+          margin: 'auto',
+          textAlign: 'center',
+        }}>
+          <CircularProgress thickness={10} size={100} />
+          <div>Initializing...</div>
+        </div>
       </div>
     ) : (
       <div style={{

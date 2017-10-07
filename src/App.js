@@ -9,7 +9,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './scenes/Home/index.js';
 import Login from './scenes/Login';
 import Lobby from './scenes/Lobby';
-import Tables from './scenes/Tables';
+import TableList from './scenes/Tables/components/TableList';
+import Room from './scenes/Tables/components/Room';
 // import AppBar from 'material-ui/AppBar';
 // import IconMenu from 'material-ui/IconMenu';
 // import MenuItem from 'material-ui/MenuItem';
@@ -117,13 +118,31 @@ class App extends Component {
             <PrivateRoute exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/newTable" component={Lobby} />
-            <PrivateRoute path="/tables" component={Tables} />
+            <PrivateRoute exact path="/tables" component={TableList} />
+            <PrivateRoute path="/tables/:id" component={Room} />
           </div>
         </Router>
       </div>
     ) : (
-      <div>
-        <CircularProgress />
+      <div style={{
+        position: 'relative',
+          width: '100%',
+          height: '100%',
+      }}>
+        <div style={{
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '80%',
+          height: '30%',
+          position: 'absolute',
+          margin: 'auto',
+          textAlign: 'center',
+        }}>
+          <CircularProgress thickness={10} size={100} />
+          <div>Loading Player Data...</div>
+        </div>
       </div>
     );
   }
