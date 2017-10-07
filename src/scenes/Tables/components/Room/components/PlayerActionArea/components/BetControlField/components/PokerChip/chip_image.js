@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
+import './chip_image.css'
 
 const chipStyle = {
   height: 80,
@@ -14,15 +15,14 @@ class ChipImage extends Component {
       onTouchTap,
     } = this.props;
 
+    let chipClassName = `pokerChip pokerChipColor${chipSize}`;
+
     return (
-      <Paper
-        style={chipStyle}
-        circle={true}
+      <div
+        className={chipClassName}
         onTouchTap={onTouchTap}
-        zDepth={3}
       >
-        {chipSize}
-      </Paper>
+      </div>
     )
   }
 }

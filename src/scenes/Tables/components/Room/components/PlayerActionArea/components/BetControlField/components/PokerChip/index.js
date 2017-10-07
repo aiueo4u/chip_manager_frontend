@@ -7,28 +7,6 @@ class PokerChip extends Component {
   render() {
     const { count, chipSize, onIncrementBetSize } = this.props;
 
-    let images = [];
-
-    if (count === 0) {
-      images.push(
-        <ChipImage
-          key={0}
-          layer_index={0}
-          chipSize={chipSize}
-        />
-      )
-    } else {
-      for (let i = 0; i < count; i ++) {
-        images.push(
-          <ChipImage
-            key={i}
-            layer_index={i}
-            chipSize={chipSize}
-          />
-        )
-      }
-    }
-
     return (
       <ChipImage
         chipSize={chipSize}

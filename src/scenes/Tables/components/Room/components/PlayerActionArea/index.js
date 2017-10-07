@@ -8,15 +8,12 @@ const buttonStyle = {
 }
 
 const waitingStyle = {
-  'background': 'red',
   'height': '100%',
 }
 
 const yourTurnStyle = {
-  'background': 'green',
   'height': '100%',
 }
-
 
 const PlayerActionArea = (
     {
