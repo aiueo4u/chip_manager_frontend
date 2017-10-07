@@ -5,7 +5,7 @@ import ChipImage from './chip_image';
 
 class PokerChip extends Component {
   render() {
-    const { count, chipSize, onIncrementBetSize } = this.props;
+    const { chipSize, onIncrementBetSize } = this.props;
 
     return (
       <ChipImage

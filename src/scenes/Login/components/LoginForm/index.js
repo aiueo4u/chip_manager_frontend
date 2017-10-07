@@ -49,7 +49,11 @@ class LoginForm extends Component {
       </div>
     ) : (
       <div>
-        <img src={wallpaperImage} style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }} />
+        <img
+          src={wallpaperImage}
+          style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }}
+          alt="wallpaper"
+        />
         <div style={loginPageStyle}>
           <TwitterLoginButton />
           <FacebookLoginButton />

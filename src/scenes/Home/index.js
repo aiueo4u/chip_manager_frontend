@@ -29,7 +29,11 @@ const homeStyle = {
 
 const Home = ({ nickname }) => (
   <div>
-    <img src={wallpaperImage} style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }} />
+    <img
+      src={wallpaperImage}
+      style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }}
+      alt="wallpaper"
+    />
     <div style={homeStyle}>
       <div style={{ margin: '5vh' }}>
         <Link to="/newTable">

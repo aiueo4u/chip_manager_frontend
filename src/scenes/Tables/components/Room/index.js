@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import GameTable from './components/GameTable';
 import PlayerActionArea from './components/PlayerActionArea';
 import {
-  addChip,
   betAction,
   callAction,
   foldAction,
