@@ -114,7 +114,7 @@ class App extends Component {
         'margin': 0,
       }}>
         <Router>
-          <div style={{ 'background': '#884444' }}>
+          <div>
             <PrivateRoute exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/newTable" component={Lobby} />
