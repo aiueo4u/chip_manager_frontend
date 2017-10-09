@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Redirect } from 'react-router-dom';
 import wallpaperImage from 'assets/wallpaper_001.jpg';
+import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
   submitInput: { // デフォルトのサブミットボタンは見えなくする
@@ -69,6 +70,10 @@ class CreateTableForm extends Component {
               <div>
                 <TextField name="bigBlindTextField" hintText="BB" />
               </div>
+              <Checkbox
+                label="With cards"
+                name="withCardsCheck"
+              />
               <div>
                 <RaisedButton label="テーブル作成" labelPosition="before" containerElement="label">
                   <input type="submit" style={styles.submitInput} />

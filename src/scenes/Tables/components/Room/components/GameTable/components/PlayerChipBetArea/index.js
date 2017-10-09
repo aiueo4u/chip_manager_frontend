@@ -9,7 +9,13 @@ const PlayerChipBetArea = ({ player, buttonSeatNo, seatNo, inGame }) => (
     ) : (<div></div>)}
     {inGame && player.bet_amount_in_state > 0 ? (
       <div className="betArea">
-        {player.bet_amount_in_state}
+        {player.betSize ? (
+          <div>
+            {player.bet_amount_in_state} -> {player.bet_amount_in_state + player.betSize}
+          </div>
+        ) : (
+          <div>{player.bet_amount_in_state}</div>
+        )}
       </div>
     ) : (<div></div>)}
   </div>

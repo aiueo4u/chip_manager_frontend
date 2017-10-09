@@ -7,7 +7,7 @@ import './style.css';
 
 class PlayerPanel extends Component {
   render() {
-    const { cards, isSeated, player, openBuyInDialog } = this.props;
+    const { enabledWithCard, cards, isSeated, player, openBuyInDialog } = this.props;
 
     const {
       currentPlayer,
@@ -38,7 +38,6 @@ class PlayerPanel extends Component {
       panelClass = 'activePanel';
     }
 
-    let enabledWithCard = false;
     let isMe = currentPlayer && currentPlayer.id === player.id;
 
     return (
@@ -80,11 +79,6 @@ class PlayerPanel extends Component {
             <div className='nickname'>{player.nickname}</div>
             <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
           </div>
-          {currentPlayer && currentPlayer.betSize ? (
-            <div>
-              {currentPlayer.betSize}
-            </div>
-          ) : (<div></div>)}
           <PlayerMenuDialog
             dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
             player={player}

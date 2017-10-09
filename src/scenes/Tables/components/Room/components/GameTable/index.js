@@ -71,6 +71,7 @@ class GameTable extends Component {
         openPlayerMenuDialog: openPlayerMenuDialog,
         tableId: tableId,
         cards: gameTable.dealtCards[playerId],
+        enabledWithCard: gameTable.dealCards,
       };
     };
 

@@ -11,7 +11,8 @@ import {
 
 function *handleRequestTableCreate(action) {
   try {
-    const { json } = yield call(tableCreate, action.tableName, action.sb, action.bb);
+    console.log(action);
+    const { json } = yield call(tableCreate, action.tableName, action.sb, action.bb, action.withCards);
     yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId: json.table_id })
   } catch (error) {
     yield put({ type: "CREATE_TABLE_FORM_ON_FAILURE" });

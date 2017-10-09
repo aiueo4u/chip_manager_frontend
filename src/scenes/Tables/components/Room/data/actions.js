@@ -34,6 +34,7 @@ export const playerActionReceived = (data) => {
     undoable,
     game_hand_count,
     board_cards,
+    deal_cards,
   } = data;
 
   return {
@@ -48,6 +49,7 @@ export const playerActionReceived = (data) => {
     undoable: undoable,
     gameHandCount: game_hand_count,
     boardCards: board_cards,
+    dealCards: deal_cards,
   };
 }
 

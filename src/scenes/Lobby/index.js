@@ -9,8 +9,8 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-const submitCreateTableForm = (tableName, sb, bb) => {
-  return { type: "CREATE_TABLE_FORM_ON_SUBMIT", tableName: tableName, sb: sb, bb: bb };
+const submitCreateTableForm = (tableName, sb, bb, withCards) => {
+  return { type: "CREATE_TABLE_FORM_ON_SUBMIT", tableName: tableName, sb: sb, bb: bb, withCards: withCards };
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -23,7 +23,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       let tableName = event.target.tableNameTextField.value.trim();
       let sb = event.target.smallBlindTextField.value.trim();
       let bb = event.target.bigBlindTextField.value.trim();
-      dispatch(submitCreateTableForm(tableName, sb, bb));
+      let withCards = event.target.withCardsCheck.checked;
+      dispatch(submitCreateTableForm(tableName, sb, bb, withCards));
     }
   }
 }
