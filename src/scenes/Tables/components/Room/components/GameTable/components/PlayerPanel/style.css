@@ -14,7 +14,6 @@
 }
 
 .nickname {
-  font-size: 0.5em;
   color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
@@ -22,7 +21,6 @@
 }
 
 .player-stack {
-  font-size: 0.7em;
   color: #ffffff;
   font-weight: bold;
 }
