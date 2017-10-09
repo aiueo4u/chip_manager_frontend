@@ -6,6 +6,7 @@ import PlayerChipBetArea from './components/PlayerChipBetArea';
 import BuyInDialog from './components/BuyInDialog';
 import UndoDialog from './components/UndoDialog';
 import './style.css';
+import PokerCard from 'components/poker_card';
 
 const roundToReadable = (round) => {
   switch (round) {
@@ -58,6 +59,7 @@ class GameTable extends Component {
     }
 
     let playerPanelProps = (index) => {
+      let playerId = sortedPlayers[index].id;
       return {
         isOpenedBuyInDialog: gameTable.isOpenedBuyInDialog,
         openingPlayerMenuDialogPlayerId: gameTable.openingPlayerMenuDialogPlayerId,
@@ -68,6 +70,7 @@ class GameTable extends Component {
         openBuyInDialog: openBuyInDialog,
         openPlayerMenuDialog: openPlayerMenuDialog,
         tableId: tableId,
+        cards: gameTable.dealtCards[playerId],
       };
     };
 
@@ -163,6 +166,65 @@ class GameTable extends Component {
                       </div>
                       <div>
                         {gameTable.pot}
+                      </div>
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        height: '5em',
+                        position: 'relative',
+                      }}
+                      >
+                        <div style={{ position: 'absolute', left: '0em' }}>
+                          {gameTable.boardCards && gameTable.boardCards[0] ? (
+                            <PokerCard
+                              rank={gameTable.boardCards[0][0]}
+                              suit={gameTable.boardCards[0][1]}
+                            />
+                          ) : (
+                            <PokerCard invisible={true} />
+                          )}
+                        </div>
+                        <div style={{ position: 'absolute', left: '1em' }}>
+                          {gameTable.boardCards && gameTable.boardCards[1] ? (
+                            <PokerCard
+                              rank={gameTable.boardCards[1][0]}
+                              suit={gameTable.boardCards[1][1]}
+                            />
+                          ) : (
+                            <PokerCard invisible={true} />
+                          )}
+                        </div>
+                        <div style={{ position: 'absolute', left: '2em' }}>
+                          {gameTable.boardCards && gameTable.boardCards[2] ? (
+                            <PokerCard
+                              rank={gameTable.boardCards[2][0]}
+                              suit={gameTable.boardCards[2][1]}
+                            />
+                          ) : (
+                            <PokerCard invisible={true} />
+                          )}
+                        </div>
+                        <div style={{ position: 'absolute', left: '3em' }}>
+                          {gameTable.boardCards && gameTable.boardCards[3] ? (
+                            <PokerCard
+                              rank={gameTable.boardCards[3][0]}
+                              suit={gameTable.boardCards[3][1]}
+                            />
+                          ) : (
+                            <PokerCard invisible={true} />
+                          )}
+                        </div>
+                        <div style={{ position: 'absolute', left: '4em' }}>
+                          {gameTable.boardCards && gameTable.boardCards[4] ? (
+                            <PokerCard
+                              rank={gameTable.boardCards[4][0]}
+                              suit={gameTable.boardCards[4][1]}
+                            />
+                          ) : (
+                            <PokerCard invisible={true} />
+                          )}
+                        </div>
                       </div>
                       <div>
                         <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />

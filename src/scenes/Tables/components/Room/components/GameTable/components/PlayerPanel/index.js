@@ -7,7 +7,7 @@ import './style.css';
 
 class PlayerPanel extends Component {
   render() {
-    const { isSeated, player, openBuyInDialog } = this.props;
+    const { cards, isSeated, player, openBuyInDialog } = this.props;
 
     const {
       currentPlayer,
@@ -29,7 +29,7 @@ class PlayerPanel extends Component {
       }
     }
 
-    let className = "avatar-" + player.state;
+    //let className = "avatar-" + player.state;
 
     let panelClass;
     if (player.state === 1) {
@@ -43,13 +43,25 @@ class PlayerPanel extends Component {
 
     return (
       <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-        {enabledWithCard && isMe ? (
+        {enabledWithCard && !isMe && player.state && player.state !== 1 ? (
           <div>
-            <div style={{ position: 'absolute', top: '-8px', left: '-3em', zIndex: 10 }}>
-              <Card />
+            <div style={{ position: 'absolute', top: '-0.5em', left: '-0.5em', zIndex: 10 }}>
+              <Card invisible={true} />
             </div>
-            <div style={{ position: 'absolute', top: '-4px', left: '-1.8em', zIndex: 10 }}>
-              <Card />
+            <div style={{ position: 'absolute', top: '-0.3em', left: '0em', zIndex: 10 }}>
+              <Card invisible={true} />
+            </div>
+          </div>
+          ) : (<div></div>)
+        }
+
+        {enabledWithCard && isMe && cards && cards.length === 2 && player.state !== 1 ? (
+          <div>
+            <div style={{ position: 'absolute', top: '-8px', left: '-5.2em', zIndex: 10 }}>
+              <Card rank={cards[0].rank} suit={cards[0].suit} />
+            </div>
+            <div style={{ position: 'absolute', top: '-4px', left: '-4em', zIndex: 10 }}>
+              <Card rank={cards[1].rank} suit={cards[1].suit} />
             </div>
           </div>
           ) : (<div></div>)
@@ -62,6 +74,7 @@ class PlayerPanel extends Component {
           <img
             src={player.image_url}
             className="avatarImage"
+            alt='avatar'
           />
           <div className="playerPanelTextArea">
             <div className='nickname'>{player.nickname}</div>

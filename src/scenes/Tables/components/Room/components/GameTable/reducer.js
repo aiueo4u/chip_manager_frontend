@@ -4,10 +4,17 @@ const initialState = {
   pot: 0,
   reconnectingActionCable: false,
   isOpenedUndoDialog: false,
+  dealtCards: [],
 }
 
 const GameTableReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'DEALT_CARD_RECEIVED':
+      let dealtCards = Object.assign({}, state.dealtCards);
+      dealtCards[action.playerId] = action.cards;
+      return Object.assign({}, state, {
+        dealtCards: dealtCards,
+      });
     case 'PLAYER_ACTION_RECEIVED':
       return Object.assign({}, state, {
         isReady: true,
@@ -19,6 +26,7 @@ const GameTableReducer = (state = initialState, action) => {
         lastAggressiveSeatNo: action.lastAggressiveSeatNo,
         undoable: action.undoable,
         gameHandCount: action.gameHandCount,
+        boardCards: action.boardCards,
       });
     case 'OPEN_PLAYER_MENU_DIALOG':
       return Object.assign({}, state, { openingPlayerMenuDialogPlayerId: action.playerId });

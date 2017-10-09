@@ -1,5 +1,5 @@
 const initialState = {
-  betSize: 0
+  betSize: 0,
 }
 
 const PlayerReducer = (state = initialState, action) => {

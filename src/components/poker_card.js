@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-//import CardbackImage from 'assets/cardback.gif';
-import './card.css';
+import './poker_card.css';
 
-class Card extends Component {
+class PokerCard extends Component {
   render() {
     const { rank, suit, invisible } = this.props;
 
@@ -44,4 +43,4 @@ class Card extends Component {
   }
 }
 
-export default Card;
+export default PokerCard;

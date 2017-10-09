@@ -10,6 +10,7 @@ import {
   playerActionReceived,
   gameHandActionReceived,
   gameHandFinishedReceived,
+  dealtCardsReceived,
 } from './data/actions.js';
 import CircularProgress from 'material-ui/CircularProgress';
 // import Information from './components/Information';
@@ -34,7 +35,8 @@ class Room extends Component {
       match,
       onGameHandFinishedReceived,
       onGameHandActionReceived,
-      onPlayerActionReceived
+      onPlayerActionReceived,
+      onDealtCardsReceived,
     } = this.props;
 
     // action cable setup
@@ -47,15 +49,15 @@ class Room extends Component {
     // TODO: create失敗のエラーハンドリングはどうやるんだろう。。
     this.App.ChipChannel = this.App.cable.subscriptions.create({ channel: 'ChipChannel', tableId: tableId }, {
       connected() {
-        console.log("Chip Channel connected")
+        console.debug("Chip Channel connected")
         onActionCableConnected();
       },
       disconnected() {
-        console.log("Chip Channel disconnected")
+        console.debug("Chip Channel disconnected")
         onActionCableDisconnected();
       },
       received(data) {
-        console.log("Chip Channel received", data)
+        console.debug("Chip Channel received", data)
         if (data.type === 'player_action') {
           onPlayerActionReceived(data);
         } else if (data.type === 'game_hand') {
@@ -64,12 +66,34 @@ class Room extends Component {
           onGameHandFinishedReceived(data)
         }
       },
-      rejected(data) { console.log("Chip Channel rejected", data) },
+      rejected(data) { console.debug("Chip Channel rejected", data) },
     });
+
+    // 配られるカード専用のチャンネル
+    this.App.cable_for_dealt_card = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
+    this.App.DealtCardChannel = this.App.cable_for_dealt_card.subscriptions.create(
+      {
+        channel: 'DealtCardChannel',
+        tableId: tableId,
+      }, {
+        connected() {
+          console.debug("DealtCardChannel connected");
+        },
+        disconnected() {
+          console.debug("DealtCardChannel disconnected");
+        },
+        received(data) {
+          console.debug("DealtCardChannel received: ", data);
+          onDealtCardsReceived(data);
+        },
+        rejected(data) { console.debug("DealtCardChannel rejected", data) },
+      }
+    );
   }
 
   componentWillUnmount() {
     this.App.ChipChannel.unsubscribe();
+    this.App.DealtCardChannel.unsubscribe();
   }
 
   render() {
@@ -195,6 +219,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onPlayerActionReceived: (data) => {
       dispatch(playerActionReceived(data));
+    },
+    onDealtCardsReceived: (data) => {
+      dispatch(dealtCardsReceived(data));
     },
     onGameStart: () => {
        dispatch(gameStartButtonClicked(tableId));
