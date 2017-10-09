@@ -98,8 +98,10 @@ class GameTable extends Component {
         <div className="flex-container">
           <div className="game-table">
             <div className="topPlayerContainer">
-              <div className="flex-column-container" style={{ width: '30vw' }}>
-                <PlayerPanel {...playerPanelProps(5)} />
+              <div className="test">
+                <div style={{ height: '20vw' }}>
+                  <PlayerPanel {...playerPanelProps(5)} />
+                </div>
                 <PlayerChipBetArea {...playerChipBetAreaProps(5) } />
               </div>
             </div>
