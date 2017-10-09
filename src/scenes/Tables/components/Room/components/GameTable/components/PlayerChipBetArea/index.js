@@ -7,14 +7,14 @@ const PlayerChipBetArea = ({ player, buttonSeatNo, seatNo, inGame }) => (
     {inGame && player.seat_no === buttonSeatNo ? (
       <Paper circle={true} className="buttonPlate">D</Paper>
     ) : (<div></div>)}
-    {inGame && player.bet_amount_in_state > 0 ? (
+    {inGame && (player.bet_amount_in_state || player.betSize) ? (
       <div className="betArea">
         {player.betSize ? (
           <div>
-            {player.bet_amount_in_state} -> {player.bet_amount_in_state + player.betSize}
+            {player.bet_amount_in_state || 0} -> {player.bet_amount_in_state + player.betSize}
           </div>
         ) : (
-          <div>{player.bet_amount_in_state}</div>
+          <div>{player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ''}</div>
         )}
       </div>
     ) : (<div></div>)}
