@@ -93,36 +93,45 @@ class GameTable extends Component {
         />
         <div className="flex-container">
           <div className="game-table">
-
             <div className="topPlayerContainer">
-              <div className="flex-column-container">
+              <div className="flex-column-container" style={{ width: '30vw' }}>
                 <PlayerPanel {...playerPanelProps(5)} />
                 <PlayerChipBetArea {...playerChipBetAreaProps(5) } />
               </div>
             </div>
 
             <div className="middlePlayerContainer">
-              <div className="flex-column-container" style={{ 'width': '25vw' }}>
-                <div className="flex-row-container">
+              <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
+                <div style={{ width: '15vw', height: '15vw' }}>
                   <PlayerPanel {...playerPanelProps(4)} />
+                </div>
+                <div style={{ width: '15vw', height: '15vw' }}>
+                  <PlayerPanel {...playerPanelProps(3)} />
+                </div>
+                <div style={{ width: '15vw', height: '15vw' }}>
+                  <PlayerPanel {...playerPanelProps(2)} />
+                </div>
+                <div style={{ width: '15vw', height: '15vw' }}>
+                  <PlayerPanel {...playerPanelProps(1)} />
+                </div>
+              </div>
+              <div className="flex-column-container" style={{ 'width': '10vw' }}>
+                <div style={{ width: '9vw', height: '9vw' }}>
                   <PlayerChipBetArea {...playerChipBetAreaProps(4) } />
                 </div>
-                <div className="flex-row-container">
-                  <PlayerPanel {...playerPanelProps(3)} />
+                <div style={{ width: '9vw', height: '9vw' }}>
                   <PlayerChipBetArea {...playerChipBetAreaProps(3) } />
                 </div>
-                <div className="flex-row-container">
-                  <PlayerPanel {...playerPanelProps(2)} />
+                <div style={{ width: '9vw', height: '9vw' }}>
                   <PlayerChipBetArea {...playerChipBetAreaProps(2) } />
                 </div>
-                <div className="flex-row-container">
-                  <PlayerPanel {...playerPanelProps(1)} />
+                <div style={{ width: '9vw', height: '9vw' }}>
                   <PlayerChipBetArea {...playerChipBetAreaProps(1) } />
                 </div>
               </div>
               <div
                 className="flex-center-container"
-                style={{ 'width': '40vw' }}
+                style={{ 'width': '25vw' }}
               >
                 {
                   !inGame && (players.length >= 2) && isSeated ? (
@@ -162,21 +171,31 @@ class GameTable extends Component {
                   )
                 }
               </div>
-              <div className="flex-column-container" style={{ 'width': '25vw' }}>
-                <div className="flex-row-container">
+              <div className="flex-column-container" style={{ 'width': '10vw' }}>
+                <div style={{ width: '9vw', height: '9vw' }}>
                   <PlayerChipBetArea {...playerChipBetAreaProps(6) } />
+                </div>
+                <div style={{ width: '9vw', height: '9vw' }}>
+                  <PlayerChipBetArea {...playerChipBetAreaProps(7) } />
+                </div>
+                <div style={{ width: '9vw', height: '9vw' }}>
+                  <PlayerChipBetArea {...playerChipBetAreaProps(8) } />
+                </div>
+                <div style={{ width: '9vw', height: '9vw' }}>
+                  <PlayerChipBetArea {...playerChipBetAreaProps(9) } />
+                </div>
+              </div>
+              <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
+                <div style={{ width: '15vw', height: '15vw' }}>
                   <PlayerPanel {...playerPanelProps(6)} />
                 </div>
-                <div className="flex-row-container">
-                  <PlayerChipBetArea {...playerChipBetAreaProps(7) } />
+                <div style={{ width: '15vw', height: '15vw' }}>
                   <PlayerPanel {...playerPanelProps(7)} />
                 </div>
-                <div className="flex-row-container">
-                  <PlayerChipBetArea {...playerChipBetAreaProps(8) } />
+                <div style={{ width: '15vw', height: '15vw' }}>
                   <PlayerPanel {...playerPanelProps(8)} />
                 </div>
-                <div className="flex-row-container">
-                  <PlayerChipBetArea {...playerChipBetAreaProps(9) } />
+                <div style={{ width: '15vw', height: '15vw' }}>
                   <PlayerPanel {...playerPanelProps(9)} />
                 </div>
               </div>
@@ -184,7 +203,9 @@ class GameTable extends Component {
             <div className="lowPlayerContainer">
               <div className="test">
                 <PlayerChipBetArea {...playerChipBetAreaProps(0) } />
-                <PlayerPanel {...playerPanelProps(0)} currentPlayer={currentPlayer} />
+                <div style={{ height: '20vw' }}>
+                  <PlayerPanel {...playerPanelProps(0)} currentPlayer={currentPlayer} />
+                </div>
               </div>
             </div>
           </div>

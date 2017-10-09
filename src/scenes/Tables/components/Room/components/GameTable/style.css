@@ -9,6 +9,7 @@
 
 .topPlayerContainer {
   height: 15%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -16,6 +17,7 @@
 
 .middlePlayerContainer {
   height: 60%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -33,11 +35,12 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  width: 100%;
+  height: 100%;
 }
 
 .test {
-  max-width: 50%;
-  margin: auto;
+  width: 20vw; 
 }
 
 .flex-column-container {
@@ -66,7 +69,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background: radial-gradient(#00dd00, #008800);
+  background: radial-gradient(#00bb00, #006600);
   border-radius: 7em;
   box-shadow: 0 0 0 5px black,
               0 0 10px 5px #006600 inset;

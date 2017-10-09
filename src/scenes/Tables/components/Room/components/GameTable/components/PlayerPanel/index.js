@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 import PlayerMenuDialog from './playerMenuDialog';
+import Card from './card';
 import './style.css';
 
 class PlayerPanel extends Component {
@@ -38,28 +38,46 @@ class PlayerPanel extends Component {
       panelClass = 'activePanel';
     }
 
+    let enabledWithCard = false;
+    let isMe = currentPlayer && currentPlayer.id === player.id;
+
     return (
-      <div
-        className={panelClass}
-        onTouchTap={openPlayerMenuDialog}
-      >
-        <div style={{ 'display': 'flex', 'flexDirection': 'column', 'justifyContent': 'spaceAround', 'marginRight': '10px' }}>
-          <Avatar className={className} src={player.image_url} style={{ 'boxShadow': '1px 1px 4px 2px #000000' }} />
-        </div>
-        <div style={{ 'display': 'flex', 'flexDirection': 'column', 'justifyContent': 'spaceAround' }}>
-          <div className='nickname'>{player.nickname}</div>
-          <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
-        </div>
-        {currentPlayer && currentPlayer.betSize ? (
+      <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+        {enabledWithCard && isMe ? (
           <div>
-            {currentPlayer.betSize}
+            <div style={{ position: 'absolute', top: '-8px', left: '-3em', zIndex: 10 }}>
+              <Card />
+            </div>
+            <div style={{ position: 'absolute', top: '-4px', left: '-1.8em', zIndex: 10 }}>
+              <Card />
+            </div>
           </div>
-        ) : (<div></div>)}
-        <PlayerMenuDialog
-          dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
-          player={player}
-          openBuyInDialog={openBuyInDialog}
-        />
+          ) : (<div></div>)
+        }
+        <div
+          className={panelClass}
+          onTouchTap={openPlayerMenuDialog}
+          style={{ position: 'absolute', zIndex: 50 }}
+        >
+          <img
+            src={player.image_url}
+            className="avatarImage"
+          />
+          <div className="playerPanelTextArea">
+            <div className='nickname'>{player.nickname}</div>
+            <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+          </div>
+          {currentPlayer && currentPlayer.betSize ? (
+            <div>
+              {currentPlayer.betSize}
+            </div>
+          ) : (<div></div>)}
+          <PlayerMenuDialog
+            dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
+            player={player}
+            openBuyInDialog={openBuyInDialog}
+          />
+        </div>
       </div>
     )
   }
