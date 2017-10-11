@@ -13,6 +13,7 @@ import {
   dealtCardsReceived,
 } from './data/actions.js';
 import CircularProgress from 'material-ui/CircularProgress';
+import CustomCircularProgress from 'components/CustomCircularProgress';
 // import Information from './components/Information';
 import GameDialog from './components/GameDialog';
 import Dialog from 'material-ui/Dialog';
@@ -129,7 +130,7 @@ class Room extends Component {
       </div>
     ) : (
       <div style={{
-          'background': '#005500',
+          'background': '#003300',
           'height': '100vh'
       }}>
         <Dialog
@@ -159,20 +160,24 @@ class Room extends Component {
         </div>
         {/* プレイヤーのアクション操作エリア */}
         <div style={{ 'height': '20vh' }}>
-          {currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ? (
-            <PlayerActionArea
-              key={currentPlayer.id}
-              tableId={tableId}
-              player={currentPlayer}
-              onCheckAction={onCheckAction}
-              onBetAction={onBetAction}
-              onCallAction={onCallAction}
-              onFoldAction={onFoldAction}
-              yourTurn={gameTable.currentSeatNo === currentPlayer.seat_no}
-              pot={gameTable.pot}
-              inGame={inGame}
-            />
-          ) : (
+          {currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
+            currentPlayer.isFetching ? (
+              <CustomCircularProgress />
+            ) : (
+              <PlayerActionArea
+                key={currentPlayer.id}
+                tableId={tableId}
+                player={currentPlayer}
+                onCheckAction={onCheckAction}
+                onBetAction={onBetAction}
+                onCallAction={onCallAction}
+                onFoldAction={onFoldAction}
+                yourTurn={gameTable.currentSeatNo === currentPlayer.seat_no}
+                pot={gameTable.pot}
+                inGame={inGame}
+              />
+            )
+          : (
             <div></div>
           )}
         </div>
