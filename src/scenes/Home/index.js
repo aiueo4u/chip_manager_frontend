@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
-import wallpaperImage from 'assets/wallpaper_001.jpg';
+import WallPaperImage from 'components/WallPaperImage';
 
 const clearAllData = () => {
   localStorage.clear();
@@ -29,11 +29,7 @@ const homeStyle = {
 
 const Home = ({ nickname }) => (
   <div>
-    <img
-      src={wallpaperImage}
-      style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }}
-      alt="wallpaper"
-    />
+    <WallPaperImage />
     <div style={homeStyle}>
       <div style={{ margin: '5vh' }}>
         <Link to="/newTable">

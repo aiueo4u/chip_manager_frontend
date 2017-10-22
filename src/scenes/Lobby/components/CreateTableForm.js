@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Redirect } from 'react-router-dom';
-import wallpaperImage from 'assets/wallpaper_001.jpg';
+import WallPaperImage from 'components/WallPaperImage';
 import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
@@ -53,11 +53,7 @@ class CreateTableForm extends Component {
       </div>
     ) : (
       <div>
-        <img
-          src={wallpaperImage}
-          style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }}
-          alt="wallpaper"
-        />
+        <WallPaperImage />
         <div style={createTableFormStyle}>
           <form onSubmit={handleSubmit}>
             <div>

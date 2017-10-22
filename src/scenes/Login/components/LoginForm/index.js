@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import TwitterLoginButton from './components/TwitterLoginButton';
 import FacebookLoginButton from './components/FacebookLoginButton';
-import wallpaperImage from 'assets/wallpaper_001.jpg';
+import WallPaperImage from 'components/WallPaperImage';
 
 const loginPageStyle = {
   display: 'flex',
@@ -49,11 +49,7 @@ class LoginForm extends Component {
       </div>
     ) : (
       <div>
-        <img
-          src={wallpaperImage}
-          style={{ position: 'fixed', height: '100vh', filter: 'blur(2px)' }}
-          alt="wallpaper"
-        />
+        <WallPaperImage />
         <div style={loginPageStyle}>
           <TwitterLoginButton />
           <FacebookLoginButton />
