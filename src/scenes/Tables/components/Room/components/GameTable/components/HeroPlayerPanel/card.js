@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './poker_card.css';
+//import CardbackImage from 'assets/cardback.gif';
+import './card.css';
 
-class PokerCard extends Component {
+class Card extends Component {
   render() {
     const { rank, suit, invisible } = this.props;
 
@@ -35,12 +36,12 @@ class PokerCard extends Component {
       <div className="card">
         <div className={"front " + suitColor} style={frontStyle}>
           <div className="index">{rankValue}<br />{unescape(suitMarkCode)}</div>
-          <div style={{ position: 'absolute', left: '18px', top: '4px', fontSize: '32px' }}>{rankValue}</div>
-          <div style={{ position: 'absolute', left: '18px', top: '30px', fontSize: '32px' }}>{unescape(suitMarkCode)}</div>
+          <div style={{ position: 'absolute', left: '0.65em', top: '0.2em', fontSize: '2em' }}>{rankValue}</div>
+          <div style={{ position: 'absolute', left: '0.65em', top: '1.1em', fontSize: '2em' }}>{unescape(suitMarkCode)}</div>
         </div>
       </div>
     );
   }
 }
 
-export default PokerCard;
+export default Card;

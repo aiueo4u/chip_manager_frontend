@@ -1,7 +1,7 @@
 .pokerChip {
   float: left;
-  width: 20vw;
-  height: 20vw;
+  width: 100%;
+  height: 18vw; /* TODO */
   border-radius: 1000px;
   box-shadow: inset 0 0 1px 1px rgba(0,0,0,0.1), 0 0 5px 1px rgba(90,90,90,0.1), inset 0 35px 1px rgba(255,255,255,0.2);
   border: 8px dotted #ffffff;

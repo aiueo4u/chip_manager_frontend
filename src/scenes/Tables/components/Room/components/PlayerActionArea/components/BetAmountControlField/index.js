@@ -6,10 +6,19 @@ import './style.css';
 
 const BetAmountControlField = ({ incrementBetSize }) => (
   <div className="chipFieldContainer">
-    <PokerChip chipSize={25} onTouchTap={() => incrementBetSize(25)} />
-    <PokerChip chipSize={100} onTouchTap={() => incrementBetSize(100)} />
-    <PokerChip chipSize={500} onTouchTap={() => incrementBetSize(500)} />
-    <PokerChip chipSize={1000} onTouchTap={() => incrementBetSize(1000)} />
+    <div style={{ width: '18%', height: '100%', margin: '1%' }}>
+      <PokerChip chipSize={25} onTouchTap={() => incrementBetSize(25)} />
+    </div>
+    <div style={{ width: '18%', height: '100%', margin: '1%' }}>
+      <PokerChip chipSize={100} onTouchTap={() => incrementBetSize(100)} />
+    </div>
+    <div style={{ width: '20%' }} />
+    <div style={{ width: '18%', height: '100%', margin: '1%' }}>
+      <PokerChip chipSize={500} onTouchTap={() => incrementBetSize(500)} />
+    </div>
+    <div style={{ width: '18%', height: '100%', margin: '1%' }}>
+      <PokerChip chipSize={1000} onTouchTap={() => incrementBetSize(1000)} />
+    </div>
   </div>
 )
 

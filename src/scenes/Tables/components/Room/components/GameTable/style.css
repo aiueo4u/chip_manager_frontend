@@ -7,12 +7,31 @@
   justify-content: space-around;
 }
 
+.game-table {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #338c00;
+  background-image: url('./climpek.png');
+  border-radius: 7em;
+  box-shadow: 0 0 0 5px black,
+              0 0 100px 10px #004400 inset,
+              0 0 10px 2px #33ff00 inset;
+  margin: 20px;
+  padding: 0px;
+}
+
 .topPlayerContainer {
-  height: 15%;
+  height: 15vh;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.topPlayerPanel {
+  width: 70%;
 }
 
 .middlePlayerContainer {
@@ -23,8 +42,8 @@
   justify-content: space-around;
 }
 
-.lowPlayerContainer {
-  height: 25%;
+.heroPlayerContainer {
+  height: 25vh;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -40,7 +59,8 @@
 }
 
 .test {
-  width: 20vw; 
+  height: 100%;
+  width: 80%; 
 }
 
 .flex-column-container {
@@ -64,22 +84,22 @@
   justify-content: space-around;
 }
 
-.game-table {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  background: radial-gradient(#00bb00, #006600);
-  border-radius: 7em;
-  box-shadow: 0 0 0 5px black,
-              0 0 10px 5px #006600 inset;
-  margin: 20px;
-  padding: 0px;
-}
-
 .currentStateArea {
-  height: 100%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.heroDealerButtonArea {
+  height: 10%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.heroDealerButtonWrapper {
+  width: 30px;
+  height: 30px;
+  margin: auto;
 }

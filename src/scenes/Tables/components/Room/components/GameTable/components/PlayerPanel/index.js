@@ -15,6 +15,14 @@ class PlayerPanel extends Component {
       openingPlayerMenuDialogPlayerId,
     } = this.props;
 
+    // TODO
+    /*
+    player.id = 123;
+    player.nickname = 'aiueo';
+    player.image_url = 'http://pbs.twimg.com/profile_images/802939485017079808/NdbKiaEp_normal.jpg';
+    player.stack = 12345;
+    */
+
     // 空席の場合
     if (!player.id) {
       // 自分が着席済みの場合
@@ -22,7 +30,7 @@ class PlayerPanel extends Component {
         return (<div></div>)
       // 自分が未着席の場合
       } else {
-        let seat_label = "Seat " + player.seat_no;
+        let seat_label = "No " + player.seat_no;
         return (
           <RaisedButton label={seat_label} onTouchTap={openBuyInDialog} />
         )
@@ -68,16 +76,28 @@ class PlayerPanel extends Component {
         <div
           className={panelClass}
           onTouchTap={openPlayerMenuDialog}
-          style={{ position: 'absolute', zIndex: 50 }}
+          style={{
+            position: 'absolute',
+            zIndex: 50,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}
         >
-          <img
-            src={player.image_url}
-            className="avatarImage"
-            alt='avatar'
-          />
-          <div className="playerPanelTextArea">
-            <div className='nickname'>{player.nickname}</div>
-            <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+          <div style={{ height: '100%', width: '100%', position: 'relative' }}>
+            {player.image_url ? (
+              <img
+                src={player.image_url}
+                className="otherPlayerAvatarImage"
+                alt='avatar'
+              />
+            ) : (
+              <div>&hearts;</div>
+            )}
+            <div className="otherPlayerPanelTextArea">
+              <div className='nickname'>{player.nickname}</div>
+              <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+            </div>
           </div>
           <PlayerMenuDialog
             dialogOpen={openingPlayerMenuDialogPlayerId === player.id}

@@ -15,8 +15,9 @@ const PlayerActionArea = (
       checkable,
       callable,
     }) => (
-  <div>
+  <div style={{ height: '100%' }}>
     <BetAmountControlField player={player} />
+    {/*
     {player.betSize > 0 ? (
       <ActionControlField
         dispatchBetAction={dispatchBetAction}
@@ -31,6 +32,7 @@ const PlayerActionArea = (
         callable={callable}
       />
     )}
+    */}
   </div>
 )
 

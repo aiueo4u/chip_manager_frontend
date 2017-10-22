@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import PlayerPanel from './components/PlayerPanel';
+import HeroPlayerPanel from './components/HeroPlayerPanel';
 import PlayerChipBetArea from './components/PlayerChipBetArea';
 import BuyInDialog from './components/BuyInDialog';
 import UndoDialog from './components/UndoDialog';
 import './style.css';
-import PokerCard from 'components/poker_card';
+import DealerButtonPlate from 'components/DealerButtonPlate';
+import BoardCardArea from './components/BoardCardArea';
 
 const roundToReadable = (round) => {
   switch (round) {
@@ -98,26 +100,30 @@ class GameTable extends Component {
         <div className="flex-container">
           <div className="game-table">
             <div className="topPlayerContainer">
-              <div className="test">
-                <div style={{ height: '20vw' }}>
-                  <PlayerPanel {...playerPanelProps(5)} />
+              <div className="topPlayerPanel">
+                <div style={{ height: '12vh', width: '100%' }}>
+                  <div style={{ height: '15vw', width: '15vw', margin: 'auto' }}>
+                    <PlayerPanel {...playerPanelProps(5)} />
+                  </div>
                 </div>
-                <PlayerChipBetArea {...playerChipBetAreaProps(5) } />
+                <div style={{ height: '3vh', width: '15vw', margin: 'auto' }}>
+                  <PlayerChipBetArea {...playerChipBetAreaProps(5) } />
+                </div>
               </div>
             </div>
 
             <div className="middlePlayerContainer">
               <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(4)} />
                 </div>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(3)} />
                 </div>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(2)} />
                 </div>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(1)} />
                 </div>
               </div>
@@ -137,13 +143,13 @@ class GameTable extends Component {
               </div>
               <div
                 className="flex-center-container"
-                style={{ 'width': '25vw' }}
+                style={{ 'width': '25vw', 'position': 'relative' }}
               >
                 {
                   !inGame && (players.length >= 2) && isSeated ? (
                     <div>
                       <RaisedButton
-                        label="Game Start"
+                        label="Start"
                         onTouchTap={onGameStart}
                       />
                       {gameTable.undoable && isSeated ? (
@@ -170,71 +176,24 @@ class GameTable extends Component {
                       <div>
                         {gameTable.pot}
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        height: '5em',
-                        position: 'relative',
-                      }}
-                      >
-                        <div style={{ position: 'absolute', left: '0em' }}>
-                          {gameTable.boardCards && gameTable.boardCards[0] ? (
-                            <PokerCard
-                              rank={gameTable.boardCards[0][0]}
-                              suit={gameTable.boardCards[0][1]}
-                            />
-                          ) : (
-                            <PokerCard invisible={true} />
-                          )}
-                        </div>
-                        <div style={{ position: 'absolute', left: '1em' }}>
-                          {gameTable.boardCards && gameTable.boardCards[1] ? (
-                            <PokerCard
-                              rank={gameTable.boardCards[1][0]}
-                              suit={gameTable.boardCards[1][1]}
-                            />
-                          ) : (
-                            <PokerCard invisible={true} />
-                          )}
-                        </div>
-                        <div style={{ position: 'absolute', left: '2em' }}>
-                          {gameTable.boardCards && gameTable.boardCards[2] ? (
-                            <PokerCard
-                              rank={gameTable.boardCards[2][0]}
-                              suit={gameTable.boardCards[2][1]}
-                            />
-                          ) : (
-                            <PokerCard invisible={true} />
-                          )}
-                        </div>
-                        <div style={{ position: 'absolute', left: '3em' }}>
-                          {gameTable.boardCards && gameTable.boardCards[3] ? (
-                            <PokerCard
-                              rank={gameTable.boardCards[3][0]}
-                              suit={gameTable.boardCards[3][1]}
-                            />
-                          ) : (
-                            <PokerCard invisible={true} />
-                          )}
-                        </div>
-                        <div style={{ position: 'absolute', left: '4em' }}>
-                          {gameTable.boardCards && gameTable.boardCards[4] ? (
-                            <PokerCard
-                              rank={gameTable.boardCards[4][0]}
-                              suit={gameTable.boardCards[4][1]}
-                            />
-                          ) : (
-                            <PokerCard invisible={true} />
-                          )}
-                        </div>
-                      </div>
+                      <BoardCardArea gameTable={gameTable} />
                       <div>
                         <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
                       </div>
                     </div>
                   )
                 }
+                <div className="heroDealerButtonArea">
+                  <div className="heroDealerButtonWrapper">
+                    {
+                      inGame && currentPlayer.seat_no === gameTable.buttonSeatNo ? (
+                        <DealerButtonPlate />
+                      ) : (
+                        <div />
+                      )
+                    }
+                  </div>
+                </div>
               </div>
               <div className="flex-column-container" style={{ 'width': '10vw' }}>
                 <div style={{ width: '9vw', height: '9vw' }}>
@@ -251,25 +210,31 @@ class GameTable extends Component {
                 </div>
               </div>
               <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(6)} />
                 </div>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(7)} />
                 </div>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(8)} />
                 </div>
-                <div style={{ width: '15vw', height: '15vw' }}>
+                <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
                   <PlayerPanel {...playerPanelProps(9)} />
                 </div>
               </div>
             </div>
-            <div className="lowPlayerContainer">
+            <div className="heroPlayerContainer">
               <div className="test">
-                <PlayerChipBetArea {...playerChipBetAreaProps(0) } />
-                <div style={{ height: '20vw' }}>
-                  <PlayerPanel {...playerPanelProps(0)} currentPlayer={currentPlayer} />
+                <div style={{ height: '20%' }}>
+                  <PlayerChipBetArea {...playerChipBetAreaProps(0)} buttonDisable={true} />
+                </div>
+                <div style={{ height: '80%', width: '100%', textAlign: 'center' }}>
+                  <HeroPlayerPanel
+                    {...playerPanelProps(0)}
+                    currentPlayer={currentPlayer}
+                    tableId={tableId}
+                  />
                 </div>
               </div>
             </div>

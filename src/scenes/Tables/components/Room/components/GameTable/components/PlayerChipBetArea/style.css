@@ -1,25 +1,15 @@
 .playerChipBetArea {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   text-align: center;
-}
-
-.buttonPlateWrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.buttonPlate {
-  height: 30px;
-  width: 30px;
-  boxShadow: 1px 1px 2px 2px black;
-  padding: 5px;
+  z-index: 1000;
 }
 
 .betArea {
-  background: rgba(150, 150, 150, 0.5);
+  background: rgba(30, 30, 30, 0.5);
   border-radius: 1em;
-  padding: 3px;
+  color: white;
+  padding: 0.2em 0.5em 0.2em 0.5em;
 }

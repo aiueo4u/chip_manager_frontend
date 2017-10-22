@@ -144,7 +144,7 @@ class Room extends Component {
           tableId={tableId}
         />
         <div
-          style={{ 'height': '80vh' }}
+          style={{ 'height': '100vh' }}
         >
           <GameTable
             tableName={tableName}
@@ -159,7 +159,7 @@ class Room extends Component {
           />
         </div>
         {/* プレイヤーのアクション操作エリア */}
-        <div style={{ 'height': '20vh' }}>
+        <div style={{ 'height': '15vh', width: '100%', position: 'absolute', bottom: 0, zIndex: 1000 }}>
           {currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
             currentPlayer.isFetching ? (
               <CustomCircularProgress />
