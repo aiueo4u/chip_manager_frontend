@@ -1,6 +1,6 @@
 import InformationReducer from './components/Information/reducer.js';
 import GameTableReducer from './components/GameTable/reducer.js';
-import PlayersReducer from './components/PlayerActionArea/reducer.js';
+import PlayersReducer from './components/ChipAmountControlContainer/reducer.js';
 import GameDialogReducer from './components/GameDialog/reducer.js';
 
 const initialState = {}
