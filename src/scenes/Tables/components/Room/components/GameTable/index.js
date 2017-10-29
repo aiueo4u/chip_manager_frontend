@@ -85,6 +85,8 @@ class GameTable extends Component {
       };
     }
 
+    let playerOnTurn = players.find(player => player.seat_no === gameTable.currentSeatNo)
+
     return (
       <div style={{ 'height': '100%' }}>
         <BuyInDialog
@@ -234,6 +236,7 @@ class GameTable extends Component {
                     {...playerPanelProps(0)}
                     currentPlayer={currentPlayer}
                     tableId={tableId}
+                    playerOnTurn={playerOnTurn}
                   />
                 </div>
               </div>

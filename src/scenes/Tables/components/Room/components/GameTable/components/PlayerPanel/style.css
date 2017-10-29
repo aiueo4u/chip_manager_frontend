@@ -4,6 +4,19 @@
   border-radius: 1em;
 }
 
+.otherPlayerAvatarImageOnTurn {
+  height: 100%;
+  width: 100%;
+  border-radius: 1em;
+  animation: onPlayerTurnAvatarBlinkAnimation 1s infinite;
+}
+
+@keyframes onPlayerTurnAvatarBlinkAnimation {
+  50% {
+    box-shadow: 0 1px 15px 1px yellow;
+  }
+}
+
 .my-turn {
   background-color: #dddddd;
 }

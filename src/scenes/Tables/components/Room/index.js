@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import GameTable from './components/GameTable';
-import PlayerActionArea from './components/PlayerActionArea';
+import ChipAmountControlContainer from './components/ChipAmountControlContainer';
 import {
   betAction,
-  callAction,
-  foldAction,
-  checkAction,
   playerActionReceived,
   gameHandActionReceived,
   gameHandFinishedReceived,
@@ -101,51 +98,57 @@ class Room extends Component {
     const {
       gameTable,
       playerSession,
-      onFoldAction,
-      onCheckAction,
       // informationItems,
-      onGameStart, players, tableId, tableName, onCallAction, onBetAction } = this.props
+      onGameStart, players, tableId, tableName, onBetAction } = this.props
 
     let isSeated = players.find(player => player.id === playerSession.playerId) ? true : false
     const inGame = !gameStartable(gameTable.gameHandState);
 
     let currentPlayer = players.find(player => player.id === playerSession.playerId)
 
-    return (!gameTable.isReady) ? (
-      <div>
-        <div style={{
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: '80%',
-          height: '30%',
-          position: 'fixed',
-          margin: 'auto',
-          textAlign: 'center',
-        }}>
-          <CircularProgress thickness={10} size={100} />
-          <div>Initializing...</div>
+    let playerOnTurn = players.find(player => player.seat_no === gameTable.currentSeatNo)
+
+    /* ゲームデータのローディング */
+    if (!gameTable.isReady) {
+      return (
+        <div>
+          <div style={{
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: '80%',
+            height: '30%',
+            position: 'fixed',
+            margin: 'auto',
+            textAlign: 'center',
+          }}>
+            <CircularProgress thickness={10} size={100} />
+            <div>Initializing...</div>
+          </div>
         </div>
-      </div>
-    ) : (
+      )
+    }
+
+    return (
       <div style={{
           'background': '#003300',
           'height': '100vh'
       }}>
+        {/* ネットワーク接続中のダイアログ */}
         <Dialog
-          title="ネットワーク再接続中・・・"
+          title="Network connecting..."
           modal={false}
           open={gameTable.reconnectingActionCable}
         >
-          <CircularProgress />
+          <div style={{ textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
         </Dialog>
-        <GameDialog
-          tableId={tableId}
-        />
-        <div
-          style={{ 'height': '100vh' }}
-        >
+
+        <GameDialog tableId={tableId} />
+
+        <div style={{ 'height': '100vh' }}>
           <GameTable
             tableName={tableName}
             tableId={tableId}
@@ -158,23 +161,20 @@ class Room extends Component {
             onBetAction={onBetAction}
           />
         </div>
-        {/* プレイヤーのアクション操作エリア */}
+
+        {/* チップ量調整エリア */}
         <div style={{ 'height': '15vh', width: '100%', position: 'absolute', bottom: 0, zIndex: 1000 }}>
-          {currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
+          {/* TODO: 一旦ほかプレイヤーの操作も行えるように */}
+          {
+            /*currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?*/
+            currentPlayer && inGame ?
             currentPlayer.isFetching ? (
               <CustomCircularProgress />
             ) : (
-              <PlayerActionArea
+              <ChipAmountControlContainer
                 key={currentPlayer.id}
-                tableId={tableId}
-                player={currentPlayer}
-                onCheckAction={onCheckAction}
-                onBetAction={onBetAction}
-                onCallAction={onCallAction}
-                onFoldAction={onFoldAction}
-                yourTurn={gameTable.currentSeatNo === currentPlayer.seat_no}
-                pot={gameTable.pot}
-                inGame={inGame}
+                playerOnTurn={playerOnTurn}
+                operatingPlayer={currentPlayer}
               />
             )
           : (
@@ -197,15 +197,6 @@ const mapStateToProps = (state, ownProps) => {
     playerSession: state.data.playerSession,
     // informationItems: state.scenes.Tables.Room.Information.informationItems,
     gameTable: Room.GameTable,
-    onCheckAction: (playerId) => {
-      return checkAction(tableId, playerId);
-    },
-    onFoldAction: (playerId) => {
-      return foldAction(tableId, playerId);
-    },
-    onCallAction: (playerId) => {
-      return callAction(tableId, playerId);
-    },
     onBetAction: (playerId, amount) => {
       return betAction(tableId, playerId, amount);
     },

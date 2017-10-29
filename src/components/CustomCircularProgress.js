@@ -2,7 +2,7 @@ import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 
 const CustomCircularProgress = () => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ height: '100%', position: 'relative' }}>
     <div style={{
       top: 0,
       bottom: 0,

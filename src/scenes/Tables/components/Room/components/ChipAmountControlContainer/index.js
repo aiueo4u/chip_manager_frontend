@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PokerChip from './components/PokerChip';
 import './style.css';
 
-const BetAmountControlField = ({ incrementBetSize }) => (
+const ChipAmountControlContainer = ({ incrementBetSize }) => (
   <div className="chipFieldContainer">
     <div style={{ width: '18%', height: '100%', margin: '1%' }}>
       <PokerChip chipSize={25} onTouchTap={() => incrementBetSize(25)} />
@@ -22,24 +22,26 @@ const BetAmountControlField = ({ incrementBetSize }) => (
   </div>
 )
 
-BetAmountControlField.propTypes = {
+ChipAmountControlContainer.propTypes = {
+  playerOnTurn: PropTypes.object.isRequired,
+  operatingPlayer: PropTypes.object,
   incrementBetSize: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state, ownProps) => { return {} }
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { player } = ownProps;
+  const { playerOnTurn } = ownProps;
 
   return {
     incrementBetSize: (amount) => {
       dispatch({
         type: "INCREMENT_BET_SIZE",
-        playerId: player.id,
-        playerStack: player.stack,
+        playerId: playerOnTurn.id,
+        playerStack: playerOnTurn.stack,
         amount: amount,
       });
     },
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BetAmountControlField);
+export default connect(mapStateToProps, mapDispatchToProps)(ChipAmountControlContainer);

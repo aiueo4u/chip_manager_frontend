@@ -13,6 +13,7 @@ class PlayerPanel extends Component {
       currentPlayer,
       openPlayerMenuDialog,
       openingPlayerMenuDialogPlayerId,
+      currentSeatNo,
     } = this.props;
 
     // TODO
@@ -47,6 +48,8 @@ class PlayerPanel extends Component {
     }
 
     let isMe = currentPlayer && currentPlayer.id === player.id;
+
+    let isPlayerTurn = player.seat_no === currentSeatNo;
 
     return (
       <div style={{ position: 'relative', height: '100%', width: '100%' }}>
@@ -88,7 +91,7 @@ class PlayerPanel extends Component {
             {player.image_url ? (
               <img
                 src={player.image_url}
-                className="otherPlayerAvatarImage"
+                className={isPlayerTurn ? "otherPlayerAvatarImageOnTurn" : "otherPlayerAvatarImage"}
                 alt='avatar'
               />
             ) : (

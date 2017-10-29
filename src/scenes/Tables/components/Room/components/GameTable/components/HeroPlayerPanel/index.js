@@ -21,7 +21,10 @@ class HeroPlayerPanel extends Component {
       gameTable,
       resetBetSize,
       dispatchBetAction,
+      playerOnTurn,
     } = this.props;
+
+    let isHeroTurn = currentPlayer.seat_no === gameTable.currentSeatNo
 
     let panelClass;
     if (player.state === 1) {
@@ -38,8 +41,11 @@ class HeroPlayerPanel extends Component {
         height: '100%',
         width: '100%',
       }}>
-        {inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
-          currentPlayer.betSize > 0 ? (
+        {/* TODO: 一旦ほかプレイヤーの操作も行えるように */}
+        {
+          /*inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?*/
+          inGame ?
+          playerOnTurn.betSize > 0 ? (
             <div>
               <RaisedButton label='reset' className="foldButtonClass" onTouchTap={resetBetSize} />
               <RaisedButton label='bet' className="callButtonClass" onTouchTap={dispatchBetAction} />
@@ -70,7 +76,7 @@ class HeroPlayerPanel extends Component {
           <div style={{ width: '30%', position: 'relative' }}>
             <img
               src={player.image_url}
-              className="avatarImage"
+              className={isHeroTurn ? "avatarImageOnTurn" : "avatarImage"}
               alt='avatar'
             />
             <div className="heroPanelTextArea">
@@ -115,7 +121,8 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { player, tableId } = ownProps;
+  const { player, tableId, playerOnTurn } = ownProps;
+
   return {
     openBuyInDialog: () => {
       ownProps.openBuyInDialog(player.seat_no, player.id)
@@ -127,36 +134,36 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({
         type: "BET_ACTION",
         tableId: tableId,
-        playerId: player.id,
-        amount: player.betSize,
+        playerId: playerOnTurn.id,
+        amount: playerOnTurn.betSize,
       });
     },
     resetBetSize: () => {
       dispatch({
         type: "RESET_BET_SIZE",
         tableId: tableId,
-        playerId: player.id,
+        playerId: playerOnTurn.id,
       });
     },
     onFoldAction: () => {
       dispatch({
         type: "FOLD_ACTION",
         tableId: tableId,
-        playerId: player.id,
+        playerId: playerOnTurn.id,
       })
     },
     onCallAction: () => {
       dispatch({
         type: "CALL_ACTION",
         tableId: tableId,
-        playerId: player.id,
+        playerId: playerOnTurn.id,
       })
     },
     onCheckAction: () => {
       dispatch({
         type: "CHECK_ACTION",
         tableId: tableId,
-        playerId: player.id,
+        playerId: playerOnTurn.id,
       })
     },
   }
