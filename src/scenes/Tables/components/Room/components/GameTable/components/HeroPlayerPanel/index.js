@@ -107,10 +107,10 @@ class HeroPlayerPanel extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { player } = ownProps;
+  const { playerOnTurn } = ownProps;
   const gameTable = state.scenes.Tables.Room.GameTable
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false
-  const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seat_no
+  const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === playerOnTurn.seat_no
 
   const inGame = !(!gameTable.gameHandState || gameTable.gameHandState === 'finished' || gameTable.gameHandState === 'init')
   return {
