@@ -18,24 +18,40 @@
   box-shadow: 0 0 0 5px black,
               0 0 100px 10px #004400 inset,
               0 0 10px 2px #33ff00 inset;
-  margin: 20px;
+  margin: 10px;
   padding: 0px;
 }
 
 .topPlayerContainer {
-  height: 15vh;
+  height: 20vh;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  position: relative;
+}
+
+.topPlayerArea {
+  height: 100%;
+  width: 30%;
 }
 
 .topPlayerPanel {
-  width: 70%;
+  height: 14vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.topPlayerChipBetArea {
+  height: 6vh;
+  width: 100%;
+  margin: auto;
 }
 
 .middlePlayerContainer {
-  height: 60%;
+  height: 50vh;
   width: 100%;
   display: flex;
   flex-direction: row;

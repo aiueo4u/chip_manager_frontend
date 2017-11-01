@@ -164,10 +164,10 @@ class Room extends Component {
 
         {/* チップ量調整エリア */}
         <div style={{ 'height': '15vh', width: '100%', position: 'absolute', bottom: 0, zIndex: 1000 }}>
-          {/* TODO: 一旦ほかプレイヤーの操作も行えるように */}
           {
-            /*currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?*/
-            currentPlayer && inGame ?
+            currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
+            /*currentPlayer && inGame ?*/
+
             currentPlayer.isFetching ? (
               <CustomCircularProgress />
             ) : (

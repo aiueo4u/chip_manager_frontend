@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import PlayerMenuDialog from './playerMenuDialog';
-import Card from './card';
+import PokerCard from 'components/PokerCard';
 import './style.css';
+import Paper from 'material-ui/Paper';
 
 class PlayerPanel extends Component {
   render() {
@@ -14,6 +15,11 @@ class PlayerPanel extends Component {
       openPlayerMenuDialog,
       openingPlayerMenuDialogPlayerId,
       currentSeatNo,
+    } = this.props;
+
+    const {
+      inGame,
+      buttonSeatNo,
     } = this.props;
 
     // TODO
@@ -51,31 +57,39 @@ class PlayerPanel extends Component {
 
     let isPlayerTurn = player.seat_no === currentSeatNo;
 
+    let showHand = false;
+    let handZIndex = showHand ? 500 : 5;
+
     return (
-      <div style={{ position: 'relative', height: '100%', width: '100%' }}>
-        {enabledWithCard && !isMe && player.state && player.state !== 1 ? (
+      <div style={{
+        position: 'relative',
+        height: '100%',
+        width: '100%',
+      }}>
+        {inGame && enabledWithCard && player.state !== undefined && player.state !== 1 ? (
           <div>
-            <div style={{ position: 'absolute', top: '-0.5em', left: '-0.5em', zIndex: 10 }}>
-              <Card invisible={true} />
+            <div style={{ position: 'absolute', top: '2em', left: '1em', zIndex: handZIndex }}>
+              <PokerCard invisible={!showHand} />
             </div>
-            <div style={{ position: 'absolute', top: '-0.3em', left: '0em', zIndex: 10 }}>
-              <Card invisible={true} />
+            <div style={{ position: 'absolute', top: '2em', left: '2em', zIndex: handZIndex }}>
+              <PokerCard invisible={!showHand} />
             </div>
           </div>
           ) : (<div></div>)
         }
 
-        {enabledWithCard && isMe && cards && cards.length === 2 && player.state !== 1 ? (
+        {inGame && enabledWithCard && cards && cards.length === 2 && player.state !== undefined && player.state !== 1 ? (
           <div>
-            <div style={{ position: 'absolute', top: '-8px', left: '-5.2em', zIndex: 10 }}>
-              <Card rank={cards[0].rank} suit={cards[0].suit} />
+            <div style={{ position: 'absolute', top: '-0.5em', left: '-0.5em', zIndex: handZIndex }}>
+              <PokerCard rank={cards[0].rank} suit={cards[0].suit} invisible={!showHand} />
             </div>
-            <div style={{ position: 'absolute', top: '-4px', left: '-4em', zIndex: 10 }}>
-              <Card rank={cards[1].rank} suit={cards[1].suit} />
+            <div style={{ position: 'absolute', top: '-0.3em', left: '0em', zIndex: handZIndex }}>
+              <PokerCard rank={cards[1].rank} suit={cards[1].suit} invisible={!showHand} />
             </div>
           </div>
           ) : (<div></div>)
         }
+
         <div
           className={panelClass}
           onTouchTap={openPlayerMenuDialog}
@@ -102,6 +116,30 @@ class PlayerPanel extends Component {
               <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
             </div>
           </div>
+          {inGame && player.seat_no === buttonSeatNo ? (
+            <Paper circle={true} style={{ position: 'absolute', height: '1.5rem', width: '1.5rem', top: '-10px', right: '-10px' }}>D</Paper>
+          ) : (<div />)
+          }
+
+          {/* ベット額 */}
+          {inGame && (player.bet_amount_in_state || player.betSize) ? (
+            <div style={{
+              position: 'absolute',
+              bottom: '-1.5rem',
+              right: this.props.rightSideStyle ? '1rem' : '-1rem',
+            }}>
+              {player.betSize ? (
+                <span className="betArea">
+                  {player.bet_amount_in_state || 0} -> {player.bet_amount_in_state + player.betSize}
+                </span>
+              ) : (
+                <span className="betArea">
+                  {player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ''}
+                </span>
+              )}
+            </div>
+          ) : (<div />)
+          }
           <PlayerMenuDialog
             dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
             player={player}

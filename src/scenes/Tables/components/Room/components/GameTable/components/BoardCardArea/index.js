@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import PokerCard from 'components/poker_card';
+import PokerCard from 'components/PokerCard';
 
 const BoardCardArea = ({ gameTable }) => (
-  <div style={{
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    height: '5em',
-    position: 'relative',
-  }}>
-    <div style={{ position: 'absolute', left: '0px' }}>
+  <div>
+    <div style={{ position: 'absolute', left: '-1rem' }}>
       {gameTable.boardCards && gameTable.boardCards[0] ? (
         <PokerCard
           rank={gameTable.boardCards[0][0]}
@@ -19,7 +13,7 @@ const BoardCardArea = ({ gameTable }) => (
         <PokerCard invisible={true} />
       )}
     </div>
-    <div style={{ position: 'absolute', left: '20px' }}>
+    <div style={{ position: 'absolute', left: '3rem' }}>
       {gameTable.boardCards && gameTable.boardCards[1] ? (
         <PokerCard
           rank={gameTable.boardCards[1][0]}
@@ -29,7 +23,7 @@ const BoardCardArea = ({ gameTable }) => (
         <PokerCard invisible={true} />
       )}
     </div>
-    <div style={{ position: 'absolute', left: '40px' }}>
+    <div style={{ position: 'absolute', left: '7rem' }}>
       {gameTable.boardCards && gameTable.boardCards[2] ? (
         <PokerCard
           rank={gameTable.boardCards[2][0]}
@@ -39,7 +33,7 @@ const BoardCardArea = ({ gameTable }) => (
         <PokerCard invisible={true} />
       )}
     </div>
-    <div style={{ position: 'absolute', left: '60px' }}>
+    <div style={{ position: 'absolute', left: '1rem', bottom: '5rem' }}>
       {gameTable.boardCards && gameTable.boardCards[3] ? (
         <PokerCard
           rank={gameTable.boardCards[3][0]}
@@ -49,7 +43,7 @@ const BoardCardArea = ({ gameTable }) => (
         <PokerCard invisible={true} />
       )}
     </div>
-    <div style={{ position: 'absolute', left: '80px' }}>
+    <div style={{ position: 'absolute', left: '5rem', bottom: '5rem' }}>
       {gameTable.boardCards && gameTable.boardCards[4] ? (
         <PokerCard
           rank={gameTable.boardCards[4][0]}

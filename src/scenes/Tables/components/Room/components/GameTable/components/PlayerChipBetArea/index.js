@@ -5,7 +5,9 @@ import './style.css';
 const PlayerChipBetArea = ({ player, buttonSeatNo, seatNo, inGame, buttonDisable = false}) => (
   <div className="playerChipBetArea">
     {inGame && player.seat_no === buttonSeatNo && !buttonDisable ? (
-      <Paper circle={true} className="buttonPlate">D</Paper>
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+        <Paper circle={true} className="buttonPlate">D</Paper>
+      </div>
     ) : (<div></div>)}
     {inGame && (player.bet_amount_in_state || player.betSize) ? (
       <div>

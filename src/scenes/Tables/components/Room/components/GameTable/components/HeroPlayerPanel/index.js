@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import PlayerMenuDialog from './playerMenuDialog';
-import PokerCard from 'components/poker_card';
+import PokerCard from 'components/PokerCard';
 import './style.css';
 
 class HeroPlayerPanel extends Component {
@@ -24,7 +24,7 @@ class HeroPlayerPanel extends Component {
       playerOnTurn,
     } = this.props;
 
-    let isHeroTurn = currentPlayer.seat_no === gameTable.currentSeatNo
+    let isHeroTurn = currentPlayer && currentPlayer.seat_no === gameTable.currentSeatNo
 
     let panelClass;
     if (player.state === 1) {
@@ -41,11 +41,11 @@ class HeroPlayerPanel extends Component {
         height: '100%',
         width: '100%',
       }}>
-        {/* TODO: 一旦ほかプレイヤーの操作も行えるように */}
         {
-          /*inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?*/
-          inGame ?
-          playerOnTurn.betSize > 0 ? (
+          inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
+          /*inGame ?*/
+
+          playerOnTurn && playerOnTurn.betSize > 0 ? (
             <div>
               <RaisedButton label='reset' className="foldButtonClass" onTouchTap={resetBetSize} />
               <RaisedButton label='bet' className="callButtonClass" onTouchTap={dispatchBetAction} />
