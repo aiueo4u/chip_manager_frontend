@@ -147,37 +147,13 @@ class GameTable extends Component {
                 </div>
               </div>
               <div className="flex-column-container" style={{ 'width': '10vw' }}>
-      {/*
-                <div style={{ width: '9vw', height: '9vw' }}>
-                  <PlayerChipBetArea {...playerChipBetAreaProps(3) } />
-                </div>
-                <div style={{ width: '9vw', height: '9vw' }}>
-                  <PlayerChipBetArea {...playerChipBetAreaProps(2) } />
-                </div>
-                <div style={{ width: '9vw', height: '9vw' }}>
-                  <PlayerChipBetArea {...playerChipBetAreaProps(1) } />
-                </div>
-                */}
               </div>
               <div
                 className="flex-center-container"
                 style={{ 'width': '25vw', 'position': 'relative' }}
               >
                 {
-                  !inGame && (players.length >= 2) && isSeated ? (
-                    <div>
-                      <RaisedButton
-                        label="Start"
-                        onTouchTap={onGameStart}
-                      />
-                      {gameTable.undoable && isSeated ? (
-                        <div>
-                          <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
-                        </div>
-                        ) : (<div></div>)
-                      }
-                    </div>
-                  ) : !inGame ? (
+                  !inGame && players.length < 2 ? (
                     <div>
                       {isSeated ? (
                         'Wait for other player...'
@@ -188,18 +164,33 @@ class GameTable extends Component {
                   ) : (
                     <div className="currentStateArea">
                       <div style={{ position: 'absolute', top: '0', borderRadius: '0.5em', background: 'rgba(200, 200, 200, 0.3)' }}>
-                        <div>Game {gameTable.gameHandCount}</div>
-                        <div>
-                          {roundToReadable(gameTable.round)}
-                        </div>
-                        <div>
-                          {gameTable.pot}
-                        </div>
-                        <div>
-                          <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
-                        </div>
+                        {!inGame ? (
+                            <RaisedButton
+                              label="Start"
+                              onTouchTap={onGameStart}
+                            />
+                          ) : (<div />)
+                        }
+                        {gameTable.round !== 'init' ? (
+                          <div>
+                            <div>Game {gameTable.gameHandCount}</div>
+                            <div>
+                              {roundToReadable(gameTable.round)}
+                            </div>
+                            <div>
+                              {gameTable.pot}
+                            </div>
+                            <div>
+                              <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
+                            </div>
+                          </div>
+                        ) : (<div />)
+                        }
                       </div>
-                      <BoardCardArea gameTable={gameTable} />
+                      {gameTable.round !== 'init' ? (
+                        <BoardCardArea gameTable={gameTable} />
+                      ) : (<div />)
+                      }
                     </div>
                   )
                 }
@@ -216,17 +207,6 @@ class GameTable extends Component {
                 </div>
               </div>
               <div className="flex-column-container" style={{ 'width': '10vw' }}>
-      {/*
-                <div style={{ width: '9vw', height: '9vw' }}>
-                  <PlayerChipBetArea {...playerChipBetAreaProps(6) } />
-                </div>
-                <div style={{ width: '9vw', height: '9vw' }}>
-                  <PlayerChipBetArea {...playerChipBetAreaProps(7) } />
-                </div>
-                <div style={{ width: '9vw', height: '9vw' }}>
-                  <PlayerChipBetArea {...playerChipBetAreaProps(8) } />
-                </div>
-                */}
               </div>
               <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
                 <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>

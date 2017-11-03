@@ -62,6 +62,36 @@ function *handleCheckAction(action) {
   }
 }
 
+function *handleMuckHandAction(action) {
+  let params = {
+    type: "PLAYER_ACTION_MUCK_HAND",
+    table_id: action.tableId,
+    player_id: action.playerId,
+  }
+  try {
+    yield call(actionToGameDealer, params)
+    yield put({ type: "MUCK_HAND_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: "MUCK_HAND_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId });
+  }
+}
+
+function *handleShowHandAction(action) {
+  let params = {
+    type: "PLAYER_ACTION_SHOW_HAND",
+    table_id: action.tableId,
+    player_id: action.playerId,
+  }
+  try {
+    yield call(actionToGameDealer, params)
+    yield put({ type: "SHOW_HAND_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: "SHOW_HAND_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId });
+  }
+}
+
 function *handleFoldAction(action) {
   let params = {
     type: "PLAYER_ACTION_FOLD",
@@ -187,6 +217,8 @@ export default function *rootSage() {
   yield takeEvery("CALL_ACTION", handleCallAction);
   yield takeEvery("FOLD_ACTION", handleFoldAction);
   yield takeEvery("CHECK_ACTION", handleCheckAction);
+  yield takeEvery("MUCK_HAND_ACTION", handleMuckHandAction);
+  yield takeEvery("SHOW_HAND_ACTION", handleShowHandAction);
   yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked);
   yield takeEvery("TAKE_POT_ACTION", handleTakePotAction);
   yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);

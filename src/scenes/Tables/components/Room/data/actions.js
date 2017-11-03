@@ -35,6 +35,7 @@ export const playerActionReceived = (data) => {
     game_hand_count,
     board_cards,
     deal_cards,
+    show_or_muck,
   } = data;
 
   return {
@@ -50,6 +51,7 @@ export const playerActionReceived = (data) => {
     gameHandCount: game_hand_count,
     boardCards: board_cards,
     dealCards: deal_cards,
+    showOrMuck: show_or_muck,
   };
 }
 
@@ -59,4 +61,8 @@ export const gameHandFinishedReceived = () => {
 
 export const gameHandActionReceived = (pot, players) => {
   return { type: "GAME_HAND_ACTION_RECEIVED", pot: pot, players: players };
+}
+
+export const showResultDialogReceived = (data) => {
+  return { type: "SHOW_RESULT_DIALOG_RECEIVED", players: data.players }
 }

@@ -53,11 +53,11 @@ class PlayerPanel extends Component {
       panelClass = 'activePanel';
     }
 
-    let isMe = currentPlayer && currentPlayer.id === player.id;
+    //let isMe = currentPlayer && currentPlayer.id === player.id;
 
     let isPlayerTurn = player.seat_no === currentSeatNo;
 
-    let showHand = false;
+    let showHand = player.hand_show;
     let handZIndex = showHand ? 500 : 5;
 
     return (
@@ -66,7 +66,7 @@ class PlayerPanel extends Component {
         height: '100%',
         width: '100%',
       }}>
-        {inGame && enabledWithCard && player.state !== undefined && player.state !== 1 ? (
+        {inGame && enabledWithCard && !player.hand_show && player.state !== undefined && player.state !== 1 ? (
           <div>
             <div style={{ position: 'absolute', top: '2em', left: '1em', zIndex: handZIndex }}>
               <PokerCard invisible={!showHand} />
@@ -78,13 +78,13 @@ class PlayerPanel extends Component {
           ) : (<div></div>)
         }
 
-        {inGame && enabledWithCard && cards && cards.length === 2 && player.state !== undefined && player.state !== 1 ? (
+        {enabledWithCard && player.hand_show && player.state !== undefined && player.state !== 1 ? (
           <div>
-            <div style={{ position: 'absolute', top: '-0.5em', left: '-0.5em', zIndex: handZIndex }}>
-              <PokerCard rank={cards[0].rank} suit={cards[0].suit} invisible={!showHand} />
+            <div style={{ position: 'absolute', top: '2em', left: '1em', zIndex: handZIndex }}>
+              <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
             </div>
-            <div style={{ position: 'absolute', top: '-0.3em', left: '0em', zIndex: handZIndex }}>
-              <PokerCard rank={cards[1].rank} suit={cards[1].suit} invisible={!showHand} />
+            <div style={{ position: 'absolute', top: '2em', left: '2em', zIndex: handZIndex }}>
+              <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
             </div>
           </div>
           ) : (<div></div>)
@@ -116,7 +116,7 @@ class PlayerPanel extends Component {
               <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
             </div>
           </div>
-          {inGame && player.seat_no === buttonSeatNo ? (
+          {player.seat_no === buttonSeatNo ? (
             <Paper circle={true} style={{ position: 'absolute', height: '1.5rem', width: '1.5rem', top: '-10px', right: '-10px' }}>D</Paper>
           ) : (<div />)
           }

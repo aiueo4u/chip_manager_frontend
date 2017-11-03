@@ -22,6 +22,8 @@ class HeroPlayerPanel extends Component {
       resetBetSize,
       dispatchBetAction,
       playerOnTurn,
+      onMuckAction,
+      onShowAction,
     } = this.props;
 
     let isHeroTurn = currentPlayer && currentPlayer.seat_no === gameTable.currentSeatNo
@@ -42,6 +44,7 @@ class HeroPlayerPanel extends Component {
         width: '100%',
       }}>
         {
+          /* TODO: ほかプレイヤー操作 */
           inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
           /*inGame ?*/
 
@@ -49,6 +52,11 @@ class HeroPlayerPanel extends Component {
             <div>
               <RaisedButton label='reset' className="foldButtonClass" onTouchTap={resetBetSize} />
               <RaisedButton label='bet' className="callButtonClass" onTouchTap={dispatchBetAction} />
+            </div>
+          ) : playerOnTurn && gameTable.showOrMuck ? (
+            <div>
+              <RaisedButton label='muck' className="foldButtonClass" onTouchTap={onMuckAction} />
+              <RaisedButton label='show' className="callButtonClass" onTouchTap={onShowAction} />
             </div>
           ) : (
             <div>
@@ -162,6 +170,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onCheckAction: () => {
       dispatch({
         type: "CHECK_ACTION",
+        tableId: tableId,
+        playerId: playerOnTurn.id,
+      })
+    },
+    onMuckAction: () => {
+      dispatch({
+        type: "MUCK_HAND_ACTION",
+        tableId: tableId,
+        playerId: playerOnTurn.id,
+      })
+    },
+    onShowAction: () => {
+      dispatch({
+        type: "SHOW_HAND_ACTION",
         tableId: tableId,
         playerId: playerOnTurn.id,
       })

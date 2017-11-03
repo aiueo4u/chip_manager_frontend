@@ -8,11 +8,13 @@ import {
   gameHandActionReceived,
   gameHandFinishedReceived,
   dealtCardsReceived,
+  showResultDialogReceived,
 } from './data/actions.js';
 import CircularProgress from 'material-ui/CircularProgress';
 import CustomCircularProgress from 'components/CustomCircularProgress';
 // import Information from './components/Information';
 import GameDialog from './components/GameDialog';
+import ShowResultDialog from './components/ShowResultDialog';
 import Dialog from 'material-ui/Dialog';
 import ActionCable from 'actioncable';
 import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
@@ -35,6 +37,7 @@ class Room extends Component {
       onGameHandActionReceived,
       onPlayerActionReceived,
       onDealtCardsReceived,
+      onShowResultDialogReceived,
     } = this.props;
 
     // action cable setup
@@ -62,6 +65,8 @@ class Room extends Component {
           onGameHandActionReceived(data);
         } else if (data.type === 'game_hand_finished') {
           onGameHandFinishedReceived(data)
+        } else if (data.type === 'show_result_dialog') {
+          onShowResultDialogReceived(data)
         }
       },
       rejected(data) { console.debug("Chip Channel rejected", data) },
@@ -147,6 +152,7 @@ class Room extends Component {
         </Dialog>
 
         <GameDialog tableId={tableId} />
+        <ShowResultDialog tableId={tableId} onGameStart={onGameStart} />
 
         <div style={{ 'height': '100vh' }}>
           <GameTable
@@ -165,8 +171,9 @@ class Room extends Component {
         {/* チップ量調整エリア */}
         <div style={{ 'height': '15vh', width: '100%', position: 'absolute', bottom: 0, zIndex: 1000 }}>
           {
-            currentPlayer && inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
-            /*currentPlayer && inGame ?*/
+            /* TODO: ほかプレイヤー操作 */
+            currentPlayer && inGame && !gameTable.showOrMuck && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
+            /*currentPlayer && inGame && !gameTable.showOrMuck ?*/
 
             currentPlayer.isFetching ? (
               <CustomCircularProgress />
@@ -219,8 +226,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onDealtCardsReceived: (data) => {
       dispatch(dealtCardsReceived(data));
     },
+    onShowResultDialogReceived: (data) => {
+      dispatch(showResultDialogReceived(data))
+    },
     onGameStart: () => {
-       dispatch(gameStartButtonClicked(tableId));
+      dispatch(gameStartButtonClicked(tableId));
     },
     onActionCableConnected: () => {
       dispatch({ "type": "ACTION_CABLE_CONNECTED" });

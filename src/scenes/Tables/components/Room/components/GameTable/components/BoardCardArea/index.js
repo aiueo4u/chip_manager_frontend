@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PokerCard from 'components/PokerCard';
 
 const BoardCardArea = ({ gameTable }) => (

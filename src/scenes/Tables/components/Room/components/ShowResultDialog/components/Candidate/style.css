@@ -1,0 +1,12 @@
+.show-result-dialog-stack-after {
+}
+
+.show-result-dialog-amount-diff-plus {
+  float: right;
+  color: blue;
+}
+
+.show-result-dialog-amount-diff-minus {
+  float: right;
+  color: red;
+}

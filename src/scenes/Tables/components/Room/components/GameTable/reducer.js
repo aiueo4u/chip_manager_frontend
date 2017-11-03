@@ -28,6 +28,7 @@ const GameTableReducer = (state = initialState, action) => {
         gameHandCount: action.gameHandCount,
         boardCards: action.boardCards,
         dealCards: action.dealCards,
+        showOrMuck: action.showOrMuck,
       });
     case 'OPEN_PLAYER_MENU_DIALOG':
       return Object.assign({}, state, { openingPlayerMenuDialogPlayerId: action.playerId });
