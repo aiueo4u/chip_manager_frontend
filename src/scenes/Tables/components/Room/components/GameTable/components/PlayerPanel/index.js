@@ -116,9 +116,19 @@ class PlayerPanel extends Component {
               <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
             </div>
           </div>
-          {player.seat_no === buttonSeatNo ? (
-            <Paper circle={true} style={{ position: 'absolute', height: '1.5rem', width: '1.5rem', top: '-10px', right: '-10px' }}>D</Paper>
-          ) : (<div />)
+          {
+            player.seat_no === buttonSeatNo ? (
+              <Paper
+                circle={true}
+                style={{
+                  position: 'absolute',
+                  height: '1.5rem',
+                  width: '1.5rem',
+                  top: '-10px',
+                  right: '-10px'
+                }}
+              >D</Paper>
+            ) : (<div />)
           }
 
           {/* ベット額 */}

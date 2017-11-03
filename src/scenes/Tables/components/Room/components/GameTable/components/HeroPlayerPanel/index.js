@@ -45,7 +45,7 @@ class HeroPlayerPanel extends Component {
       }}>
         {
           /* TODO: ほかプレイヤー操作 */
-          inGame && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
+          inGame && currentPlayer && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
           /*inGame ?*/
 
           playerOnTurn && playerOnTurn.betSize > 0 ? (

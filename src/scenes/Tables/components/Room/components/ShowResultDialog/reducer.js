@@ -11,6 +11,8 @@ const ShowResultDialogReducer = (state = initialState, action) => {
       return Object.assign({}, state, { open: true, players: action.players });
     case 'SHOW_RESULT_DIALOG_FINISHED_RECEIVED':
       return initialState;
+    case 'PLAYER_ACTION_RECEIVED':
+      return Object.assign({}, state, { open: false });
     default:
       return state;
   }

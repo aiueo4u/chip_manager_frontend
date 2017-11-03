@@ -75,6 +75,7 @@ class GameTable extends Component {
         tableId: tableId,
         cards: gameTable.dealtCards[playerId],
         enabledWithCard: gameTable.dealCards,
+        buttonSeatNo: gameTable.buttonSeatNo,
       };
     };
 
@@ -197,7 +198,7 @@ class GameTable extends Component {
                 <div className="heroDealerButtonArea">
                   <div className="heroDealerButtonWrapper">
                     {
-                      inGame && currentPlayer.seat_no === gameTable.buttonSeatNo ? (
+                      inGame && currentPlayer && currentPlayer.seat_no === gameTable.buttonSeatNo ? (
                         <DealerButtonPlate />
                       ) : (
                         <div />
