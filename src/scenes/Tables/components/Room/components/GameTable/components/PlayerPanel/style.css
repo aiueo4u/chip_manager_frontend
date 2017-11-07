@@ -15,7 +15,7 @@
 
 @keyframes onPlayerTurnAvatarBlinkAnimation {
   50% {
-    box-shadow: 0 1px 15px 1px yellow;
+    box-shadow: 0 3px 15px 1px yellow;
   }
 }
 
@@ -78,9 +78,43 @@
   height: 50%;
 }
 
-.betArea {
-  background: rgba(30, 30, 30, 0.5);
-  border-radius: 1em;
+.otherPlayerBetArea {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
   color: white;
   padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+.bottomRightDealerButtonPosition {
+  position: absolute;
+  height: 1.5rem;
+  width: 1.5rem;
+  z-index: 100;
+  bottom: -1.8rem;
+  right: 0;
+}
+
+.bottomLeftDealerButtonPosition {
+  position: absolute;
+  height: 1.5rem;
+  width: 1.5rem;
+  z-index: 100;
+  bottom: -1.8rem;
+  left: 0;
+}
+
+.rightDealerButtonPosition {
+  position: absolute;
+  height: 1.5rem;
+  width: 1.5rem;
+  z-index: 100;
+  right: -1.0rem;
+}
+
+.leftDealerButtonPosition {
+  position: absolute;
+  height: 1.5rem;
+  width: 1.5rem;
+  z-index: 100;
+  left: -1.0rem;
 }

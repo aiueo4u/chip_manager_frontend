@@ -108,11 +108,8 @@ class GameTable extends Component {
               <div className="topPlayerArea">
                 <div className="topPlayerPanel">
                   <div style={{ height: '15vw', width: '15vw', margin: 'auto' }}>
-                    <PlayerPanel {...playerPanelProps(4)} />
+                    <PlayerPanel {...playerPanelProps(4)} topLeftSideStyle={true} />
                   </div>
-                </div>
-                <div className="topPlayerChipBetArea">
-                  <PlayerChipBetArea {...playerChipBetAreaProps(4) } />
                 </div>
               </div>
 
@@ -120,11 +117,8 @@ class GameTable extends Component {
               <div className="topPlayerArea">
                 <div className="topPlayerPanel">
                   <div style={{ height: '15vw', width: '15vw', margin: 'auto' }}>
-                    <PlayerPanel {...playerPanelProps(5)} />
+                    <PlayerPanel {...playerPanelProps(5)} topRightSideStyle={true} />
                   </div>
-                </div>
-                <div className="topPlayerChipBetArea">
-                  <PlayerChipBetArea {...playerChipBetAreaProps(5) } />
                 </div>
               </div>
             </div>
@@ -133,17 +127,17 @@ class GameTable extends Component {
               <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
                 <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
                   <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(3)} />
+                    <PlayerPanel {...playerPanelProps(3)} leftSideStyle={true} />
                   </div>
                 </div>
                 <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
                   <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(2)} {...playerChipBetAreaProps(2)} />
+                    <PlayerPanel {...playerPanelProps(2)} leftSideStyle={true} />
                   </div>
                 </div>
                 <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
                   <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(1)} />
+                    <PlayerPanel {...playerPanelProps(1)} leftSideStyle={true} />
                   </div>
                 </div>
               </div>
@@ -164,7 +158,14 @@ class GameTable extends Component {
                     </div>
                   ) : (
                     <div className="currentStateArea">
-                      <div style={{ position: 'absolute', top: '0', borderRadius: '0.5em', background: 'rgba(200, 200, 200, 0.3)' }}>
+                      <div style={{
+                        position: 'absolute',
+                        top: '0',
+                        borderRadius: '0.5em',
+                        //background: 'rgba(200, 200, 200, 0.3)',
+                        height: '30%',
+                        width: '100%',
+                      }}>
                         {!inGame ? (
                             <RaisedButton
                               label="Start"
@@ -173,17 +174,32 @@ class GameTable extends Component {
                           ) : (<div />)
                         }
                         {gameTable.round !== 'init' ? (
-                          <div>
+                          <div style={{
+                            display: 'flex',
+                            'flexDirection': 'column',
+                            'justifyContent': 'space-around',
+                            height: '100%',
+                          }}>
                             <div>Game {gameTable.gameHandCount}</div>
                             <div>
                               {roundToReadable(gameTable.round)}
                             </div>
-                            <div>
+                            <div style={{
+                              fontSize: '1.4rem',
+                              'fontWeight': 'bold',
+                              color: 'white',
+                              background: 'rgba(0, 0, 0, 0.7)',
+                              borderRadius: '0.5rem',
+                              padding: '0.5rem',
+                            }}>
                               {gameTable.pot}
                             </div>
-                            <div>
-                              <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
-                            </div>
+                            {!gameTable.dealCards ? (
+                              <div>
+                                <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
+                              </div>
+                            ) : (<div />)
+                            }
                           </div>
                         ) : (<div />)
                         }

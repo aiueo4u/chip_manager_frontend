@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import PlayerMenuDialog from './playerMenuDialog';
 import PokerCard from 'components/PokerCard';
+import DealerButtonPlate from 'components/DealerButtonPlate';
 import './style.css';
 import Paper from 'material-ui/Paper';
 
@@ -28,6 +29,7 @@ class PlayerPanel extends Component {
     player.nickname = 'aiueo';
     player.image_url = 'http://pbs.twimg.com/profile_images/802939485017079808/NdbKiaEp_normal.jpg';
     player.stack = 12345;
+    player.bet_amount_in_state = 1234;
     */
 
     // 空席の場合
@@ -60,13 +62,24 @@ class PlayerPanel extends Component {
     let showHand = player.hand_show;
     let handZIndex = showHand ? 500 : 5;
 
+    let dealerButtonPositionClassName;
+    if (this.props.rightSideStyle) {
+      dealerButtonPositionClassName = 'leftDealerButtonPosition';
+    } else if (this.props.leftSideStyle) {
+      dealerButtonPositionClassName = 'rightDealerButtonPosition';
+    } else if (this.props.topLeftSideStyle) {
+      dealerButtonPositionClassName = 'bottomRightDealerButtonPosition';
+    } else if (this.props.topRightSideStyle) {
+      dealerButtonPositionClassName = 'bottomLeftDealerButtonPosition';
+    }
+
     return (
       <div style={{
         position: 'relative',
         height: '100%',
         width: '100%',
       }}>
-        {inGame && enabledWithCard && !player.hand_show && player.state !== undefined && player.state !== 1 ? (
+      {inGame && enabledWithCard && !player.hand_show && player.state !== undefined && player.state !== 1 ? (
           <div>
             <div style={{ position: 'absolute', top: '2em', left: '1em', zIndex: handZIndex }}>
               <PokerCard invisible={!showHand} />
@@ -118,16 +131,9 @@ class PlayerPanel extends Component {
           </div>
           {
             player.seat_no === buttonSeatNo ? (
-              <Paper
-                circle={true}
-                style={{
-                  position: 'absolute',
-                  height: '1.5rem',
-                  width: '1.5rem',
-                  top: '-10px',
-                  right: '-10px'
-                }}
-              >D</Paper>
+              <div className={dealerButtonPositionClassName}>
+                <DealerButtonPlate />
+              </div>
             ) : (<div />)
           }
 
@@ -135,15 +141,15 @@ class PlayerPanel extends Component {
           {inGame && (player.bet_amount_in_state || player.betSize) ? (
             <div style={{
               position: 'absolute',
-              bottom: '-1.5rem',
-              right: this.props.rightSideStyle ? '1rem' : '-1rem',
+              bottom: this.props.topLeftSideStyle || this.props.topRightSideStyle ? '-3.3rem' : '-1.5rem',
+              right: this.props.rightSideStyle || this.props.topRightSideStyle ? '1rem' : '-1rem',
             }}>
               {player.betSize ? (
-                <span className="betArea">
+                <span className="otherPlayerBetArea">
                   {player.bet_amount_in_state || 0} -> {player.bet_amount_in_state + player.betSize}
                 </span>
               ) : (
-                <span className="betArea">
+                <span className="otherPlayerBetArea">
                   {player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ''}
                 </span>
               )}
