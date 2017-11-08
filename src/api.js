@@ -20,6 +20,18 @@ const send = (path, method, headers = {}, body = '') => {
       if (!response.ok) {
         throw response;
       }
+
+      // クライアントバージョン確認
+      let prevClientVersion = localStorage.getItem('Current-Client-Version');
+      let currentClientVersion = response.headers.get('Current-Client-Version');
+      localStorage.setItem('Current-Client-Version', currentClientVersion);
+
+      // クライアントバージョンが更新されていた場合
+      if (prevClientVersion && prevClientVersion != currentClientVersion) {
+        // TODO: ここでリロード・・・？
+        window.location.reload();
+      }
+
       return response.json(); // TODO: .json()を消す？
     })
 }
