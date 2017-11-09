@@ -169,7 +169,8 @@ class Room extends Component {
         </div>
 
         {/* チップ量調整エリア */}
-        <div style={{ 'height': '15vh', width: '100%', position: 'absolute', bottom: 0, zIndex: 1000 }}>
+        <div style={{ 'height': '15vh', width: '100%', position: 'absolute', bottom: 0,
+            zIndex: 1000 }}>
           {
             /* TODO: ほかプレイヤー操作 */
             currentPlayer && inGame && !gameTable.showOrMuck && (gameTable.currentSeatNo === currentPlayer.seat_no) ?
