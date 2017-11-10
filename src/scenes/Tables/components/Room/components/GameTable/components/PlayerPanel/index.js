@@ -24,11 +24,13 @@ class PlayerPanel extends Component {
     } = this.props;
 
     // TODO
+    /*
     player.id = 123;
     player.nickname = 'aiueo';
     player.image_url = 'http://pbs.twimg.com/profile_images/802939485017079808/NdbKiaEp_normal.jpg';
     player.stack = 12345;
     player.bet_amount_in_state = 1234;
+    */
 
     // 空席の場合
     if (!player.id) {
