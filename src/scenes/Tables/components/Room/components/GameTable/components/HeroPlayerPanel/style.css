@@ -1,8 +1,10 @@
 .avatarImage {
+  width: 100%;
   border-radius: 1em;
 }
 
 .avatarImageOnTurn {
+  width: 100%;
   border-radius: 1em;
   animation: onHeroTurnAvatarBlinkAnimation 1s infinite;
 }
