@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import PlayerMenuDialog from './playerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
@@ -8,6 +9,24 @@ import './style.css';
 import Paper from 'material-ui/Paper';
 
 class PlayerPanel extends Component {
+  componentDidMount() {
+    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
+  progressTimer(mSecond) {
+    const { currentSeatNo, gameTable, inGame, player } = this.props;
+    let isPlayerTurn = player.seat_no === currentSeatNo;
+
+    if (isPlayerTurn && inGame && player) {
+      this.props.dispatchProgressTimer(mSecond)
+    }
+    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
+  }
+
   render() {
     const { enabledWithCard, cards, isSeated, player, openBuyInDialog } = this.props;
 
@@ -127,6 +146,10 @@ class PlayerPanel extends Component {
             <div className="otherPlayerPanelTextArea">
               <div className='nickname'>{player.nickname}</div>
               <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+              {isPlayerTurn ? (
+                <LinearProgress mode="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
+              ) : (<div />)
+              }
             </div>
           </div>
           {
@@ -169,13 +192,21 @@ class PlayerPanel extends Component {
 
 const mapStateToProps = (state, ownProps) => { return {} }
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { player } = ownProps;
+  const { player, tableId } = ownProps;
   return {
     openBuyInDialog: () => {
       ownProps.openBuyInDialog(player.seat_no, player.id)
     },
     openPlayerMenuDialog: () => {
       ownProps.openPlayerMenuDialog(player.id)
+    },
+    dispatchProgressTimer: (mSecond) => {
+      dispatch({
+        type: "PROGRESS_PLAYER_ACTION_TIMER",
+        tableId: tableId,
+        playerId: player.id,
+        remainTimeToAction: player.remain_time_to_action - mSecond / 1000,
+      });
     },
   }
 }

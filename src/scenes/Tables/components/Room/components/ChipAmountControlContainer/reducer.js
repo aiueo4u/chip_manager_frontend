@@ -11,6 +11,8 @@ const PlayerReducer = (state = initialState, action) => {
   let betSize = 0;
 
   switch (action.type) {
+    case 'PROGRESS_PLAYER_ACTION_TIMER':
+      return Object.assign({}, player, { remain_time_to_action: action.remainTimeToAction });
     case 'CHANGE_BET_AMOUNT':
       return Object.assign({}, player, { betSize: action.amount });
     case 'SET_BET_SIZE':
@@ -59,6 +61,8 @@ const PlayerReducer = (state = initialState, action) => {
 
 const PlayersReducer = (state = [], action) => {
   switch (action.type) {
+    case 'PROGRESS_PLAYER_ACTION_TIMER':
+      return state.map((player) => { return PlayerReducer(player, action) });
     case 'PLAYER_ACTION_RECEIVED':
       return action.players;
     case 'CHANGE_BET_AMOUNT':

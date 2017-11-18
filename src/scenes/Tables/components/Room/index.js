@@ -51,6 +51,11 @@ class Room extends Component {
     this.App.ChipChannel = this.App.cable.subscriptions.create({ channel: 'ChipChannel', tableId: tableId }, {
       connected() {
         console.debug("Chip Channel connected")
+
+        setInterval(() => {
+          this.refresh()
+        }, 5000);
+
         onActionCableConnected();
       },
       disconnected() {
@@ -70,6 +75,9 @@ class Room extends Component {
         }
       },
       rejected(data) { console.debug("Chip Channel rejected", data) },
+      refresh() {
+        this.perform('refresh')
+      },
     });
 
     // 配られるカード専用のチャンネル

@@ -1,11 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import PlayerMenuDialog from './playerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import './style.css';
 
 class HeroPlayerPanel extends Component {
+  componentDidMount() {
+    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
+  progressTimer(mSecond) {
+    const { currentPlayer, gameTable, inGame, playerOnTurn } = this.props;
+    let isHeroTurn = currentPlayer && currentPlayer.seat_no === gameTable.currentSeatNo
+
+    if (isHeroTurn && inGame && playerOnTurn) {
+      this.props.dispatchProgressTimer(mSecond)
+    }
+    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
+  }
+
   render() {
     const { enabledWithCard, cards, isSeated, player, openBuyInDialog } = this.props;
 
@@ -90,6 +109,10 @@ class HeroPlayerPanel extends Component {
             <div className="heroPanelTextArea">
               <div className='nickname'>{player.nickname}</div>
               <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+              {isHeroTurn ? (
+                <LinearProgress mode="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
+              ) : (<div />)
+              }
             </div>
             {enabledWithCard && isMe && cards && cards.length === 2 && player.state !== 1 ? (
               <div>
@@ -187,6 +210,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         tableId: tableId,
         playerId: playerOnTurn.id,
       })
+    },
+    dispatchProgressTimer: (mSecond) => {
+      dispatch({
+        type: "PROGRESS_PLAYER_ACTION_TIMER",
+        tableId: tableId,
+        playerId: playerOnTurn.id,
+        remainTimeToAction: playerOnTurn.remain_time_to_action - mSecond / 1000,
+      });
     },
   }
 }
