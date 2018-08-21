@@ -3,10 +3,10 @@ var api_endpoint;
 var twitter_login_endpoint;
 var facebook_login_endpoint;
 if (process.env.NODE_ENV === 'production') {
-  websocket_endpoint = 'wss://safe-fortress-96782.herokuapp.com';
-  api_endpoint = 'https://safe-fortress-96782.herokuapp.com/api';
-  twitter_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/auth/twitter';
-  facebook_login_endpoint = 'https://safe-fortress-96782.herokuapp.com/auth/facebook';
+  websocket_endpoint = 'wss://poker-webapp-backend.herokuapp.com/';
+  api_endpoint = 'https://poker-webapp-backend.herokuapp.com/api';
+  twitter_login_endpoint = 'https://poker-webapp-backend.herokuapp.com/auth/twitter';
+  facebook_login_endpoint = 'https://poker-webapp-backend.herokuapp.com/auth/facebook';
 } else {
   websocket_endpoint = 'ws://localhost:3001';
   api_endpoint = 'http://localhost:3001/api';
