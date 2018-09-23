@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import GameTable from './components/GameTable';
 import ChipAmountControlContainer from './components/ChipAmountControlContainer';
+import './style.css'
 import {
   betAction,
   playerActionReceived,
@@ -99,6 +100,14 @@ class Room extends Component {
         rejected(data) { console.debug("DealtCardChannel rejected", data) },
       }
     );
+
+    // iOS Safariのボトムバー対応
+    window.addEventListener('resize', () => {
+      let vh = window.innerHeight * 0.01;
+      window.document.documentElement.style.setProperty('--vh', `${vh}px`);
+    })
+    let vh = window.innerHeight * 0.01;
+    window.document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
   componentWillUnmount() {
@@ -143,9 +152,8 @@ class Room extends Component {
     }
 
     return (
-      <div style={{
+      <div id="baseWrapper" style={{
           'background': '#003300',
-          'height': '100vh'
       }}>
         {/* ネットワーク接続中のダイアログ */}
         <Dialog
@@ -161,7 +169,7 @@ class Room extends Component {
 
         <ShowResultDialog tableId={tableId} onGameStart={onGameStart} gameTable={gameTable} />
 
-        <div style={{ 'height': '100vh' }}>
+        <div style={{ 'height': '100%' }}>
           <GameTable
             tableName={tableName}
             tableId={tableId}

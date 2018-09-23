@@ -12,6 +12,12 @@ if (process.env.NODE_ENV === 'production') {
   api_endpoint = 'http://localhost:3001/api';
   twitter_login_endpoint = 'http://localhost:3001/auth/twitter';
   facebook_login_endpoint = 'http://localhost:3001/auth/facebook';
+  /*
+  websocket_endpoint = 'ws://192.168.100.100:3001';
+  api_endpoint = 'http://192.168.100.100:3001/api';
+  twitter_login_endpoint = 'http://192.168.100.100:3001/auth/twitter';
+  facebook_login_endpoint = 'http://192.168.100.100:3001/auth/facebook';
+  */
 }
 
 export const WEBSOCKET_ENDPOINT = websocket_endpoint;
