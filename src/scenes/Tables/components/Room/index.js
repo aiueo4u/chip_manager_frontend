@@ -243,6 +243,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onShowResultDialogReceived: (data) => {
       dispatch(showResultDialogReceived(data))
+
+      // 結果が出た5秒後に次のゲームを再開
+      setTimeout(() => {
+        dispatch(gameStartButtonClicked(tableId));
+      }, 5000);
     },
     onGameStart: () => {
       dispatch(gameStartButtonClicked(tableId));
