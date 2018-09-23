@@ -1,10 +1,10 @@
 {
-  "short_name": "Poker Rabbit",
-  "name": "Poker Rabbit",
+  "short_name": "YOUPOKER",
+  "name": "YOUPOKER",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "192x192",
+      "sizes": "64x64",
       "type": "image/png"
     }
   ],
