@@ -1,5 +1,10 @@
-.show-result-dialog-stack-after {
+.show-result-dialog-user-nickname {
 }
+
+.show-result-dialog-stack-after {
+  font-weight: bold;
+}
+
 
 .show-result-dialog-amount-diff-plus {
   float: right;

@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       let tableName = event.target.tableNameTextField.value.trim();
       let sb = event.target.smallBlindTextField.value.trim();
       let bb = event.target.bigBlindTextField.value.trim();
-      let withCards = event.target.withCardsCheck.checked;
+      let withCards = true; // TODO
       dispatch(submitCreateTableForm(tableName, sb, bb, withCards));
     }
   }

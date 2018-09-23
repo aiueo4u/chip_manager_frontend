@@ -5,10 +5,15 @@ const initialState = {
   reconnectingActionCable: false,
   isOpenedUndoDialog: false,
   dealtCards: [],
+  buyInAmount: '',
 }
 
 const GameTableReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "ON_CHANGE_BUY_IN_AMOUNT":
+      return Object.assign({}, state, {
+        buyInAmount: action.amount,
+      })
     case 'DEALT_CARD_RECEIVED':
       let dealtCards = Object.assign({}, state.dealtCards);
       dealtCards[action.playerId] = action.cards;
@@ -58,7 +63,15 @@ const GameTableReducer = (state = initialState, action) => {
         buyInPlayerId: action.playerId,
       });
     case 'CLOSE_BUY_IN_DIALOG':
-      return Object.assign({}, state, { isOpenedBuyInDialog: false, selectingSeatNo: null });
+      return Object.assign({}, state, {
+        isOpenedBuyInDialog: false,
+        selectingSeatNo: null,
+        buyInAmount: "",
+      });
+    case "PLAYER_TAKE_SEAT":
+      return Object.assign({}, state, {
+        buyInAmount: "",
+      })
     case 'PLAYER_ACTION_TAKE_SEAT_COMPLETED':
       return Object.assign({}, state, { isOpenedBuyInDialog: false, selectingSeatNo: null });
     case 'PLAYER_ACTION_TAKE_SEAT_FAILED':

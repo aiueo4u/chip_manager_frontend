@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import TwitterLoginButton from './components/TwitterLoginButton';
 import FacebookLoginButton from './components/FacebookLoginButton';
 import WallPaperImage from 'components/WallPaperImage';
@@ -57,10 +57,11 @@ class LoginForm extends Component {
           <div>or</div>
           <br />
           <form onSubmit={handleSubmit}>
-            <TextField name="playerNicknameTextField" hintText="Your nickname" />
-            <RaisedButton label="Debug Login" labelPosition="before" containerElement="label">
+            <TextField name="playerNicknameTextField" placeholder="Your nickname" />
+            <Button variant="raised">
+              デバッグログイン
               <input type="submit" style={styles.submitInput} />
-            </RaisedButton>
+            </Button>
           </form>
         </div>
       </div>

@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import RaisedButton from 'material-ui/RaisedButton';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import CircularProgress from 'material-ui/CircularProgress';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const loadingTablesData = () => {
   return { type: 'LOADING_TABLES_DATA' };
@@ -52,30 +49,32 @@ class TableList extends Component {
           margin: 'auto',
           textAlign: 'center',
         }}>
-          <CircularProgress thickness={10} size={100} />
+          <CircularProgress thickness={4} size={60} />
           <div>Loading Table Data...</div>
         </div>
       )
     } else {
       return (
-        <Table selectable={false}>
-          <TableHeader displaySelectAll={false}>
+        <Table>
+          <TableHead>
             <TableRow>
-              <TableHeaderColumn>テーブル名</TableHeaderColumn>
-              <TableHeaderColumn>プレイヤー</TableHeaderColumn>
+              <TableCell>テーブル名</TableCell>
+              <TableCell>プレイヤー</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false}>
+          </TableHead>
+          <TableBody>
             {tables.map(table =>
               <TableRow key={table.id}>
-                <TableRowColumn>
+                <TableCell>
                   <Link to={`${match.url}/${table.id}`}>
-                    <RaisedButton label={table.name || table.id} />
+                    <Button variant="raised">
+                      {table.name || table.id}
+                    </Button>
                   </Link>
-                </TableRowColumn>
-                <TableRowColumn>
+                </TableCell>
+                <TableCell>
                   {table.players.length} / 10 名
-                </TableRowColumn>
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

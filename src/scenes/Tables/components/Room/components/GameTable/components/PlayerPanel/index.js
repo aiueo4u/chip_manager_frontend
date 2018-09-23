@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import LinearProgress from 'material-ui/LinearProgress';
+import Button from '@material-ui/core/Button';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import PlayerMenuDialog from './playerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import './style.css';
-import Paper from 'material-ui/Paper';
 
 class PlayerPanel extends Component {
   componentDidMount() {
@@ -18,7 +17,7 @@ class PlayerPanel extends Component {
   }
 
   progressTimer(mSecond) {
-    const { currentSeatNo, gameTable, inGame, player } = this.props;
+    const { currentSeatNo, inGame, player } = this.props;
     let isPlayerTurn = player.seat_no === currentSeatNo;
 
     if (isPlayerTurn && inGame && player) {
@@ -28,10 +27,10 @@ class PlayerPanel extends Component {
   }
 
   render() {
-    const { enabledWithCard, cards, isSeated, player, openBuyInDialog } = this.props;
+    const { enabledWithCard, isSeated, player, openBuyInDialog } = this.props;
 
     const {
-      currentPlayer,
+      //currentPlayer,
       openPlayerMenuDialog,
       openingPlayerMenuDialogPlayerId,
       currentSeatNo,
@@ -60,7 +59,7 @@ class PlayerPanel extends Component {
       } else {
         let seat_label = "No " + player.seat_no;
         return (
-          <RaisedButton label={seat_label} onTouchTap={openBuyInDialog} />
+          <Button variant="raised" onClick={openBuyInDialog}>{seat_label}</Button>
         )
       }
     }
@@ -124,7 +123,7 @@ class PlayerPanel extends Component {
 
         <div
           className={panelClass}
-          onTouchTap={openPlayerMenuDialog}
+          onClick={openPlayerMenuDialog}
           style={{
             position: 'absolute',
             zIndex: 50,
@@ -147,7 +146,7 @@ class PlayerPanel extends Component {
               <div className='nickname'>{player.nickname}</div>
               <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
               {isPlayerTurn ? (
-                <LinearProgress mode="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
+                <LinearProgress variant="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
               ) : (<div />)
               }
             </div>

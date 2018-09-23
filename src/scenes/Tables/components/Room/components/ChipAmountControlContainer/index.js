@@ -7,17 +7,17 @@ import './style.css';
 const ChipAmountControlContainer = ({ incrementBetSize }) => (
   <div className="chipFieldContainer">
     <div style={{ width: '18%', height: '100%', margin: '1%', bottom: '-20px', position: 'relative' }}>
-      <PokerChip chipSize={25} onTouchTap={() => incrementBetSize(25)} />
+      <PokerChip chipSize={25} onClick={() => incrementBetSize(25)} />
     </div>
     <div style={{ width: '18%', height: '100%', margin: '1%', bottom: '-20px', position: 'relative' }}>
-      <PokerChip chipSize={100} onTouchTap={() => incrementBetSize(100)} />
+      <PokerChip chipSize={100} onClick={() => incrementBetSize(100)} />
     </div>
     <div style={{ width: '20%' }} />
     <div style={{ width: '18%', height: '100%', margin: '1%', bottom: '-20px', position: 'relative' }}>
-      <PokerChip chipSize={500} onTouchTap={() => incrementBetSize(500)} />
+      <PokerChip chipSize={500} onClick={() => incrementBetSize(500)} />
     </div>
     <div style={{ width: '18%', height: '100%', margin: '1%', bottom: '-20px', position: 'relative' }}>
-      <PokerChip chipSize={1000} onTouchTap={() => incrementBetSize(1000)} />
+      <PokerChip chipSize={1000} onClick={() => incrementBetSize(1000)} />
     </div>
   </div>
 )

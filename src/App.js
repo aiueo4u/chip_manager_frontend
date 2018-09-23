@@ -11,44 +11,9 @@ import Login from './scenes/Login';
 import Lobby from './scenes/Lobby';
 import TableList from './scenes/Tables/components/TableList';
 import Room from './scenes/Tables/components/Room';
-// import AppBar from 'material-ui/AppBar';
-// import IconMenu from 'material-ui/IconMenu';
-// import MenuItem from 'material-ui/MenuItem';
-// import IconButton from 'material-ui/IconButton';
-// import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { DragDropContext } from 'react-dnd';
 import TouchBackend from 'react-dnd-touch-backend';
-
-/*
-class InnerAppBar extends Component {
-  render() {
-    const { match, history, location, staticContext, ...rest } = this.props
-    return (
-      <AppBar
-        {...rest}
-        iconElementLeft={
-          <IconMenu
-            iconButtonElement={<IconButton><MenuIcon /></IconButton>}
-          >
-            <MenuItem primaryText="ホーム" onTouchTap={() => { history.push("/") }} />
-          </IconMenu>
-        }
-      />
-    )
-  }
-}
-*/
-
-/*
-class CustomAppBar extends Component {
-  render() {
-    return (
-      <Route path="/" render={(props) => <InnerAppBar {...props} {...this.props} />} />
-    )
-  }
-}
-*/
 
 function parse_query_string(query) {
   if (!query) {

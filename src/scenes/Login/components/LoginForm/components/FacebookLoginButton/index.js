@@ -1,6 +1,6 @@
 import React from 'react';
-import { FACEBOOK_LOGIN_ENDPOINT } from './../../../../../../Configuration.js'; // TODO: なんとかしたい。。
-import RaisedButton from 'material-ui/RaisedButton';
+import { FACEBOOK_LOGIN_ENDPOINT } from 'Configuration.js';
+import Button from '@material-ui/core/Button';
 
 const facebookLoginButtonStyle = {
   width: '50vw',
@@ -9,7 +9,7 @@ const facebookLoginButtonStyle = {
 const FacebookLoginButton = () => (
   <div>
     <a href={FACEBOOK_LOGIN_ENDPOINT}>
-      <RaisedButton style={facebookLoginButtonStyle}>Facebook Login</RaisedButton>
+      <Button variant="raised" color="primary" style={facebookLoginButtonStyle}>Facebook Login</Button>
     </a>
   </div>
 )

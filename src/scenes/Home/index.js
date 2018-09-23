@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 import WallPaperImage from 'components/WallPaperImage';
 
 const clearAllData = () => {
@@ -33,16 +33,22 @@ const Home = ({ nickname }) => (
     <div style={homeStyle}>
       <div style={{ margin: '5vh' }}>
         <Link to="/newTable">
-          <RaisedButton label="new table" primary={true} />
+          <Button variant="raised">
+            新規テーブル作成
+          </Button>
         </Link>
       </div>
       <div style={{ margin: '5vh' }}>
         <Link to="/tables">
-          <RaisedButton label="Table list" primary={true} />
+          <Button variant="raised">
+            テーブル一覧
+          </Button>
         </Link>
       </div>
       <div style={{ margin: '5vh' }}>
-        <RaisedButton label="Log out" onTouchTap={clearAllData} primary={true} />
+        <Button variant="raised" onClick={clearAllData}>
+          ログアウト
+        </Button>
       </div>
     </div>
   </div>

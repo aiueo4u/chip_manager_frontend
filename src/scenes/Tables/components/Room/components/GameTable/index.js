@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
+
+import Button from '@material-ui/core/Button'
+
 import PlayerPanel from './components/PlayerPanel';
 import HeroPlayerPanel from './components/HeroPlayerPanel';
 import PlayerChipBetArea from './components/PlayerChipBetArea';
 import BuyInDialog from './components/BuyInDialog';
-import UndoDialog from './components/UndoDialog';
 import './style.css';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import BoardCardArea from './components/BoardCardArea';
@@ -23,10 +24,6 @@ const roundToReadable = (round) => {
     default:
       return round;
   }
-}
-
-const buttonStyle = {
-  'backgroundColor': '#bb4444',
 }
 
 class GameTable extends Component {
@@ -92,11 +89,6 @@ class GameTable extends Component {
     return (
       <div style={{ 'height': '100%' }}>
         <BuyInDialog
-          tableId={tableId}
-          gameTable={gameTable}
-          playerSession={playerSession}
-        />
-        <UndoDialog
           tableId={tableId}
           gameTable={gameTable}
           playerSession={playerSession}
@@ -167,10 +159,12 @@ class GameTable extends Component {
                         width: '100%',
                       }}>
                         {!inGame ? (
-                            <RaisedButton
-                              label="Start"
-                              onTouchTap={onGameStart}
-                            />
+                            <Button
+                              variant="raised"
+                              onClick={onGameStart}
+                            >
+                              Start
+                            </Button>
                           ) : (<div />)
                         }
                         {gameTable.round !== 'init' ? (
@@ -194,11 +188,14 @@ class GameTable extends Component {
                             }}>
                               {gameTable.pot}
                             </div>
-                            {!gameTable.dealCards ? (
-                              <div>
-                                <RaisedButton label="Undo" primary={true} onTouchTap={openUndoDialog} buttonStyle={buttonStyle} />
-                              </div>
-                            ) : (<div />)
+                            {
+                              !gameTable.dealCards && (
+                                <div>
+                                  <Button variant="raised" color="primary" onClick={openUndoDialog}>
+                                    Undo
+                                  </Button>
+                                </div>
+                              )
                             }
                           </div>
                         ) : (<div />)

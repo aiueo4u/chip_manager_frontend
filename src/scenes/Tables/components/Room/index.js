@@ -10,12 +10,11 @@ import {
   dealtCardsReceived,
   showResultDialogReceived,
 } from './data/actions.js';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomCircularProgress from 'components/CustomCircularProgress';
-// import Information from './components/Information';
-import GameDialog from './components/GameDialog';
 import ShowResultDialog from './components/ShowResultDialog';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle'
 import ActionCable from 'actioncable';
 import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
@@ -150,17 +149,17 @@ class Room extends Component {
       }}>
         {/* ネットワーク接続中のダイアログ */}
         <Dialog
-          title="Network connecting..."
-          modal={false}
           open={gameTable.reconnectingActionCable}
         >
+          <DialogTitle>
+            Network connecting...
+          </DialogTitle>
           <div style={{ textAlign: 'center' }}>
             <CircularProgress />
           </div>
         </Dialog>
 
-        <GameDialog tableId={tableId} />
-        <ShowResultDialog tableId={tableId} onGameStart={onGameStart} />
+        <ShowResultDialog tableId={tableId} onGameStart={onGameStart} gameTable={gameTable} />
 
         <div style={{ 'height': '100vh' }}>
           <GameTable
@@ -211,7 +210,6 @@ const mapStateToProps = (state, ownProps) => {
     tableName: tableId, // TODO
     players: Room.Players,
     playerSession: state.data.playerSession,
-    // informationItems: state.scenes.Tables.Room.Information.informationItems,
     gameTable: Room.GameTable,
     onBetAction: (playerId, amount) => {
       return betAction(tableId, playerId, amount);

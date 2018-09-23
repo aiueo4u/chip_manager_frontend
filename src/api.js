@@ -27,7 +27,7 @@ const send = (path, method, headers = {}, body = '') => {
       localStorage.setItem('Current-Client-Version', currentClientVersion);
 
       // クライアントバージョンが更新されていた場合
-      if (prevClientVersion && prevClientVersion != currentClientVersion) {
+      if (prevClientVersion && prevClientVersion !== currentClientVersion) {
         // TODO: ここでリロード・・・？
         window.location.reload();
       }

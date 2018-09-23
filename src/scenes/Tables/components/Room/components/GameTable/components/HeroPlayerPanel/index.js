@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import LinearProgress from 'material-ui/LinearProgress';
+import Button from '@material-ui/core/Button';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import PlayerMenuDialog from './playerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import './style.css';
@@ -56,6 +56,15 @@ class HeroPlayerPanel extends Component {
 
     let isMe = currentPlayer && currentPlayer.id === player.id;
 
+    if (!player.id) {
+      if (isSeated) {
+        return <div />
+      } else {
+        const seat_label = "No " + player.seat_no
+        return <Button variant="raised" onClick={openBuyInDialog}>{seat_label}</Button>
+      }
+    }
+
     return (
       <div style={{
         position: 'relative',
@@ -69,21 +78,27 @@ class HeroPlayerPanel extends Component {
 
           playerOnTurn && playerOnTurn.betSize > 0 ? (
             <div>
-              <RaisedButton label='reset' className="foldButtonClass" onTouchTap={resetBetSize} />
-              <RaisedButton label='bet' className="callButtonClass" onTouchTap={dispatchBetAction} />
+              <Button variant="raised" className="foldButtonClass" onClick={resetBetSize}>リセット</Button>
+              <Button variant="raised" className="callButtonClass" onClick={dispatchBetAction}>ベット</Button>
             </div>
           ) : playerOnTurn && gameTable.showOrMuck ? (
             <div>
-              <RaisedButton label='muck' className="foldButtonClass" onTouchTap={onMuckAction} />
-              <RaisedButton label='show' className="callButtonClass" onTouchTap={onShowAction} />
+              <Button variant="raised" className="foldButtonClass" onClick={onMuckAction}>マック</Button>
+              <Button variant="raised" className="callButtonClass" onClick={onShowAction}>ショウ</Button>
             </div>
           ) : (
             <div>
-              <RaisedButton label='fold' className="foldButtonClass" onTouchTap={onFoldAction} />
+              <div className="foldButtonClass">
+                <Button variant="raised" onClick={onFoldAction}>フォールド</Button>
+              </div>
               {checkable ? (
-                <RaisedButton label='check' className="callButtonClass" onTouchTap={onCheckAction} />
+                <div className="callButtonClass">
+                  <Button variant="raised" onClick={onCheckAction}>チェック</Button>
+                </div>
               ) : (
-                <RaisedButton label='call' className="callButtonClass" onTouchTap={onCallAction} />
+                <div className="callButtonClass">
+                  <Button variant="raised" onClick={onCallAction}>コール</Button>
+                </div>
               )}
             </div>
           )
@@ -91,7 +106,7 @@ class HeroPlayerPanel extends Component {
         }
         <div
           className={panelClass}
-          onTouchTap={openPlayerMenuDialog}
+          onClick={openPlayerMenuDialog}
           style={{
             position: 'absolute',
             zIndex: 50,
@@ -109,9 +124,10 @@ class HeroPlayerPanel extends Component {
             <div className="heroPanelTextArea">
               <div className='nickname'>{player.nickname}</div>
               <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
-              {isHeroTurn ? (
-                <LinearProgress mode="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
-              ) : (<div />)
+              {
+                isHeroTurn && (
+                  <LinearProgress variant="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
+                )
               }
             </div>
             {enabledWithCard && isMe && cards && cards.length === 2 && player.state !== 1 ? (

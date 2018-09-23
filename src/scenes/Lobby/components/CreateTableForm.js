@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Redirect } from 'react-router-dom';
 import WallPaperImage from 'components/WallPaperImage';
-import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
   submitInput: { // デフォルトのサブミットボタンは見えなくする
@@ -58,22 +57,19 @@ class CreateTableForm extends Component {
           <form onSubmit={handleSubmit}>
             <div>
               <div>
-                <TextField name="tableNameTextField" hintText="Input table name" />
+                <TextField name="tableNameTextField" placeholder="Input table name" />
               </div>
               <div>
-                <TextField name="smallBlindTextField" hintText="SB" />
+                <TextField name="smallBlindTextField" placeholder="SB" />
               </div>
               <div>
-                <TextField name="bigBlindTextField" hintText="BB" />
+                <TextField name="bigBlindTextField" placeholder="BB" />
               </div>
-              <Checkbox
-                label="With cards"
-                name="withCardsCheck"
-              />
               <div>
-                <RaisedButton label="テーブル作成" labelPosition="before" containerElement="label">
+                <Button variant="raised" component="label">
+                  テーブル作成
                   <input type="submit" style={styles.submitInput} />
-                </RaisedButton>
+                </Button>
               </div>
             </div>
           </form>

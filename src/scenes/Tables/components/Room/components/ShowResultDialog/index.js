@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Dialog from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import List from '@material-ui/core/List';
+
 import Candidate from './components/Candidate/index.js';
-import List from 'material-ui/List/List';
-import RaisedButton from 'material-ui/RaisedButton';
 
 class ShowResultDialog extends Component {
 
@@ -12,17 +13,18 @@ class ShowResultDialog extends Component {
       open,
       players,
       onRequestClose,
-      onGameStartAndClose,
+      gameTable,
     } = this.props;
 
     return (
       <div>
         <Dialog
-          title="Result"
-          modal={false}
           open={open}
-          onRequestClose={onRequestClose}
+          onClose={onRequestClose}
         >
+          <DialogTitle>
+            ハンド{gameTable.gameHandCount}の結果
+          </DialogTitle>
           <List>
             {players.map(player => (
               <Candidate
@@ -31,8 +33,6 @@ class ShowResultDialog extends Component {
               />
             ))}
           </List>
-          {/* TODO: 同期対応 */}
-          {/*<RaisedButton label="Next game" onTouchTap={onGameStartAndClose} />*/}
         </Dialog>
       </div>
     );
@@ -50,10 +50,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onRequestClose: () => {
-      dispatch({ type: "SHOW_RESULT_DIALOG_CLOSE" })
-    },
-    onGameStartAndClose: () => {
-      ownProps.onGameStart();
       dispatch({ type: "SHOW_RESULT_DIALOG_CLOSE" })
     },
   };
