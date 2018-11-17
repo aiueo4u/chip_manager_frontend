@@ -1,8 +1,12 @@
 .show-result-dialog-user-nickname {
 }
 
+.show-result-dialog-stack-before {
+}
+
 .show-result-dialog-stack-after {
   font-weight: bold;
+  font-size: 1rem;
 }
 
 

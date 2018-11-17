@@ -17,7 +17,11 @@ class Candidate extends Component {
         <ListItemText>
           <div className="show-result-dialog-user-nickname">{player.nickname}</div>
           <div>
+            <span className="show-result-dialog-stack-before">{player.stack_before}</span>
+            →
             <span className="show-result-dialog-stack-after">{player.stack_after}</span>
+          </div>
+          <div>
             <span className={amount_diff_class}>
               ({player.amount_diff > 0 ? '+' : ''}{player.amount_diff})
             </span>
