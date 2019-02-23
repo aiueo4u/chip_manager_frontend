@@ -19,6 +19,8 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import ActionCable from 'actioncable';
 import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
+import Loading from './components/Loading'
+
 const gameStartButtonClicked = (tableId) => {
   return { type: "GAME_START_BUTTON_CLICKED", tableId: tableId };
 }
@@ -131,24 +133,7 @@ class Room extends Component {
 
     /* ゲームデータのローディング */
     if (!gameTable.isReady) {
-      return (
-        <div>
-          <div style={{
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            width: '80%',
-            height: '30%',
-            position: 'fixed',
-            margin: 'auto',
-            textAlign: 'center',
-          }}>
-            <CircularProgress thickness={10} size={100} />
-            <div>Initializing...</div>
-          </div>
-        </div>
-      )
+      return <Loading />
     }
 
     return (

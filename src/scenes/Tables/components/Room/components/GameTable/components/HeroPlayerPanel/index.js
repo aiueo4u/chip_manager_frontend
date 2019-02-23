@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { withStyles } from '@material-ui/core/styles'
+
 import PlayerMenuDialog from './playerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import './style.css';
+
+const styles = theme => ({
+  actionButton: {
+    textTransform: 'none',
+  },
+})
 
 class HeroPlayerPanel extends Component {
   componentDidMount() {
@@ -43,6 +52,7 @@ class HeroPlayerPanel extends Component {
       playerOnTurn,
       onMuckAction,
       onShowAction,
+      classes,
     } = this.props;
 
     let isHeroTurn = currentPlayer && currentPlayer.seat_no === gameTable.currentSeatNo
@@ -78,26 +88,56 @@ class HeroPlayerPanel extends Component {
 
           playerOnTurn && playerOnTurn.betSize > 0 ? (
             <div>
-              <Button variant="contained" className="foldButtonClass" onClick={resetBetSize}>リセット</Button>
-              <Button variant="contained" className="callButtonClass" onClick={dispatchBetAction}>ベット</Button>
+              <div className="foldButtonClass">
+                <Button className={classes.actionButton} variant="contained" onClick={resetBetSize}>Reset</Button>
+              </div>
+              <div className="callButtonClass">
+                <Button
+                  className={classes.actionButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={dispatchBetAction}
+                >
+                  Bet
+                </Button>
+              </div>
             </div>
           ) : playerOnTurn && gameTable.showOrMuck ? (
             <div>
-              <Button variant="contained" className="foldButtonClass" onClick={onMuckAction}>マック</Button>
-              <Button variant="contained" className="callButtonClass" onClick={onShowAction}>ショウ</Button>
+              <Button className={classes.actionButton} variant="contained" className="foldButtonClass" onClick={onMuckAction}>Muck</Button>
+              <Button className={classes.actionButton} variant="contained" className="callButtonClass" onClick={onShowAction}>Show</Button>
             </div>
           ) : (
             <div>
               <div className="foldButtonClass">
-                <Button variant="contained" onClick={onFoldAction}>フォールド</Button>
+                <Button
+                  className={classes.actionButton}
+                  variant="contained"
+                  color="secondary"
+                  onClick={onFoldAction}
+                >
+                  Fold
+                </Button>
               </div>
               {checkable ? (
                 <div className="callButtonClass">
-                  <Button variant="contained" onClick={onCheckAction}>チェック</Button>
+                  <Button
+                    className={classes.actionButton}
+                    variant="contained"
+                    onClick={onCheckAction}
+                  >
+                    Check
+                  </Button>
                 </div>
               ) : (
                 <div className="callButtonClass">
-                  <Button variant="contained" onClick={onCallAction}>コール</Button>
+                  <Button
+                    className={classes.actionButton}
+                    variant="contained"
+                    onClick={onCallAction}
+                  >
+                    Call
+                  </Button>
                 </div>
               )}
             </div>
@@ -122,32 +162,33 @@ class HeroPlayerPanel extends Component {
               alt='avatar'
             />
             <div className="heroPanelTextArea">
-              <div className='nickname'>{player.nickname}</div>
-              <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+              <div className='heroNickname'>{player.nickname}</div>
+              <div className='hero-player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
               {
                 isHeroTurn && (
                   <LinearProgress variant="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
                 )
               }
             </div>
-            {enabledWithCard && isMe && cards && cards.length === 2 && player.state !== 1 ? (
-              <div>
-                <div className="heroHoleCard1">
-                  <PokerCard rank={cards[0].rank} suit={cards[0].suit} />
-                </div>
-                <div className="heroHoleCard2">
-                  <PokerCard rank={cards[1].rank} suit={cards[1].suit} />
-                </div>
-              </div>
-            ) : (<div />)
+            {
+              enabledWithCard && isMe && cards && cards.length === 2 && player.state !== 1 && (
+                <React.Fragment>
+                  <div className="heroHoleCard1">
+                    <PokerCard rank={cards[0].rank} suit={cards[0].suit} />
+                  </div>
+                  <div className="heroHoleCard2">
+                    <PokerCard rank={cards[1].rank} suit={cards[1].suit} />
+                  </div>
+                </React.Fragment>
+              )
             }
           </div>
-          <PlayerMenuDialog
-            dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
-            player={player}
-            openBuyInDialog={openBuyInDialog}
-          />
         </div>
+        <PlayerMenuDialog
+          dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
+          player={player}
+          openBuyInDialog={openBuyInDialog}
+        />
       </div>
     )
   }
@@ -238,4 +279,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeroPlayerPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(HeroPlayerPanel))

@@ -34,6 +34,10 @@ class PlayerPanel extends Component {
       openPlayerMenuDialog,
       openingPlayerMenuDialogPlayerId,
       currentSeatNo,
+      leftSideStyle,
+      rightSideStyle,
+      topLeftSideStyle,
+      topRightSideStyle,
     } = this.props;
 
     const {
@@ -43,11 +47,13 @@ class PlayerPanel extends Component {
 
     // TODO
     /*
-    player.id = 123;
-    player.nickname = 'aiueo';
-    player.image_url = 'http://pbs.twimg.com/profile_images/802939485017079808/NdbKiaEp_normal.jpg';
-    player.stack = 12345;
-    player.bet_amount_in_state = 1234;
+    if (!player.id) {
+      player.id = 123;
+      player.nickname = 'aiueo';
+      player.image_url = 'https://pbs.twimg.com/profile_images/1051459451654295553/BSCtj42Z_400x400.jpg'
+      player.stack = 12345;
+      player.bet_amount_in_state = 1234;
+    }
     */
 
     // 空席の場合
@@ -81,13 +87,13 @@ class PlayerPanel extends Component {
     let handZIndex = showHand ? 500 : 5;
 
     let dealerButtonPositionClassName;
-    if (this.props.rightSideStyle) {
+    if (rightSideStyle) {
       dealerButtonPositionClassName = 'leftDealerButtonPosition';
-    } else if (this.props.leftSideStyle) {
+    } else if (leftSideStyle) {
       dealerButtonPositionClassName = 'rightDealerButtonPosition';
-    } else if (this.props.topLeftSideStyle) {
+    } else if (topLeftSideStyle) {
       dealerButtonPositionClassName = 'bottomRightDealerButtonPosition';
-    } else if (this.props.topRightSideStyle) {
+    } else if (topRightSideStyle) {
       dealerButtonPositionClassName = 'bottomLeftDealerButtonPosition';
     }
 
@@ -98,11 +104,11 @@ class PlayerPanel extends Component {
         width: '100%',
       }}>
       {inGame && enabledWithCard && !player.hand_show && player.state !== undefined && player.state !== 1 ? (
-          <div>
-            <div style={{ position: 'absolute', top: '2em', left: '1em', zIndex: handZIndex }}>
+          <div style={{ fontSize: '10px' }}>
+            <div style={{ position: 'absolute', top: '16px', left: 'calc(50% - 6px)', transform: 'translate(-50%, 0)', zIndex: handZIndex }}>
               <PokerCard invisible={!showHand} />
             </div>
-            <div style={{ position: 'absolute', top: '2em', left: '2em', zIndex: handZIndex }}>
+            <div style={{ position: 'absolute', top: '16px', left: 'calc(50% + 6px)', transform: 'translate(-50%, 0)', zIndex: handZIndex }}>
               <PokerCard invisible={!showHand} />
             </div>
           </div>
@@ -143,8 +149,12 @@ class PlayerPanel extends Component {
               <div>&hearts;</div>
             )}
             <div className="otherPlayerPanelTextArea">
-              <div className='nickname'>{player.nickname}</div>
-              <div className='player-stack'>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+              <div className='nickname'>
+                {player.nickname}
+              </div>
+              <div className='player-stack'>
+                {player.betSize ? player.stack - player.betSize : player.stack}
+              </div>
               {isPlayerTurn ? (
                 <LinearProgress variant="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
               ) : (<div />)
@@ -160,30 +170,35 @@ class PlayerPanel extends Component {
           }
 
           {/* ベット額 */}
-          {inGame && (player.bet_amount_in_state || player.betSize) ? (
-            <div style={{
-              position: 'absolute',
-              bottom: this.props.topLeftSideStyle || this.props.topRightSideStyle ? '-3.3rem' : '-1.5rem',
-              right: this.props.rightSideStyle || this.props.topRightSideStyle ? '1rem' : '-1rem',
-            }}>
-              {player.betSize ? (
-                <span className="otherPlayerBetArea">
-                  {player.bet_amount_in_state || 0} -> {player.bet_amount_in_state + player.betSize}
-                </span>
-              ) : (
-                <span className="otherPlayerBetArea">
-                  {player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ''}
-                </span>
-              )}
-            </div>
-          ) : (<div />)
+          {
+            inGame && (player.bet_amount_in_state || player.betSize) && (
+              <div
+                className={`
+                  betAmountArea
+                  ${topRightSideStyle ? 'topRightSide' : ''}
+                  ${topLeftSideStyle ? 'topLeftSide' : ''}
+                  ${rightSideStyle ? 'rightSide' : ''}
+                  ${leftSideStyle ? 'leftSide' : ''}
+                `}
+              >
+                {player.betSize ? (
+                  <span className="otherPlayerBetArea">
+                    {player.bet_amount_in_state || 0} -> {player.bet_amount_in_state + player.betSize}
+                  </span>
+                ) : (
+                  <span className="otherPlayerBetArea">
+                    {player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ''}
+                  </span>
+                )}
+              </div>
+            )
           }
-          <PlayerMenuDialog
-            dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
-            player={player}
-            openBuyInDialog={openBuyInDialog}
-          />
         </div>
+        <PlayerMenuDialog
+          dialogOpen={openingPlayerMenuDialogPlayerId === player.id}
+          player={player}
+          openBuyInDialog={openBuyInDialog}
+        />
       </div>
     )
   }

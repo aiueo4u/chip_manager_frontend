@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Button from '@material-ui/core/Button';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@material-ui/core'
 
 class PlayerMenuDialog extends Component {
   render() {
@@ -21,10 +25,14 @@ class PlayerMenuDialog extends Component {
         <DialogTitle>
           {"Player " + player.nickname}
         </DialogTitle>
-        <div>Stack {player.stack}</div>
-        <Button variant="flat" color="primary" onClick={switchToBuyInDialog}>
-          チップ量調整
-        </Button>
+        <DialogContent>
+          <div>Stack {player.stack}</div>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="primary" onClick={switchToBuyInDialog}>
+            チップ量調整
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

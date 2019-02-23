@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button'
+import {
+  Typography,
+} from '@material-ui/core'
 
 import PlayerPanel from './components/PlayerPanel';
 import HeroPlayerPanel from './components/HeroPlayerPanel';
@@ -116,21 +119,15 @@ class GameTable extends Component {
             </div>
 
             <div className="middlePlayerContainer">
-              <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
-                <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                  <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(3)} leftSideStyle={true} />
-                  </div>
+              <div className="flex-column-container" style={{ 'width': '20vw', maxWidth: '200px', height: '100%' }}>
+                <div style={{ height: '16vh', width: '15vw' }}>
+                  <PlayerPanel {...playerPanelProps(3)} leftSideStyle={true} />
                 </div>
-                <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                  <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(2)} leftSideStyle={true} />
-                  </div>
+                <div style={{ height: '16vh', width: '15vw' }}>
+                  <PlayerPanel {...playerPanelProps(2)} leftSideStyle={true} />
                 </div>
-                <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                  <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(1)} leftSideStyle={true} />
-                  </div>
+                <div style={{ height: '16vh', width: '15vw' }}>
+                  <PlayerPanel {...playerPanelProps(1)} leftSideStyle={true} />
                 </div>
               </div>
               <div className="flex-column-container" style={{ 'width': '10vw' }}>
@@ -161,7 +158,9 @@ class GameTable extends Component {
                         {!inGame ? (
                             <Button
                               variant="contained"
+                              color="primary"
                               onClick={onGameStart}
+                              style={{ textTransform: 'none' }}
                             >
                               Start
                             </Button>
@@ -174,17 +173,16 @@ class GameTable extends Component {
                             'justifyContent': 'space-around',
                             height: '100%',
                           }}>
-                            <div>Game {gameTable.gameHandCount}</div>
-                            <div>
+                            <Typography variant="h5">Game {gameTable.gameHandCount}</Typography>
+                            <Typography variant="h6">
                               {roundToReadable(gameTable.round)}
-                            </div>
+                            </Typography>
                             <div style={{
-                              fontSize: '1.4rem',
-                              'fontWeight': 'bold',
+                              fontSize: '1.25rem',
                               color: 'white',
                               background: 'rgba(0, 0, 0, 0.7)',
-                              borderRadius: '0.5rem',
-                              padding: '0.5rem',
+                              borderRadius: '2px',
+                              padding: '2px',
                             }}>
                               {gameTable.pot}
                             </div>
@@ -222,21 +220,15 @@ class GameTable extends Component {
               </div>
               <div className="flex-column-container" style={{ 'width': '10vw' }}>
               </div>
-              <div className="flex-column-container" style={{ 'width': '20vw', height: '100%' }}>
-                <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                  <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(6)} rightSideStyle={true} />
-                  </div>
+              <div className="flex-column-container" style={{ 'width': '20vw', maxWidth: '200px', height: '100%' }}>
+                <div style={{ height: '16vh', width: '75%', marginLeft: 'auto' }}>
+                  <PlayerPanel {...playerPanelProps(6)} rightSideStyle={true} />
                 </div>
-                <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                  <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(7)} rightSideStyle={true} />
-                  </div>
+                <div style={{ height: '16vh', width: '75%', marginLeft: 'auto' }}>
+                  <PlayerPanel {...playerPanelProps(7)} rightSideStyle={true} />
                 </div>
-                <div style={{ height: '16vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                  <div style={{ width: '15vw', height: '15vw', margin: '0 auto' }}>
-                    <PlayerPanel {...playerPanelProps(8)} rightSideStyle={true} />
-                  </div>
+                <div style={{ height: '16vh', width: '75%', marginLeft: 'auto' }}>
+                  <PlayerPanel {...playerPanelProps(8)} rightSideStyle={true} />
                 </div>
               </div>
             </div>

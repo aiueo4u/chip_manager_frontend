@@ -1,10 +1,30 @@
 import React from 'react';
-import './style.css';
+import {
+  Grid,
+  Typography,
+} from '@material-ui/core'
+import { withStyles } from '@material-ui/core/styles'
 
-const DealerButtonPlate = () => (
-  <div className="dealer-button-plate">
-    D
-  </div>
+const styles = theme => ({
+  plate: {
+    width: '24px',
+    margin: 'auto',
+    background: theme.palette.common.white,
+    textAlign: 'center',
+    borderRadius: '50%',
+    boxShadow: '1px 1px 1px 1px black',
+  },
+  label: {
+    lineHeight: '24px',
+  },
+})
+
+const DealerButtonPlate = ({ classes }) => (
+  <Grid container className={classes.plate} direction="column" justify="center">
+    <Grid item>
+      <Typography className={classes.label}>D</Typography>
+    </Grid>
+  </Grid>
 )
 
-export default DealerButtonPlate;
+export default withStyles(styles)(DealerButtonPlate)

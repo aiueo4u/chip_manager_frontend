@@ -39,7 +39,7 @@ class BuyInDialog extends Component {
         </DialogContent>
         <DialogActions>
           <div style={{ textAlign: 'right' }}>
-            <Button variant="flat" onClick={onRequestClose}>
+            <Button onClick={onRequestClose}>
               キャンセル
             </Button>
             <Button variant="contained" color="primary" onClick={() => onSubmitTakeSeat(buyInAmount)}>
