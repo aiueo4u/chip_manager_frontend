@@ -9,7 +9,7 @@ const facebookLoginButtonStyle = {
 const FacebookLoginButton = () => (
   <div>
     <a href={FACEBOOK_LOGIN_ENDPOINT}>
-      <Button variant="raised" color="primary" style={facebookLoginButtonStyle}>Facebook Login</Button>
+      <Button variant="contained" color="primary" style={facebookLoginButtonStyle}>Facebook Login</Button>
     </a>
   </div>
 )

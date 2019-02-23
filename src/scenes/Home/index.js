@@ -33,20 +33,20 @@ const Home = ({ nickname }) => (
     <div style={homeStyle}>
       <div style={{ margin: '5vh' }}>
         <Link to="/newTable">
-          <Button variant="raised">
+          <Button variant="contained">
             新規テーブル作成
           </Button>
         </Link>
       </div>
       <div style={{ margin: '5vh' }}>
         <Link to="/tables">
-          <Button variant="raised">
+          <Button variant="contained">
             テーブル一覧
           </Button>
         </Link>
       </div>
       <div style={{ margin: '5vh' }}>
-        <Button variant="raised" onClick={clearAllData}>
+        <Button variant="contained" onClick={clearAllData}>
           ログアウト
         </Button>
       </div>

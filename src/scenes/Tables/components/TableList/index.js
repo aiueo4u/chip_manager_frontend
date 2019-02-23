@@ -67,7 +67,7 @@ class TableList extends Component {
               <TableRow key={table.id}>
                 <TableCell>
                   <Link to={`${match.url}/${table.id}`}>
-                    <Button variant="raised">
+                    <Button variant="contained">
                       {table.name || table.id}
                     </Button>
                   </Link>

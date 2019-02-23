@@ -61,7 +61,7 @@ class HeroPlayerPanel extends Component {
         return <div />
       } else {
         const seat_label = "No " + player.seat_no
-        return <Button variant="raised" onClick={openBuyInDialog}>{seat_label}</Button>
+        return <Button variant="contained" onClick={openBuyInDialog}>{seat_label}</Button>
       }
     }
 
@@ -78,26 +78,26 @@ class HeroPlayerPanel extends Component {
 
           playerOnTurn && playerOnTurn.betSize > 0 ? (
             <div>
-              <Button variant="raised" className="foldButtonClass" onClick={resetBetSize}>リセット</Button>
-              <Button variant="raised" className="callButtonClass" onClick={dispatchBetAction}>ベット</Button>
+              <Button variant="contained" className="foldButtonClass" onClick={resetBetSize}>リセット</Button>
+              <Button variant="contained" className="callButtonClass" onClick={dispatchBetAction}>ベット</Button>
             </div>
           ) : playerOnTurn && gameTable.showOrMuck ? (
             <div>
-              <Button variant="raised" className="foldButtonClass" onClick={onMuckAction}>マック</Button>
-              <Button variant="raised" className="callButtonClass" onClick={onShowAction}>ショウ</Button>
+              <Button variant="contained" className="foldButtonClass" onClick={onMuckAction}>マック</Button>
+              <Button variant="contained" className="callButtonClass" onClick={onShowAction}>ショウ</Button>
             </div>
           ) : (
             <div>
               <div className="foldButtonClass">
-                <Button variant="raised" onClick={onFoldAction}>フォールド</Button>
+                <Button variant="contained" onClick={onFoldAction}>フォールド</Button>
               </div>
               {checkable ? (
                 <div className="callButtonClass">
-                  <Button variant="raised" onClick={onCheckAction}>チェック</Button>
+                  <Button variant="contained" onClick={onCheckAction}>チェック</Button>
                 </div>
               ) : (
                 <div className="callButtonClass">
-                  <Button variant="raised" onClick={onCallAction}>コール</Button>
+                  <Button variant="contained" onClick={onCallAction}>コール</Button>
                 </div>
               )}
             </div>

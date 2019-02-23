@@ -160,7 +160,7 @@ class GameTable extends Component {
                       }}>
                         {!inGame ? (
                             <Button
-                              variant="raised"
+                              variant="contained"
                               onClick={onGameStart}
                             >
                               Start
@@ -191,7 +191,7 @@ class GameTable extends Component {
                             {
                               !gameTable.dealCards && (
                                 <div>
-                                  <Button variant="raised" color="primary" onClick={openUndoDialog}>
+                                  <Button variant="contained" color="primary" onClick={openUndoDialog}>
                                     Undo
                                   </Button>
                                 </div>

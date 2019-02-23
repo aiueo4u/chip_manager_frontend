@@ -42,7 +42,7 @@ class BuyInDialog extends Component {
             <Button variant="flat" onClick={onRequestClose}>
               キャンセル
             </Button>
-            <Button variant="raised" color="primary" onClick={() => onSubmitTakeSeat(buyInAmount)}>
+            <Button variant="contained" color="primary" onClick={() => onSubmitTakeSeat(buyInAmount)}>
               着席
             </Button>
           </div>

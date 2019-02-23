@@ -59,7 +59,7 @@ class PlayerPanel extends Component {
       } else {
         let seat_label = "No " + player.seat_no;
         return (
-          <Button variant="raised" onClick={openBuyInDialog}>{seat_label}</Button>
+          <Button variant="contained" onClick={openBuyInDialog}>{seat_label}</Button>
         )
       }
     }

@@ -66,7 +66,7 @@ class CreateTableForm extends Component {
                 <TextField name="bigBlindTextField" placeholder="BB" />
               </div>
               <div>
-                <Button variant="raised" component="label">
+                <Button variant="contained" component="label">
                   テーブル作成
                   <input type="submit" style={styles.submitInput} />
                 </Button>

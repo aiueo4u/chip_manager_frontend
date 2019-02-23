@@ -58,7 +58,7 @@ class LoginForm extends Component {
           <br />
           <form onSubmit={handleSubmit}>
             <TextField name="playerNicknameTextField" placeholder="Your nickname" />
-            <Button variant="raised" component="label">
+            <Button variant="contained" component="label">
               デバッグログイン
               <input type="submit" style={styles.submitInput} />
             </Button>
