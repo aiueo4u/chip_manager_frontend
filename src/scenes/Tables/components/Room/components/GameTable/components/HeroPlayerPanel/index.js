@@ -104,8 +104,12 @@ class HeroPlayerPanel extends Component {
             </div>
           ) : playerOnTurn && gameTable.showOrMuck ? (
             <div>
-              <Button className={classes.actionButton} variant="contained" className="foldButtonClass" onClick={onMuckAction}>Muck</Button>
-              <Button className={classes.actionButton} variant="contained" className="callButtonClass" onClick={onShowAction}>Show</Button>
+              <div className="foldButtonClass">
+                <Button className={classes.actionButton} variant="contained" onClick={onMuckAction}>Muck</Button>
+              </div>
+              <div className="callButtonClass">
+                <Button className={classes.actionButton} variant="contained" onClick={onShowAction}>Show</Button>
+              </div>
             </div>
           ) : (
             <div>
