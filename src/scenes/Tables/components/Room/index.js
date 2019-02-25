@@ -54,10 +54,6 @@ class Room extends Component {
       connected() {
         console.debug("Chip Channel connected")
 
-        setInterval(() => {
-          this.refresh()
-        }, 5000);
-
         onActionCableConnected();
       },
       disconnected() {
@@ -77,9 +73,6 @@ class Room extends Component {
         }
       },
       rejected(data) { console.debug("Chip Channel rejected", data) },
-      refresh() {
-        this.perform('refresh')
-      },
     });
 
     // 配られるカード専用のチャンネル
