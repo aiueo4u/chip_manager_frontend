@@ -56,6 +56,7 @@
   text-align: center;
   height: 100%;
   width: 100%;
+  filter: grayscale(100%);
 }
 
 .activeHeroPanel {
@@ -102,14 +103,14 @@
 
 .foldButtonClass {
   position: absolute;
+  top: 65px;
   left: 24px;
-  bottom: 16px;
   z-index: 1000;
 }
 
 .callButtonClass {
   position: absolute;
+  top: 65px;
   right: 24px;
-  bottom: 16px;
   z-index: 1000;
 }

@@ -65,6 +65,14 @@ export const takeSeatToGameDealer = (action) => {
   return post('/game_dealer/take_seat', {}, body)
 }
 
+export const addNpcPlayer = (params) => {
+  let body = new FormData()
+  for (let key in params) {
+    body.append(key, params[key])
+  }
+  return post('/game_dealer/add_npc_player', {}, body)
+}
+
 export const actionToGameDealer = (action) => {
   let body = new FormData();
   for (let key in action) {

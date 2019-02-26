@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
+
+import {
+  Button,
+} from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress';
+
 import PlayerMenuDialog from './playerMenuDialog';
+import EmptySeatMenu from './components/EmptySeatMenu'
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import './style.css';
@@ -30,6 +35,7 @@ class PlayerPanel extends Component {
     const { enabledWithCard, isSeated, player, openBuyInDialog } = this.props;
 
     const {
+      tableId,
       //currentPlayer,
       openPlayerMenuDialog,
       openingPlayerMenuDialogPlayerId,
@@ -60,7 +66,7 @@ class PlayerPanel extends Component {
     if (!player.id) {
       // 自分が着席済みの場合
       if (isSeated) {
-        return (<div></div>)
+        return <EmptySeatMenu tableId={tableId} player={player} />
       // 自分が未着席の場合
       } else {
         let seat_label = "No " + player.seat_no;

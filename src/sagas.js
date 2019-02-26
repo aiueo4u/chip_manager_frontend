@@ -7,6 +7,7 @@ import {
   actionToGameDealer,
   startToGameDealer,
   takeSeatToGameDealer,
+  addNpcPlayer,
 } from './api';
 
 function *handleRequestTableCreate(action) {
@@ -185,6 +186,21 @@ function *handlePlayerTakeSeat(action) {
   }
 }
 
+function *handleAddNpcPlayer(action) {
+  let params = {
+    type: "PLAYER_ACTION_TAKE_SEAT",
+    table_id: action.tableId,
+    seat_no: action.seatNo,
+  }
+
+  try {
+    yield call(addNpcPlayer, params)
+    yield put({ type: "ON_SUCCESS_ADD_NPC_PLAYER" })
+  } catch(error) {
+    yield put({ type: "ON_FAILURE_ADD_NPC_PLAYER" })
+  }
+}
+
 function *handleFetchPlayer() {
   try {
     const json = yield call(initialLogin);
@@ -223,4 +239,5 @@ export default function *rootSage() {
   yield takeEvery("TAKE_POT_ACTION", handleTakePotAction);
   yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);
   yield takeEvery("UNDO_PLAYER_ACTION", handleUndoPlayerAction);
+  yield takeEvery("ADD_NPC_PLAYER", handleAddNpcPlayer)
 }
