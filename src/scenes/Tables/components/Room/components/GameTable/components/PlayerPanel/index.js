@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import {
+  Avatar,
   Button,
+  Paper,
+  Typography,
 } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
@@ -152,7 +155,18 @@ class PlayerPanel extends Component {
                 alt='avatar'
               />
             ) : (
-              <div>&hearts;</div>
+              <Paper
+                style={{
+                  height: '50px',
+                  width: '50px',
+                  margin: 'auto',
+                  borderRadius: '50%',
+                  border: '1px solid white',
+                  background: 'black',
+                }}
+              >
+                <Typography style={{ color: 'white', lineHeight: '50px' }}>AI</Typography>
+              </Paper>
             )}
             <div className="otherPlayerPanelTextArea">
               <div className='nickname'>
