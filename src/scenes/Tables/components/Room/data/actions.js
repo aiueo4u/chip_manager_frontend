@@ -37,10 +37,11 @@ export const playerActionReceived = (data) => {
     deal_cards,
     show_or_muck,
     reached_rounds,
+    last_action,
   } = data;
 
   return {
-    type: "PLAYER_ACTION_RECEIVED",
+    type: "BEFORE_PLAYER_ACTION_RECEIVED",
     pot: pot,
     gameHandState: game_hand_state,
     round: game_hand_state, // TODO,
@@ -54,6 +55,7 @@ export const playerActionReceived = (data) => {
     dealCards: deal_cards,
     showOrMuck: show_or_muck,
     reachedRounds: reached_rounds,
+    lastAction: last_action,
   };
 }
 

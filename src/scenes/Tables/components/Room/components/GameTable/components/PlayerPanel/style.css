@@ -27,6 +27,12 @@
   background-color: #aaaaaa;
 }
 
+.actionTypeLabel {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
 .nickname {
   font-size: 0.625rem;
   color: #ffffff;
@@ -69,6 +75,9 @@
 }
 
 .otherPlayerPanelTextArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background: rgba(0, 0, 0, 0.6);
   border-radius: 2px;
   z-index: 10;
@@ -76,6 +85,7 @@
   top: 35px;
   left: 50%;
   transform: translate(-50%, 0);
+  height: 3rem;
   width: 80px;
   max-width: 100%;
   margin: auto;

@@ -35,9 +35,11 @@ class PlayerPanel extends Component {
   }
 
   render() {
-    const { enabledWithCard, isSeated, player, openBuyInDialog } = this.props;
-
     const {
+      enabledWithCard,
+      isSeated,
+      player,
+      openBuyInDialog,
       tableId,
       //currentPlayer,
       openPlayerMenuDialog,
@@ -169,15 +171,23 @@ class PlayerPanel extends Component {
               </Paper>
             )}
             <div className="otherPlayerPanelTextArea">
-              <div className='nickname'>
-                {player.nickname}
-              </div>
-              <div className='player-stack'>
-                {player.betSize ? player.stack - player.betSize : player.stack}
-              </div>
-              {isPlayerTurn ? (
-                <LinearProgress variant="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
-              ) : (<div />)
+              {
+                player.actionType ? (
+                  <div className="actionTypeLabel">{player.actionType}</div>
+                ) : (
+                  <React.Fragment>
+                    <div className='nickname'>
+                      {player.nickname}
+                    </div>
+                    <div className='player-stack'>
+                      {player.betSize ? player.stack - player.betSize : player.stack}
+                    </div>
+                    {isPlayerTurn ? (
+                      <LinearProgress variant="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
+                    ) : (<div />)
+                    }
+                  </React.Fragment>
+                )
               }
             </div>
           </div>

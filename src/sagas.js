@@ -1,4 +1,5 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { eventChannel, END } from 'redux-saga'
+import { call, put, take, takeEvery } from 'redux-saga/effects'
 import {
   tableCreate,
   submitLogin,
@@ -224,6 +225,39 @@ function *handleGameStartButtonClicked(action) {
   }
 }
 
+function sleepTimer(seconds) {
+  return eventChannel(emitter => {
+      const iv = setInterval(() => {
+        emitter(END)
+      }, 1000 * seconds)
+
+    return () => { clearInterval(iv) }
+    }
+  )
+}
+
+function *handleBeforePlayerActionReceived(action) {
+  let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
+  yield put(object)
+
+  yield put({
+    type: "OTHER_PLAYER_ACTION",
+    actionType: action.lastAction.action_type,
+    playerId: action.lastAction.player_id,
+  })
+
+  try {
+    const channel = yield call(sleepTimer, 2)
+    yield take(channel)
+  } finally {
+    yield put({
+      type: "OTHER_PLAYER_ACTION",
+      actionType: null,
+      playerId: action.lastAction.player_id,
+    })
+  }
+}
+
 export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
@@ -240,4 +274,5 @@ export default function *rootSage() {
   yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);
   yield takeEvery("UNDO_PLAYER_ACTION", handleUndoPlayerAction);
   yield takeEvery("ADD_NPC_PLAYER", handleAddNpcPlayer)
+  yield takeEvery("BEFORE_PLAYER_ACTION_RECEIVED", handleBeforePlayerActionReceived)
 }
