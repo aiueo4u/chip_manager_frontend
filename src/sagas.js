@@ -237,24 +237,23 @@ function sleepTimer(seconds) {
 }
 
 function *handleBeforePlayerActionReceived(action) {
-  let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
-  yield put(object)
-
-  yield put({
-    type: "OTHER_PLAYER_ACTION",
-    actionType: action.lastAction.action_type,
-    playerId: action.lastAction.player_id,
-  })
-
-  try {
-    const channel = yield call(sleepTimer, 2)
-    yield take(channel)
-  } finally {
+  if (action.lastAction && action.lastAction.action_type !== 'blind' && action.lastAction.action_type !== 'taken') {
     yield put({
       type: "OTHER_PLAYER_ACTION",
-      actionType: null,
+      actionType: action.lastAction.action_type,
       playerId: action.lastAction.player_id,
     })
+
+    try {
+      const channel = yield call(sleepTimer, 0.8)
+      yield take(channel)
+    } finally {
+      let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
+      yield put(object)
+    }
+  } else {
+    let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
+    yield put(object)
   }
 }
 

@@ -129,8 +129,7 @@
   height: 1.5rem;
   width: 1.5rem;
   z-index: 100;
-  bottom: -2.8rem;
-  right: 0;
+  bottom: -3.4rem;
 }
 
 .bottomLeftDealerButtonPosition {
@@ -138,8 +137,7 @@
   height: 1.5rem;
   width: 1.5rem;
   z-index: 100;
-  bottom: -2.8rem;
-  left: 0;
+  bottom: -3.4rem;
 }
 
 .rightDealerButtonPosition {
