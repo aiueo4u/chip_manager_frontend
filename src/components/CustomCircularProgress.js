@@ -12,7 +12,7 @@ const CustomCircularProgress = () => (
       margin: 'auto',
       textAlign: 'center',
     }}>
-      <CircularProgress thickness={8} size={80} />
+      <CircularProgress thickness={4} size={40} />
     </div>
   </div>
 )

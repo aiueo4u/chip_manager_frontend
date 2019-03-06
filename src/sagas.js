@@ -1,5 +1,5 @@
 import { eventChannel, END } from 'redux-saga'
-import { call, put, take, takeEvery } from 'redux-saga/effects'
+import { all, call, put, take, takeEvery } from 'redux-saga/effects'
 import {
   tableCreate,
   submitLogin,
@@ -236,7 +236,37 @@ function sleepTimer(seconds) {
   )
 }
 
+function *openBoardCard(reachedRounds, boardCards, time) {
+  try {
+    const channel = yield call(sleepTimer, time)
+    yield take(channel)
+  } finally {
+    yield put({
+      type: "OPEN_BOARD_CARD_BY_ROUND",
+      reachedRounds: reachedRounds,
+      boardCards: boardCards,
+    })
+  }
+}
+
 function *handleBeforePlayerActionReceived(action) {
+  // ALLIN時のボードオープン用
+  if (action.justActioned && action.reachingRounds.length > 0) {
+    let reachedRounds = {}
+    yield all(action.reachingRounds.map((round, i) => {
+      reachedRounds = Object.assign({}, reachedRounds)
+      reachedRounds[round] = true
+      return call(openBoardCard, reachedRounds, action.boardCards, i * 2)
+    }))
+    try {
+      const channel = yield call(sleepTimer, 2)
+      yield take(channel)
+    } finally {
+      yield put(Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" }))
+      return
+    }
+  }
+
   if (action.lastAction && action.lastAction.action_type !== 'blind' && action.lastAction.action_type !== 'taken') {
     yield put({
       type: "OTHER_PLAYER_ACTION",

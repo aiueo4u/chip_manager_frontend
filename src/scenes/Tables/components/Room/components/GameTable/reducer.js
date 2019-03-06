@@ -20,6 +20,11 @@ const GameTableReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         dealtCards: dealtCards,
       });
+    case 'OPEN_BOARD_CARD_BY_ROUND':
+      return Object.assign({}, state, {
+        reachedRounds: action.reachedRounds,
+        boardCards: action.boardCards,
+      })
     case 'PLAYER_ACTION_RECEIVED':
       return Object.assign({}, state, {
         isReady: true,

@@ -35,21 +35,27 @@ const PlayerReducer = (state = initialState, action) => {
       }
       return Object.assign({}, player, { betSize: betSize });
     case 'CHECK_ACTION':
-      return Object.assign({}, player, { isFetching: true });
+      return Object.assign({}, player, { isFetching: true, isHiddenPanel: true });
     case 'CHECK_ACTION_COMPLETED':
       return Object.assign({}, player, { isFetching: false });
     case 'CHECK_ACTION_FAILED':
       return Object.assign({}, player, { isFetching: false });
     case 'BET_ACTION':
-      return Object.assign({}, player, { isFetching: true });
+      return Object.assign({}, player, { isFetching: true, isHiddenPanel: true });
+    case 'BET_ACTION_COMPLETED':
+      return Object.assign({}, player, { isFetching: false });
     case 'BET_ACTION_FAILED':
       return Object.assign({}, player, { isFetching: false });
     case 'CALL_ACTION':
-      return Object.assign({}, player, { isFetching: true });
+      return Object.assign({}, player, { isFetching: true, isHiddenPanel: true });
+    case 'CALL_ACTION_COMPLETED':
+      return Object.assign({}, player, { isFetching: false });
     case 'CALL_ACTION_FAILED':
       return Object.assign({}, player, { isFetching: false });
     case 'FOLD_ACTION':
-      return Object.assign({}, player, { isFetching: true });
+      return Object.assign({}, player, { isFetching: true, isHiddenPanel: true });
+    case 'FOLD_ACTION_COMPLETED':
+      return Object.assign({}, player, { isFetching: false });
     case 'FOLD_ACTION_FAILED':
       return Object.assign({}, player, { isFetching: false });
     case 'UNDO_PLAYER_ACTION':
@@ -88,14 +94,18 @@ const PlayersReducer = (state = [], action) => {
     case 'BET_ACTION':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'BET_ACTION_COMPLETED':
-      return state;
+      return state.map((player) => { return PlayerReducer(player, action) });
     case 'BET_ACTION_FAILED':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'CALL_ACTION':
       return state.map((player) => { return PlayerReducer(player, action) });
+    case 'CALL_ACTION_COMPLETED':
+      return state.map((player) => { return PlayerReducer(player, action) });
     case 'CALL_ACTION_FAILED':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'FOLD_ACTION':
+      return state.map((player) => { return PlayerReducer(player, action) });
+    case 'FOLD_ACTION_COMPLETED':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'FOLD_ACTION_FAILED':
       return state.map((player) => { return PlayerReducer(player, action) });

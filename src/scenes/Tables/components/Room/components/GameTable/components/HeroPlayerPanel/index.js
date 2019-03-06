@@ -111,6 +111,8 @@ class HeroPlayerPanel extends Component {
                 <Button className={classes.actionButton} variant="contained" onClick={onShowAction}>Show</Button>
               </div>
             </div>
+          ) : currentPlayer.isHiddenPanel ? (
+            <div />
           ) : (
             <div>
               <div className="foldButtonClass">

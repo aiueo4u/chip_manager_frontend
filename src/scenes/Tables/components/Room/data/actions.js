@@ -37,7 +37,9 @@ export const playerActionReceived = (data) => {
     deal_cards,
     show_or_muck,
     reached_rounds,
+    reaching_rounds,
     last_action,
+    just_actioned,
   } = data;
 
   return {
@@ -56,6 +58,8 @@ export const playerActionReceived = (data) => {
     showOrMuck: show_or_muck,
     reachedRounds: reached_rounds,
     lastAction: last_action,
+    reachingRounds: reaching_rounds,
+    justActioned: just_actioned,
   };
 }
 

@@ -48,6 +48,7 @@ class PlayerPanel extends Component {
       rightSideStyle,
       topLeftSideStyle,
       topRightSideStyle,
+      gameHandState,
     } = this.props;
 
     const {
@@ -198,6 +199,24 @@ class PlayerPanel extends Component {
             ) : (<div />)
           }
 
+          {/* チップ増減結果 */}
+          {
+            gameHandState === 'finished' && player.amount_diff && (
+              <div className={`
+                  betAmountArea
+                  ${player.amount_diff > 0 ? 'resultChipAmountPlus' : 'resultChipAmountMinus'}
+                  ${topRightSideStyle ? 'topRightSide' : ''}
+                  ${topLeftSideStyle ? 'topLeftSide' : ''}
+                  ${rightSideStyle ? 'rightSide' : ''}
+                  ${leftSideStyle ? 'leftSide' : ''}
+                `}>
+                {
+                  player.amount_diff > 0 && <span>+</span>
+                }
+                {player.amount_diff}
+              </div>
+            )
+          }
           {/* ベット額 */}
           {
             inGame && (player.bet_amount_in_state || player.betSize) && (

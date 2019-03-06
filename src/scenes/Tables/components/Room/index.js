@@ -171,6 +171,8 @@ class Room extends Component {
 
             currentPlayer.isFetching ? (
               <CustomCircularProgress />
+            ) : currentPlayer.isHiddenPanel ? (
+              <div />
             ) : (
               <ChipAmountControlContainer
                 key={currentPlayer.id}

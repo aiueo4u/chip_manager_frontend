@@ -76,6 +76,7 @@ class GameTable extends Component {
         cards: gameTable.dealtCards[playerId],
         enabledWithCard: gameTable.dealCards,
         buttonSeatNo: gameTable.buttonSeatNo,
+        gameHandState: gameTable.gameHandState,
       };
     };
 
@@ -84,6 +85,7 @@ class GameTable extends Component {
         inGame: inGame,
         buttonSeatNo: gameTable.buttonSeatNo,
         player: sortedPlayers[index],
+        gameHandState: gameTable.gameHandState,
       };
     }
 
