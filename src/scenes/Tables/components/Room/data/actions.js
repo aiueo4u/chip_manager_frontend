@@ -40,6 +40,7 @@ export const playerActionReceived = (data) => {
     reaching_rounds,
     last_action,
     just_actioned,
+    table_id,
   } = data;
 
   return {
@@ -60,6 +61,7 @@ export const playerActionReceived = (data) => {
     lastAction: last_action,
     reachingRounds: reaching_rounds,
     justActioned: just_actioned,
+    tableId: table_id,
   };
 }
 

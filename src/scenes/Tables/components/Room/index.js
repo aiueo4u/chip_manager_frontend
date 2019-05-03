@@ -233,9 +233,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onShowResultDialogReceived: (data) => {
       dispatch(showResultDialogReceived(data))
-      setTimeout(() => {
-        dispatch({ type: "SETUP_GAME_START_TIMER", tableId: tableId, seconds: 5 })
-      }, 2000)
     },
     onGameStart: () => {
       dispatch(gameStartButtonClicked(tableId));

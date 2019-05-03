@@ -263,6 +263,7 @@ function *handleBeforePlayerActionReceived(action) {
       yield take(channel)
     } finally {
       yield put(Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" }))
+      yield put({ type: "SETUP_GAME_START_TIMER", tableId: action.tableId, seconds: 10 })
       return
     }
   }
@@ -280,10 +281,16 @@ function *handleBeforePlayerActionReceived(action) {
     } finally {
       let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
       yield put(object)
+      if (action.gameHandState === 'finished') {
+        yield put({ type: "SETUP_GAME_START_TIMER", tableId: action.tableId, seconds: 5 })
+      }
     }
   } else {
     let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
     yield put(object)
+    if (action.gameHandState === 'finished') {
+      yield put({ type: "SETUP_GAME_START_TIMER", tableId: action.tableId, seconds: 5 })
+    }
   }
 }
 
