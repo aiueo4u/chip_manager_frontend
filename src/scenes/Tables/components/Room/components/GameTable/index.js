@@ -13,21 +13,8 @@ import BuyInDialog from './components/BuyInDialog';
 import './style.css';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import BoardCardArea from './components/BoardCardArea';
+import GameStartCountdown from './components/GameStartCountdown'
 
-const roundToReadable = (round) => {
-  switch (round) {
-    case 'preflop':
-      return "Preflop";
-    case 'flop':
-      return "Flop";
-    case 'turn':
-      return "Turn";
-    case 'river':
-      return "River";
-    default:
-      return round;
-  }
-}
 
 class GameTable extends Component {
   render() {
@@ -42,6 +29,8 @@ class GameTable extends Component {
       players,
       inGame,
       onGameStart,
+      isOpenGameStartCountdown,
+      timeToStart,
     } = this.props
 
     // TODO: リファクタしたい。。。自分を中心に並び替えてる
@@ -132,11 +121,9 @@ class GameTable extends Component {
                   <PlayerPanel {...playerPanelProps(1)} leftSideStyle={true} />
                 </div>
               </div>
-              <div className="flex-column-container" style={{ 'width': '10vw' }}>
-              </div>
               <div
                 className="flex-center-container"
-                style={{ 'width': '25vw', 'position': 'relative' }}
+                style={{ 'width': '45vw', 'position': 'relative' }}
               >
                 {
                   !inGame && players.length < 2 ? (
@@ -153,11 +140,11 @@ class GameTable extends Component {
                         position: 'absolute',
                         top: '0',
                         borderRadius: '0.5em',
-                        //background: 'rgba(200, 200, 200, 0.3)',
                         height: '30%',
                         width: '100%',
                       }}>
-                        {!inGame ? (
+                        { /* 次のハンド開始ボタン */
+                          !inGame && (
                             <Button
                               variant="contained"
                               color="primary"
@@ -166,39 +153,45 @@ class GameTable extends Component {
                             >
                               Start
                             </Button>
-                          ) : (<div />)
+                          )
                         }
-                        {gameTable.round !== 'init' ? (
-                          <div style={{
-                            display: 'flex',
-                            'flexDirection': 'column',
-                            'justifyContent': 'space-around',
-                            height: '100%',
-                          }}>
-                            <Typography variant="h5">Game {gameTable.gameHandCount}</Typography>
-                            <Typography variant="h6">
-                              {roundToReadable(gameTable.round)}
-                            </Typography>
+
+                        { /* 次のハンド自動開始までのカウントダウン */
+                          isOpenGameStartCountdown && (
+                            <GameStartCountdown count={timeToStart}/>
+                          )
+                        }
+
+                        {
+                          gameTable.round !== 'init' && (
                             <div style={{
-                              fontSize: '1.25rem',
-                              color: 'white',
-                              background: 'rgba(0, 0, 0, 0.7)',
-                              borderRadius: '2px',
-                              padding: '2px',
+                              display: 'flex',
+                              'flexDirection': 'column',
+                              'justifyContent': 'space-around',
+                              height: '100%',
                             }}>
-                              {gameTable.pot}
+                              <div style={{
+                                background: 'rgba(0, 0, 0, 0.7)',
+                                borderRadius: '4px',
+                                padding: '4px',
+                                marginLeft: '32px',
+                                marginRight: '32px',
+                              }}>
+                                <Typography style={{ color: 'white' }}>
+                                  {gameTable.pot}
+                                </Typography>
+                              </div>
+                              {
+                                !gameTable.dealCards && (
+                                  <div>
+                                    <Button variant="contained" color="primary" onClick={openUndoDialog}>
+                                      Undo
+                                    </Button>
+                                  </div>
+                                )
+                              }
                             </div>
-                            {
-                              !gameTable.dealCards && (
-                                <div>
-                                  <Button variant="contained" color="primary" onClick={openUndoDialog}>
-                                    Undo
-                                  </Button>
-                                </div>
-                              )
-                            }
-                          </div>
-                        ) : (<div />)
+                          )
                         }
                       </div>
                       {gameTable.round !== 'init' ? (
@@ -219,8 +212,6 @@ class GameTable extends Component {
                     }
                   </div>
                 </div>
-              </div>
-              <div className="flex-column-container" style={{ 'width': '10vw' }}>
               </div>
               <div className="flex-column-container" style={{ 'width': '20vw', maxWidth: '200px', height: '100%' }}>
                 <div style={{ height: '16vh', width: '75%', marginLeft: 'auto' }}>
@@ -256,7 +247,14 @@ class GameTable extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => { return {} }
+const mapStateToProps = (state) => {
+  const subState = state.scenes.Tables.Room.GameTable
+  return {
+    isOpenGameStartCountdown: subState.isOpenGameStartCountdown,
+    timeToStart: subState.timeToStart,
+  }
+}
+
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { tableId, playerSession } = ownProps;
 

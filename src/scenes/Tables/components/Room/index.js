@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import GameTable from './components/GameTable';
 import ChipAmountControlContainer from './components/ChipAmountControlContainer';
 import './style.css'
 import {
@@ -13,13 +12,15 @@ import {
 } from './data/actions.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomCircularProgress from 'components/CustomCircularProgress';
-import ShowResultDialog from './components/ShowResultDialog';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle'
 import ActionCable from 'actioncable';
 import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
+import GameTable from './components/GameTable';
 import Loading from './components/Loading'
+import ShowResultDialog from './components/ShowResultDialog';
+import TopInfobar from './components/TopInfobar'
 
 const gameStartButtonClicked = (tableId) => {
   return { type: "GAME_START_BUTTON_CLICKED", tableId: tableId };
@@ -147,6 +148,15 @@ class Room extends Component {
 
         <ShowResultDialog tableId={tableId} onGameStart={onGameStart} gameTable={gameTable} />
 
+        { /* 画面右上部の情報バー */
+          (inGame || players.length > 1) && gameTable.round !== 'init' && (
+            <TopInfobar
+              handCount={gameTable.gameHandCount}
+              round={gameTable.round}
+            />
+          )
+        }
+
         <div style={{ 'height': '100%' }}>
           <GameTable
             tableName={tableName}
@@ -223,11 +233,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onShowResultDialogReceived: (data) => {
       dispatch(showResultDialogReceived(data))
-
-      // 結果が出た5秒後に次のゲームを再開
       setTimeout(() => {
-        dispatch(gameStartButtonClicked(tableId));
-      }, 5000);
+        dispatch({ type: "SETUP_GAME_START_TIMER", tableId: tableId, seconds: 5 })
+      }, 2000)
     },
     onGameStart: () => {
       dispatch(gameStartButtonClicked(tableId));

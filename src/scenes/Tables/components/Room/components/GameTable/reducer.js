@@ -6,10 +6,16 @@ const initialState = {
   isOpenedUndoDialog: false,
   dealtCards: [],
   buyInAmount: '',
+  isOpenGameStartCountdown: false,
+  timeToStart: 0,
 }
 
 const GameTableReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "SETUP_GAME_START_TIMER":
+      return { ...state, isOpenGameStartCountdown: true, timeToStart: action.seconds }
+    case "GAME_START_COMPLETED":
+      return { ...state, isOpenGameStartCountdown: false }
     case "ON_CHANGE_BUY_IN_AMOUNT":
       return Object.assign({}, state, {
         buyInAmount: action.amount,

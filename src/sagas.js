@@ -287,6 +287,29 @@ function *handleBeforePlayerActionReceived(action) {
   }
 }
 
+function countdown(mSeconds) {
+  return eventChannel(emitter => {
+      const iv = setInterval(() => {
+        mSeconds -= 1000
+        if (mSeconds <= 0) {
+          emitter(END)
+        }
+      }, 1000)
+
+    return () => { clearInterval(iv) }
+    }
+  )
+}
+function *handleSetupGameStartTimer(action) {
+  let remain = action.seconds * 1000
+  try {
+    const channel = yield call(countdown, remain)
+    yield take(channel)
+  } finally {
+    yield put({ type: "GAME_START_BUTTON_CLICKED", tableId: action.tableId })
+  }
+}
+
 export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
@@ -304,4 +327,5 @@ export default function *rootSage() {
   yield takeEvery("UNDO_PLAYER_ACTION", handleUndoPlayerAction);
   yield takeEvery("ADD_NPC_PLAYER", handleAddNpcPlayer)
   yield takeEvery("BEFORE_PLAYER_ACTION_RECEIVED", handleBeforePlayerActionReceived)
+  yield takeEvery("SETUP_GAME_START_TIMER", handleSetupGameStartTimer)
 }
