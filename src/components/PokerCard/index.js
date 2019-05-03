@@ -35,6 +35,12 @@ class PokerCard extends Component {
       <div>
         <div className={`poker-card ${suitString} ${rankString}`}>
           <div className={faceOrBackClassName}>
+            <div className="poker-card-face-suit">
+              { suit === 's' && <span>&#9824;</span> }
+              { suit === 'h' && <span>&#9829;</span> }
+              { suit === 'd' && <span>&#9830;</span> }
+              { suit === 'c' && <span>&#9827;</span> }
+            </div>
           </div>
         </div>
       </div>

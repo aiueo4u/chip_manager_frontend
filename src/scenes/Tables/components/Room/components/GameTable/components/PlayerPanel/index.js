@@ -116,10 +116,10 @@ class PlayerPanel extends Component {
       }}>
       {inGame && enabledWithCard && !player.hand_show && player.state !== undefined && player.state !== 1 ? (
           <div style={{ fontSize: '10px' }}>
-            <div style={{ position: 'absolute', top: '16px', left: 'calc(50% - 6px)', transform: 'translate(-50%, 0)', zIndex: handZIndex }}>
+            <div style={{ position: 'absolute', top: '40px', left: 'calc(50% - 6px)', transform: 'translate(-50%, 0)', zIndex: handZIndex }}>
               <PokerCard invisible={!showHand} />
             </div>
-            <div style={{ position: 'absolute', top: '16px', left: 'calc(50% + 6px)', transform: 'translate(-50%, 0)', zIndex: handZIndex }}>
+            <div style={{ position: 'absolute', top: '40px', left: 'calc(50% + 6px)', transform: 'translate(-50%, 0)', zIndex: handZIndex }}>
               <PokerCard invisible={!showHand} />
             </div>
           </div>
@@ -128,10 +128,10 @@ class PlayerPanel extends Component {
 
         {enabledWithCard && player.hand_show && player.state !== undefined && player.state !== 1 ? (
           <div>
-            <div style={{ position: 'absolute', top: '2em', left: '1em', zIndex: handZIndex }}>
+            <div style={{ position: 'absolute', top: '', left: '0em', zIndex: handZIndex }}>
               <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
             </div>
-            <div style={{ position: 'absolute', top: '2em', left: '2em', zIndex: handZIndex }}>
+            <div style={{ position: 'absolute', top: '', left: '1.5em', zIndex: handZIndex }}>
               <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
             </div>
           </div>
