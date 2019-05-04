@@ -58,10 +58,6 @@ const PlayerReducer = (state = initialState, action) => {
       return Object.assign({}, player, { isFetching: false });
     case 'FOLD_ACTION_FAILED':
       return Object.assign({}, player, { isFetching: false });
-    case 'UNDO_PLAYER_ACTION':
-      return Object.assign({}, player, { isFetching: true });
-    case 'UNDO_PLAYER_ACTION_FAILED':
-      return Object.assign({}, player, { isFetching: false });
     default:
       return player;
   }
@@ -113,10 +109,6 @@ const PlayersReducer = (state = [], action) => {
     case 'FOLD_ACTION_COMPLETED':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'FOLD_ACTION_FAILED':
-      return state.map((player) => { return PlayerReducer(player, action) });
-    case 'UNDO_PLAYER_ACTION':
-      return state.map((player) => { return PlayerReducer(player, action) });
-    case 'UNDO_PLAYER_ACTION_FAILED':
       return state.map((player) => { return PlayerReducer(player, action) });
     default:
       return state;

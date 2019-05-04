@@ -35,7 +35,7 @@ class HeroPlayerPanel extends Component {
   }
 
   render() {
-    const { enabledWithCard, cards, isSeated, player, openBuyInDialog } = this.props;
+    const { cards, isSeated, player, openBuyInDialog } = this.props;
 
     const {
       currentPlayer,
@@ -177,7 +177,7 @@ class HeroPlayerPanel extends Component {
               }
             </div>
             {
-              enabledWithCard && isMe && cards && cards.length === 2 && player.state !== 1 && (
+              isMe && cards && cards.length === 2 && player.state !== 1 && (
                 <React.Fragment>
                   <div className="heroHoleCard1">
                     <PokerCard rank={cards[0].rank} suit={cards[0].suit} />

@@ -14,7 +14,7 @@ import {
 function *handleRequestTableCreate(action) {
   try {
     console.log(action);
-    const { json } = yield call(tableCreate, action.tableName, action.sb, action.bb, action.withCards);
+    const { json } = yield call(tableCreate, action.tableName, action.sb, action.bb);
     yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId: json.table_id })
   } catch (error) {
     yield put({ type: "CREATE_TABLE_FORM_ON_FAILURE" });
@@ -152,21 +152,6 @@ function *handleTakePotAction(action) {
   } catch(error) {
     console.log(error)
     yield put({ type: "TAKE_POT_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
-  }
-}
-
-function *handleUndoPlayerAction(action) {
-  let params = {
-    type: "UNDO_PLAYER_ACTION",
-    table_id: action.tableId,
-    player_id: action.playerId
-  }
-  try {
-    yield call(actionToGameDealer, params)
-    yield put({ type: "UNDO_PLAYER_ACTION_COMPLETED", tableId: action.tableId });
-  } catch(error) {
-    console.log(error)
-    yield put({ type: "UNDO_PLAYER_ACTION_FAILED", tableId: action.tableId });
   }
 }
 
@@ -332,7 +317,6 @@ export default function *rootSage() {
   yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked);
   yield takeEvery("TAKE_POT_ACTION", handleTakePotAction);
   yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);
-  yield takeEvery("UNDO_PLAYER_ACTION", handleUndoPlayerAction);
   yield takeEvery("ADD_NPC_PLAYER", handleAddNpcPlayer)
   yield takeEvery("BEFORE_PLAYER_ACTION_RECEIVED", handleBeforePlayerActionReceived)
   yield takeEvery("SETUP_GAME_START_TIMER", handleSetupGameStartTimer)

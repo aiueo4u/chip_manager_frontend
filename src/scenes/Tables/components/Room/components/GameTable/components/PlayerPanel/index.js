@@ -50,7 +50,6 @@ class PlayerPanel extends Component {
 
   render() {
     const {
-      enabledWithCard,
       isSeated,
       player,
       openBuyInDialog,
@@ -129,7 +128,7 @@ class PlayerPanel extends Component {
         height: '100%',
         width: '100%',
       }}>
-      {inGame && enabledWithCard && !player.hand_show && player.state !== undefined && player.state !== 1 ? (
+      {inGame && !player.hand_show && player.state !== undefined && player.state !== 1 ? (
           <div style={{ fontSize: '10px' }}>
             <div style={{ position: 'absolute', top: '40px', left: 'calc(50% - 6px)', transform: 'translate(-50%, 0)', zIndex: handZIndex }}>
               <PokerCard invisible={!showHand} />
@@ -141,7 +140,7 @@ class PlayerPanel extends Component {
           ) : (<div></div>)
         }
 
-        {enabledWithCard && player.hand_show && player.state !== undefined && player.state !== 1 ? (
+        {player.hand_show && player.state !== undefined && player.state !== 1 ? (
           <div>
             <div style={{ position: 'absolute', top: '', left: '0em', zIndex: handZIndex }}>
               <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />

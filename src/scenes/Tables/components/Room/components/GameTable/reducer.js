@@ -3,7 +3,6 @@ const initialState = {
   isReady: false,
   pot: 0,
   reconnectingActionCable: false,
-  isOpenedUndoDialog: false,
   dealtCards: [],
   buyInAmount: '',
   isOpenGameStartCountdown: false,
@@ -44,7 +43,6 @@ const GameTableReducer = (state = initialState, action) => {
         undoable: action.undoable,
         gameHandCount: action.gameHandCount,
         boardCards: action.boardCards,
-        dealCards: action.dealCards,
         showOrMuck: action.showOrMuck,
         reachedRounds: action.reachedRounds,
       });
@@ -52,22 +50,6 @@ const GameTableReducer = (state = initialState, action) => {
       return Object.assign({}, state, { openingPlayerMenuDialogPlayerId: action.playerId });
     case 'CLOSE_PLAYER_MENU_DIALOG':
       return Object.assign({}, state, { openingPlayerMenuDialogPlayerId: null });
-    case 'OPEN_UNDO_DIALOG':
-      return Object.assign({}, state, {
-        isOpenedUndoDialog: true,
-      });
-    case 'CLOSE_UNDO_DIALOG':
-      return Object.assign({}, state, {
-        isOpenedUndoDialog: false,
-      });
-    case 'UNDO_PLAYER_ACTION_COMPLETED':
-      return Object.assign({}, state, {
-        isOpenedUndoDialog: false,
-      });
-    case 'UNDO_PLAYER_ACTION_FAILED':
-      return Object.assign({}, state, {
-        isOpenedUndoDialog: false,
-      });
     case 'OPEN_BUY_IN_DIALOG':
       return Object.assign({}, state, {
         isOpenedBuyInDialog: true,

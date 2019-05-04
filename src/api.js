@@ -93,14 +93,11 @@ export const initialLogin = () => {
   return get('/players/@me')
 }
 
-export const tableCreate = (tableName, sb, bb, withCards) => {
+export const tableCreate = (tableName, sb, bb) => {
   let body = new FormData();
   body.append('table_name', tableName);
   body.append('sb', sb);
   body.append('bb', bb);
-  if (withCards) {
-    body.append('deal_cards', withCards);
-  }
   return post('/tables', {}, body).then(json => { return { json } })
 }
 

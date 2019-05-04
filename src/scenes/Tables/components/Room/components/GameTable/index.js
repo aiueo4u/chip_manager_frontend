@@ -21,7 +21,6 @@ class GameTable extends Component {
     const {
       tableId,
       openBuyInDialog,
-      openUndoDialog,
       openPlayerMenuDialog,
       gameTable,
       isSeated,
@@ -63,7 +62,6 @@ class GameTable extends Component {
         openPlayerMenuDialog: openPlayerMenuDialog,
         tableId: tableId,
         cards: gameTable.dealtCards[playerId],
-        enabledWithCard: gameTable.dealCards,
         buttonSeatNo: gameTable.buttonSeatNo,
         gameHandState: gameTable.gameHandState,
       };
@@ -181,15 +179,6 @@ class GameTable extends Component {
                                   {gameTable.pot}
                                 </Typography>
                               </div>
-                              {
-                                !gameTable.dealCards && (
-                                  <div>
-                                    <Button variant="contained" color="primary" onClick={openUndoDialog}>
-                                      Undo
-                                    </Button>
-                                  </div>
-                                )
-                              }
                             </div>
                           )
                         }
@@ -259,9 +248,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   const { tableId, playerSession } = ownProps;
 
   return {
-    openUndoDialog: () => {
-      dispatch({ type: "OPEN_UNDO_DIALOG", tableId: tableId, playerId: playerSession.playerId })
-    },
     openBuyInDialog: (seatNo, playerId) => {
       dispatch({ type: "OPEN_BUY_IN_DIALOG", tableId: tableId, seatNo: seatNo, playerId: playerId })
     },
