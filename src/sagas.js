@@ -320,7 +320,8 @@ function *startCountdown(action) {
 function *handleSetupGameStartTimer(action) {
   yield race([
     call(startCountdown, action),
-    take('GAME_START_BUTTON_CLICKED')
+    take('GAME_START_BUTTON_CLICKED'),
+    take('PLAYER_ACTION_RECEIVED'),
   ])
 }
 
@@ -340,5 +341,7 @@ export default function *rootSage() {
   yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);
   yield takeEvery("ADD_NPC_PLAYER", handleAddNpcPlayer)
   yield takeEvery("BEFORE_PLAYER_ACTION_RECEIVED", handleBeforePlayerActionReceived)
+
+  // TODO: 観戦時にはこれを無効にしたい
   yield takeEvery("SETUP_GAME_START_TIMER", handleSetupGameStartTimer)
 }

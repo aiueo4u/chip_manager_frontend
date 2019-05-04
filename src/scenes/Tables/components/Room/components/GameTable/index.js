@@ -142,7 +142,7 @@ class GameTable extends Component {
                         width: '100%',
                       }}>
                         { /* 次のハンド開始ボタン */
-                          !inGame && (
+                          !inGame && currentPlayer && (
                             <Button
                               variant="contained"
                               color="primary"
@@ -155,7 +155,7 @@ class GameTable extends Component {
                         }
 
                         { /* 次のハンド自動開始までのカウントダウン */
-                          isOpenGameStartCountdown && (
+                          isOpenGameStartCountdown && currentPlayer && (
                             <GameStartCountdown count={timeToStart}/>
                           )
                         }
