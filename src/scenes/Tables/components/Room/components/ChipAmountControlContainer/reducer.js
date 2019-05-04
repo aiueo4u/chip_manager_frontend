@@ -75,6 +75,11 @@ const PlayersReducer = (state = [], action) => {
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'PLAYER_ACTION_RECEIVED':
       return action.players;
+    case 'SHOW_ACTIVE_PLAYER_CARDS':
+      return state.map(player => {
+        const actionPlayer = action.players.find(ap => ap.id === player.id)
+        return { ...player, cards: actionPlayer.cards, hand_show: actionPlayer.hand_show, state: actionPlayer.state }
+      })
     case 'CHANGE_BET_AMOUNT':
       return state.map((player) => { return PlayerReducer(player, action) });
     case 'SET_BET_SIZE':

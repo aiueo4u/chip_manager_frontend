@@ -25,6 +25,7 @@ const GameTableReducer = (state = initialState, action) => {
       dealtCards[action.playerId] = action.cards;
       return Object.assign({}, state, {
         dealtCards: dealtCards,
+        isOpenGameStartCountdown: false,
       });
     case 'OPEN_BOARD_CARD_BY_ROUND':
       return Object.assign({}, state, {

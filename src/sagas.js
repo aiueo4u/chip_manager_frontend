@@ -253,6 +253,7 @@ function *handleBeforePlayerActionReceived(action) {
   // ALLIN時のボードオープン用
   if (action.justActioned && action.reachingRounds.length > 0) {
     let reachedRounds = {}
+    yield put({ type: "SHOW_ACTIVE_PLAYER_CARDS", players: action.players })
     yield all(action.reachingRounds.map((round, i) => {
       reachedRounds = Object.assign({}, reachedRounds)
       reachedRounds[round] = true

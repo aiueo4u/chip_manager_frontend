@@ -8,11 +8,13 @@ function GameStartCountdown({ count }) {
   const [remain, setRemain] = useState(count)
 
   useEffect(() => {
+    let refId = null
     if (remain > 0) {
-      setTimeout(() => {
+      refId = setTimeout(() => {
         setRemain(remain - 1)
       }, 1000)
     }
+    return () => { clearTimeout(refId) }
   }, [remain])
 
   if (remain <= 0) {
