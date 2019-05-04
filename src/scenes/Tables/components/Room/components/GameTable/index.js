@@ -149,7 +149,7 @@ class GameTable extends Component {
                               onClick={onGameStart}
                               style={{ textTransform: 'none' }}
                             >
-                              Start
+                              開始
                             </Button>
                           )
                         }
