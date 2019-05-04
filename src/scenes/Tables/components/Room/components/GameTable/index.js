@@ -245,7 +245,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { tableId, playerSession } = ownProps;
+  const { tableId } = ownProps;
 
   return {
     openBuyInDialog: (seatNo, playerId) => {
