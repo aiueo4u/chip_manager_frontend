@@ -237,12 +237,15 @@ function *openBoardCard(reachedRounds, boardCards, time) {
 function *handleBeforePlayerActionReceived(action) {
   // ALLIN時のボードオープン用
   if (action.justActioned && action.reachingRounds.length > 0) {
-    let reachedRounds = {}
+    let reachedRounds = {
+      flop: action.reachingRounds.includes('turn') || action.reachingRounds.includes('river'),
+      turn: action.reachingRounds.includes('river'),
+    }
     yield put({ type: "SHOW_ACTIVE_PLAYER_CARDS", players: action.players })
     yield all(action.reachingRounds.map((round, i) => {
       reachedRounds = Object.assign({}, reachedRounds)
       reachedRounds[round] = true
-      return call(openBoardCard, reachedRounds, action.boardCards, i * 2)
+      return call(openBoardCard, reachedRounds, action.boardCards, (i + 1) * 2)
     }))
     try {
       const channel = yield call(sleepTimer, 2)
@@ -268,14 +271,14 @@ function *handleBeforePlayerActionReceived(action) {
       let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
       yield put(object)
       if (action.gameHandState === 'finished') {
-        yield put({ type: "SETUP_GAME_START_TIMER", tableId: action.tableId, seconds: 5 })
+        yield put({ type: "SETUP_GAME_START_TIMER", tableId: action.tableId, seconds: 10 })
       }
     }
   } else {
     let object = Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" })
     yield put(object)
     if (action.gameHandState === 'finished') {
-      yield put({ type: "SETUP_GAME_START_TIMER", tableId: action.tableId, seconds: 5 })
+      yield put({ type: "SETUP_GAME_START_TIMER", tableId: action.tableId, seconds: 10 })
     }
   }
 }
