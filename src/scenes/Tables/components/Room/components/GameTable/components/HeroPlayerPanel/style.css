@@ -103,14 +103,14 @@
 
 .foldButtonClass {
   position: absolute;
-  top: 65px;
+  top: 45px;
   left: 24px;
   z-index: 1000;
 }
 
 .callButtonClass {
   position: absolute;
-  top: 65px;
+  top: 45px;
   right: 24px;
   z-index: 1000;
 }

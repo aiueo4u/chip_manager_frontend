@@ -110,7 +110,7 @@ class GameTable extends Component {
             </div>
 
             <div className="middlePlayerContainer">
-              <div className="flex-column-container" style={{ 'width': '20vw', maxWidth: '200px', height: '100%' }}>
+              <div className="flex-column-container" style={{ 'width': '25vw', maxWidth: '200px', height: '100%' }}>
                 <div style={{ height: '16vh', width: '15vw' }}>
                   <PlayerPanel {...playerPanelProps(3)} leftSideStyle={true} />
                 </div>
@@ -129,9 +129,9 @@ class GameTable extends Component {
                   !inGame && players.length < 2 ? (
                     <div>
                       {isSeated ? (
-                        'Wait for other player...'
+                        '他のプレイヤーを待っています・・・'
                       ) : (
-                        'Touch any seat'
+                        'シートをタッチしてください'
                       )}
                     </div>
                   ) : (
@@ -213,7 +213,7 @@ class GameTable extends Component {
                   </div>
                 </div>
               </div>
-              <div className="flex-column-container" style={{ 'width': '20vw', maxWidth: '200px', height: '100%' }}>
+              <div className="flex-column-container" style={{ 'width': '25vw', maxWidth: '200px', height: '100%' }}>
                 <div style={{ height: '16vh', width: '75%', marginLeft: 'auto' }}>
                   <PlayerPanel {...playerPanelProps(6)} rightSideStyle={true} />
                 </div>

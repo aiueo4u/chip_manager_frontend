@@ -14,6 +14,21 @@ import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import './style.css';
 
+const readableActionType = (actionType) => {
+  switch(actionType) {
+    case 'bet':
+      return 'ベット'
+    case 'check':
+      return 'チェック'
+    case 'call':
+      return 'コール'
+    case 'fold':
+      return 'フォールド'
+    default:
+      return actionType
+  }
+}
+
 class PlayerPanel extends Component {
   componentDidMount() {
     this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
@@ -173,7 +188,9 @@ class PlayerPanel extends Component {
             <div className="otherPlayerPanelTextArea">
               {
                 player.actionType ? (
-                  <div className="actionTypeLabel">{player.actionType}</div>
+                  <Typography variant="caption" style={{ fontSize: '0.625rem', color: 'white' }}>
+                    {readableActionType(player.actionType)}
+                  </Typography>
                 ) : (
                   <React.Fragment>
                     <div className='nickname'>

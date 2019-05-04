@@ -1,5 +1,4 @@
 .chipFieldContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  position: relative;
+  height: 100%;
 }

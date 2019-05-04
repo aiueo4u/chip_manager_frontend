@@ -139,7 +139,7 @@ class Room extends Component {
           open={gameTable.reconnectingActionCable}
         >
           <DialogTitle>
-            Network connecting...
+            再接続中・・・
           </DialogTitle>
           <div style={{ textAlign: 'center' }}>
             <CircularProgress />
