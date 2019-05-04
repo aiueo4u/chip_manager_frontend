@@ -1,5 +1,5 @@
 import { eventChannel, END } from 'redux-saga'
-import { all, call, put, take, takeEvery } from 'redux-saga/effects'
+import { all, cancelled, call, race, put, take, takeEvery } from 'redux-saga/effects'
 import {
   tableCreate,
   submitLogin,
@@ -237,16 +237,22 @@ function *openBoardCard(reachedRounds, boardCards, time) {
 function *handleBeforePlayerActionReceived(action) {
   // ALLIN時のボードオープン用
   if (action.justActioned && action.reachingRounds.length > 0) {
-    let reachedRounds = {
-      flop: action.reachingRounds.includes('turn') || action.reachingRounds.includes('river'),
-      turn: action.reachingRounds.includes('river'),
-    }
     yield put({ type: "SHOW_ACTIVE_PLAYER_CARDS", players: action.players })
+
+    let reachedRounds = {}
+    if (!action.reachingRounds.includes('flop')) {
+      reachedRounds = {
+        flop: action.reachingRounds.includes('turn') || action.reachingRounds.includes('river'),
+        turn: !action.reachingRounds.includes('turn') && action.reachingRounds.includes('river'),
+      }
+      yield call(openBoardCard, reachedRounds, action.boardCards, 0)
+    }
     yield all(action.reachingRounds.map((round, i) => {
       reachedRounds = Object.assign({}, reachedRounds)
       reachedRounds[round] = true
       return call(openBoardCard, reachedRounds, action.boardCards, (i + 1) * 2)
     }))
+
     try {
       const channel = yield call(sleepTimer, 2)
       yield take(channel)
@@ -296,14 +302,26 @@ function countdown(mSeconds) {
     }
   )
 }
-function *handleSetupGameStartTimer(action) {
+
+function *startCountdown(action) {
   let remain = action.seconds * 1000
+  const channel = yield call(countdown, remain)
   try {
-    const channel = yield call(countdown, remain)
     yield take(channel)
   } finally {
-    yield put({ type: "GAME_START_BUTTON_CLICKED", tableId: action.tableId })
+    if (yield cancelled()) {
+      channel.close()
+    } else {
+      yield put({ type: "GAME_START_BUTTON_CLICKED", tableId: action.tableId })
+    }
   }
+}
+
+function *handleSetupGameStartTimer(action) {
+  yield race([
+    call(startCountdown, action),
+    take('GAME_START_BUTTON_CLICKED')
+  ])
 }
 
 export default function *rootSage() {
