@@ -1,186 +1,153 @@
+import { camelizeKeys } from 'humps'
 import { eventChannel, END } from 'redux-saga'
 import { all, cancelled, call, race, put, take, takeEvery } from 'redux-saga/effects'
+
 import {
   tableCreate,
   submitLogin,
-  tables,
-  initialLogin,
+  fetchCurrentUser,
+  fetchTables,
   actionToGameDealer,
   startToGameDealer,
   takeSeatToGameDealer,
   addNpcPlayer,
 } from './api';
 
+import { parseQueryString } from 'utils/url'
+
 function *handleRequestTableCreate(action) {
+  const { tableName, sb, bb } = action
+
   try {
-    console.log(action);
-    const { json } = yield call(tableCreate, action.tableName, action.sb, action.bb);
-    yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId: json.table_id })
+    const response = yield call(tableCreate, tableName, sb, bb)
+    const { tableId }  = camelizeKeys(response.data)
+    yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId })
   } catch (error) {
     yield put({ type: "CREATE_TABLE_FORM_ON_FAILURE" });
   }
 }
 
 function *handleRequestLogin(action) {
-  const { json, error } = yield call(submitLogin, action.nickname);
-  if (json && !error) {
-    localStorage.setItem('playerSession.jwt', json.jwt)
-    yield put({ type: 'LOGIN_FORM_ON_SUCCESS', nickname: json.nickname, playerId: json.player_id })
-  } else {
-    // TODO
-  }
+  const { nickname } = action
+
+  const response = yield call(submitLogin, nickname)
+  const data = camelizeKeys(response.data)
+
+  localStorage.setItem('playerSession.jwt', data.jwt) // TODO
+  yield put({ type: 'LOGIN_FORM_ON_SUCCESS', nickname: data.nickname, playerId: data.playerId })
 }
 
 function *handleRequestTables() {
-  const { json, error } = yield call(tables);
-  if (json && !error) {
-    let tables = json.tables.map(table => {
-      return {
-        id: table.id,
-        name: table.name,
-        players: table.players.map(player => {
-          return { id: player.id, nickname: player.nickname };
-        }),
-      }
-    }) ;
-    yield put({ type: 'LOADING_TABLES_DATA_ON_SUCCESS', tables: tables })
-  } else {
-    // TODO
-  }
+  const response = yield call(fetchTables)
+  const data = response.data
+  const tables = data.tables
+  yield put({ type: "LOADING_TABLES_DATA_ON_SUCCESS", tables })
 }
 
 function *handleCheckAction(action) {
-  let params = {
-    type: "PLAYER_ACTION_CHECK",
-    table_id: action.tableId,
-    player_id: action.playerId,
-  }
+  const { tableId, playerId } = action
+
   try {
-    yield call(actionToGameDealer, params)
-    yield put({ type: "CHECK_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId });
+    yield call(actionToGameDealer, "PLAYER_ACTION_CHECK", tableId, playerId)
+    yield put({ type: "CHECK_ACTION_COMPLETED", tableId, playerId })
   } catch (error) {
     console.log(error);
-    yield put({ type: "CHECK_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId });
+    yield put({ type: "CHECK_ACTION_FAILED", tableId, playerId });
   }
 }
 
 function *handleMuckHandAction(action) {
-  let params = {
-    type: "PLAYER_ACTION_MUCK_HAND",
-    table_id: action.tableId,
-    player_id: action.playerId,
-  }
+  const { tableId, playerId } = action
+
   try {
-    yield call(actionToGameDealer, params)
-    yield put({ type: "MUCK_HAND_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId });
+    yield call(actionToGameDealer, "PLAYER_ACTION_MUCK_HAND", tableId, playerId)
+    yield put({ type: "MUCK_HAND_ACTION_COMPLETED", tableId, playerId })
   } catch (error) {
     console.log(error);
-    yield put({ type: "MUCK_HAND_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId });
+    yield put({ type: "MUCK_HAND_ACTION_FAILED", tableId, playerId });
   }
 }
 
 function *handleShowHandAction(action) {
-  let params = {
-    type: "PLAYER_ACTION_SHOW_HAND",
-    table_id: action.tableId,
-    player_id: action.playerId,
-  }
+  const { tableId, playerId } = action
+
   try {
-    yield call(actionToGameDealer, params)
-    yield put({ type: "SHOW_HAND_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId });
+    yield call(actionToGameDealer, "PLAYER_ACTION_SHOW_HAND", tableId, playerId)
+    yield put({ type: "SHOW_HAND_ACTION_COMPLETED", tableId, playerId });
   } catch (error) {
     console.log(error);
-    yield put({ type: "SHOW_HAND_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId });
+    yield put({ type: "SHOW_HAND_ACTION_FAILED", tableId, playerId });
   }
 }
 
 function *handleFoldAction(action) {
-  let params = {
-    type: "PLAYER_ACTION_FOLD",
-    table_id: action.tableId,
-    player_id: action.playerId,
-  }
+  const { tableId, playerId } = action
+
   try {
-    yield call(actionToGameDealer, params)
-    yield put({ type: "FOLD_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId })
+    yield call(actionToGameDealer, "PLAYER_ACTION_FOLD", tableId, playerId)
+    yield put({ type: "FOLD_ACTION_COMPLETED", tableId, playerId })
   } catch(error) {
     console.log(error)
-    yield put({ type: "FOLD_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+    yield put({ type: "FOLD_ACTION_FAILED", tableId, playerId, error })
   }
 }
 
 function *handleCallAction(action) {
-  let params = {
-    type: "PLAYER_ACTION_CALL",
-    table_id: action.tableId,
-    player_id: action.playerId,
-  }
+  const { tableId, playerId } = action
+
   try {
-    yield call(actionToGameDealer, params)
-    yield put({ type: "CALL_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId })
+    yield call(actionToGameDealer, "PLAYER_ACTION_CALL", tableId, playerId)
+    yield put({ type: "CALL_ACTION_COMPLETED", tableId, playerId })
   } catch(error) {
     console.log(error)
-    yield put({ type: "CALL_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+    yield put({ type: "CALL_ACTION_FAILED", tableId, playerId, error })
   }
 }
 
 function *handleBetAction(action) {
-  let params = {
-    type: "PLAYER_ACTION_BET_CHIPS",
-    table_id: action.tableId,
-    player_id: action.playerId,
-    amount: action.amount,
-  }
+  const { tableId, playerId, amount } = action
+
   try {
-    const json = yield call(actionToGameDealer, params)
-    yield put({ type: "BET_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId, amount: action.amount, pot: json.pot });
+    const response = yield call(actionToGameDealer, "PLAYER_ACTION_BET_CHIPS", tableId, playerId, amount)
+    const { pot } = response.data
+    yield put({ type: "BET_ACTION_COMPLETED", tableId, playerId, amount, pot });
   } catch(error) {
     console.log(error)
-    yield put({ type: "BET_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+    yield put({ type: "BET_ACTION_FAILED", tableId, playerId, error })
   }
 }
 
 function *handleTakePotAction(action) {
-  let params = {
-    type: "GAME_HAND_TAKE_POT",
-    table_id: action.tableId,
-    player_id: action.playerId,
-  }
+  const { tableId, playerId } = action
+
   try {
-    const json = yield call(actionToGameDealer, params)
-    yield put({ type: "TAKE_POT_ACTION_COMPLETED", tableId: action.tableId, playerId: action.playerId, pot: json.pot, playerStack: json.player_stack });
+    const response = yield call(actionToGameDealer, "GAME_HAND_TAKE_POT", tableId, playerId)
+    const { pot, playerStack } = camelizeKeys(response.data)
+    yield put({ type: "TAKE_POT_ACTION_COMPLETED", tableId, playerId, pot, playerStack })
   } catch(error) {
     console.log(error)
-    yield put({ type: "TAKE_POT_ACTION_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+    yield put({ type: "TAKE_POT_ACTION_FAILED", tableId, playerId, error })
   }
 }
 
 function *handlePlayerTakeSeat(action) {
-  let params = {
-    type: "PLAYER_ACTION_TAKE_SEAT",
-    table_id: action.tableId,
-    player_id: action.playerId,
-    seat_no: action.seatNo,
-    buy_in_amount: action.buyInAmount,
-  }
+  const { amount, tableId, playerId, seatNo, buyInAmount } = action
+
   try {
-    const json = yield call(takeSeatToGameDealer, params)
-    yield put({ type: "PLAYER_ACTION_TAKE_SEAT_COMPLETED", tableId: action.tableId, playerId: action.playerId, amount: action.amount, pot: json.pot });
+    const response = yield call(takeSeatToGameDealer, tableId, playerId, seatNo, buyInAmount)
+    const data = response.data
+    yield put({ type: "PLAYER_ACTION_TAKE_SEAT_COMPLETED", tableId, playerId, amount, pot: data.pot });
   } catch(error) {
     console.log(error)
-    yield put({ type: "PLAYER_ACTION_TAKE_SEAT_FAILED", tableId: action.tableId, playerId: action.playerId, error: error })
+    yield put({ type: "PLAYER_ACTION_TAKE_SEAT_FAILED", tableId, playerId, error })
   }
 }
 
 function *handleAddNpcPlayer(action) {
-  let params = {
-    type: "PLAYER_ACTION_TAKE_SEAT",
-    table_id: action.tableId,
-    seat_no: action.seatNo,
-  }
+  const { tableId, seatNo } = action
 
   try {
-    yield call(addNpcPlayer, params)
+    yield call(addNpcPlayer, tableId, seatNo)
     yield put({ type: "ON_SUCCESS_ADD_NPC_PLAYER" })
   } catch(error) {
     yield put({ type: "ON_FAILURE_ADD_NPC_PLAYER" })
@@ -189,24 +156,27 @@ function *handleAddNpcPlayer(action) {
 
 function *handleFetchPlayer() {
   try {
-    const json = yield call(initialLogin);
-    yield put({ type: "FETCH_PLAYER_SUCCEEDED", imageUrl: json.image_url, nickname: json.nickname, playerId: json.player_id });
+    const response = yield call(fetchCurrentUser)
+    const data = response.data
+    const user = camelizeKeys(data)
+    yield put({ type: "FETCH_PLAYER_SUCCEEDED", ...user })
   } catch(error) {
     console.error(error)
+    // ログイン成功後のリダイレクト先を保存
+    sessionStorage.setItem('redirectTo', window.location.href);
     yield put({ type: "FETCH_PLAYER_FAILED" });
   }
 }
 
 function *handleGameStartButtonClicked(action) {
-  let params = {
-    table_id: action.tableId
-  }
+  const { tableId } = action
+
   try {
-    yield call(startToGameDealer, params);
-    yield put({ type: "GAME_START_COMPLETED", tableId: action.tableId });
+    yield call(startToGameDealer, tableId);
+    yield put({ type: "GAME_START_COMPLETED", tableId })
   } catch(error) {
     console.log(error)
-    yield put({ type: "GAME_START_FAILED", tableId: action.tableId });
+    yield put({ type: "GAME_START_FAILED", tableId })
   }
 }
 
@@ -325,6 +295,36 @@ function *handleSetupGameStartTimer(action) {
   ])
 }
 
+function *handleInitialize() {
+  let url = new URL(window.location.href);
+
+  if (url.searchParams) {
+    let jwt = url.searchParams.get('jwt')
+    if (jwt) {
+      localStorage.setItem('playerSession.jwt', jwt)
+      // ブラウザのアドレスバーからJWTパラメータを削除する
+      window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
+    }
+  } else {
+    let parsed = parseQueryString(window.location.href.split('?')[1])
+    if (parsed.jwt) {
+      localStorage.setItem('playerSession.jwt', parsed.jwt)
+      // ブラウザのアドレスバーからJWTパラメータを削除する
+      window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
+    }
+  }
+
+  // ログイン前のページへとリダイレクトさせる
+  let jwt = localStorage.getItem('playerSession.jwt')
+  let redirectTo = sessionStorage.getItem('redirectTo')
+  sessionStorage.removeItem('redirectTo');
+  if (jwt && redirectTo) {
+    window.location = redirectTo;
+  } else {
+    yield put({ type: "FETCH_PLAYER" })
+  }
+}
+
 export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
@@ -344,4 +344,6 @@ export default function *rootSage() {
 
   // TODO: 観戦時にはこれを無効にしたい
   yield takeEvery("SETUP_GAME_START_TIMER", handleSetupGameStartTimer)
+
+  yield call(handleInitialize)
 }
