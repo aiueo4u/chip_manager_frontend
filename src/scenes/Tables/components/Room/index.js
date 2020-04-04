@@ -10,12 +10,15 @@ import {
   dealtCardsReceived,
   showResultDialogReceived,
 } from './data/actions.js';
+import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomCircularProgress from 'components/CustomCircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle'
 import ActionCable from 'actioncable';
 import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
+
+import WebRTCTest from 'components/WebRTCTest';
 
 import GameTable from './components/GameTable';
 import Loading from './components/Loading'
@@ -157,19 +160,24 @@ class Room extends Component {
           )
         }
 
-        <div style={{ 'height': '100%' }}>
-          <GameTable
-            tableName={tableName}
-            tableId={tableId}
-            onGameStart={onGameStart}
-            players={players}
-            playerSession={playerSession}
-            isSeated={isSeated}
-            inGame={inGame}
-            gameTable={gameTable}
-            onBetAction={onBetAction}
-          />
-        </div>
+        <Box display="flex">
+          <div style={{ 'height': '100%', width: '70%' }}>
+            <GameTable
+              tableName={tableName}
+              tableId={tableId}
+              onGameStart={onGameStart}
+              players={players}
+              playerSession={playerSession}
+              isSeated={isSeated}
+              inGame={inGame}
+              gameTable={gameTable}
+              onBetAction={onBetAction}
+            />
+          </div>
+          <div style={{ 'height': '100vh', width: '30%', backgroundColor: 'red' }}>
+            <WebRTCTest />
+          </div>
+        </Box>
 
         {/* チップ量調整エリア */}
         <div style={{ 'height': '15vh', width: '100%', position: 'absolute', bottom: 0,

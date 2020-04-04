@@ -13,6 +13,7 @@ import {
   startToGameDealer,
   takeSeatToGameDealer,
   addNpcPlayer,
+  postTest,
 } from './api';
 
 import { parseQueryString } from 'utils/url'
@@ -330,58 +331,94 @@ function *handleInitialize() {
 let localstream;
 
 function *initializeWebRTC() {
-  console.log(document.readyState);
-  document.onreadystatechange = () => {
-    if (document.readyState === 'interactive') {
-      navigator.mediaDevices
-        .getUserMedia({
-          audio: false,
-          video: true,
-        })
-        .then(stream => {
-          localstream = stream;
-          const localVideo = document.getElementById('local-video');
-          localVideo.srcObject = stream;
-        })
-        .catch(error => console.log('Error!: ', error))
-    }
-  };
+  //document.onreadystatechange = () => {
+  //if (document.readyState === 'interactive') {
+  navigator.mediaDevices
+    .getUserMedia({
+      audio: true,
+      video: {
+        width: '320',
+        height: '240',
+      },
+    })
+    .then(stream => {
+      localstream = stream;
+      const localVideo = document.getElementById('local-video');
+      localVideo.srcObject = stream;
+    })
+    .catch(error => console.log('Error!: ', error));
+  // }
+  // };
 }
 
 const jwt = localStorage.getItem('playerSession.jwt');
 const cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
 let session;
+let playerId;
 
 function* handleJoinSession() {
-  const playerId = yield select(state => state.data.playerSession.playerId);
-  console.log(playerId);
+  playerId = yield select(state => state.data.playerSession.playerId);
+  playerId = `${playerId}`;
 
   session = yield cable.subscriptions.create({ channel: 'TestChannel' }, {
     connected: () => {
       console.log('ActionCable connected.');
+      broadcastData({
+        type: 'JOIN_ROOM',
+        from: playerId,
+      });
     },
     received: data => {
-      console.log('ActionCable received: ', data);
       if (data.from === playerId) return;
+      console.log('ActionCable received: ', data);
       switch (data.type) {
         case 'JOIN_ROOM':
           return joinRoom(data);
+        case 'EXCHANGE':
+          if (data.to !== playerId) return;
+          return exchange(data);
+        case 'REMOVE_USER':
+          return removeUser(data);
         default:
           return;
       }
     },
   });
-  console.log('Finish handleJoinSession');
+};
+
+let pcPeers = {};
+
+function *handleLeaveSession() {
+  for (const user in pcPeers) {
+    pcPeers[user].close();
+  }
+  pcPeers = {};
+
+  session.unsubscribe();
+
+  const remoteVideoContainer = document.getElementById('remote-video-container');
+  remoteVideoContainer.innerHTML = '';
+
+  broadcastData({
+    type: 'REMOVE_USER',
+    from: playerId,
+  });
 };
 
 const joinRoom = data => {
   createPC(data.from, true);
 };
 
-const pcPeers = {};
+const removeUser = data => {
+  console.log('Removing user', data.from);
+  let video = document.getElementById(`remoteVideoContainer+${data.from}`);
+  video && video.remove();
+  delete pcPeers[data.from];
+};
+
 const ice = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
 
-const createPC = (userId, isOffer) => {
+function createPC(userId, isOffer) {
   let pc = new RTCPeerConnection(ice);
   pcPeers[userId] = pc;
 
@@ -394,10 +431,97 @@ const createPC = (userId, isOffer) => {
     .createOffer()
     .then(offer => {
       return pc.setLocalDescription(offer);
-    }).then(() => {
-      console.log('hello, world');
-    });
+    })
+    .then(() => {
+      broadcastData({
+        type: 'EXCHANGE',
+        from: playerId,
+        to: userId,
+        sdp: JSON.stringify(pc.localDescription),
+      });
+    })
+    .catch(logError);
+
+  pc.onicecandidate = event => {
+    event.candidate &&
+      broadcastData({
+        type: 'EXCHANGE',
+        from: playerId,
+        to: userId,
+        candidate: JSON.stringify(event.candidate),
+      });
+  };
+
+  pc.ontrack = event => {
+    if (event.track.kind === 'video') {
+      const element = document.createElement('video');
+      element.id = `remoteVideoContainer+${userId}`;
+      element.autoplay = 'autoplay';
+      element.srcObject = event.streams[0];
+
+      const remoteVideoContainer = document.getElementById('remote-video-container');
+      remoteVideoContainer.appendChild(element);
+    }
+  };
+
+  pc.oniceconnectionstatechange = event => {
+    if (pc.iceConnectionState === 'disconnected') {
+      console.log('Disconnected: ', userId);
+      broadcastData({
+        type: 'REMOVE_USER',
+        from: userId,
+      });
+    }
+  };
+
+  return pc;
 };
+
+const exchange = data => {
+  let pc;
+
+  if (!pcPeers[data.from]) {
+    pc = createPC(data.from, false);
+  } else {
+    pc = pcPeers[data.from];
+  }
+
+  if (data.candidate) {
+    pc
+      .addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)))
+      .then(() => console.log('Ice candidate added'))
+      .catch(logError);
+  }
+
+  if (data.sdp) {
+    let sdp = JSON.parse(data.sdp);
+    pc
+      .setRemoteDescription(new RTCSessionDescription(sdp))
+      .then(() => {
+        if (sdp.type === 'offer') {
+          pc.createAnswer()
+            .then(answer => {
+              return pc.setLocalDescription(answer);
+            })
+            .then(() => {
+              broadcastData({
+                type: 'EXCHANGE',
+                from: playerId,
+                to: data.from,
+                sdp: JSON.stringify(pc.localDescription),
+              });
+            });
+        }
+      })
+      .catch(logError);
+  }
+};
+
+function broadcastData(data) {
+  postTest(data);
+};
+
+const logError = error => console.log(error);
 
 export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
@@ -421,6 +545,7 @@ export default function *rootSage() {
 
   yield call(handleInitialize)
 
-  //yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
-  //yield call(initializeWebRTC);
+  yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
+  yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
+  yield takeEvery("INITIALIZE_WEBRTC", initializeWebRTC);
 }

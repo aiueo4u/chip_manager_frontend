@@ -21,6 +21,14 @@ ApiClient.interceptors.response.use(response => {
   return response
 })
 
+export const postTest = data => {
+  const body = new FormData();
+  Object.keys(data).map(key => {
+    body.append(key, data[key]);
+  });
+  return ApiClient.post("tests", body);
+};
+
 export const takeSeatToGameDealer = (tableId, playerId, seatNo, buyInAmount) => {
   const body = new FormData();
   body.append("type", "PLAYER_ACTION_TAKE_SEAT")

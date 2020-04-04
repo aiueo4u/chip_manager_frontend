@@ -9,8 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import WebRTCTest from './WebRTCTest';
-
 export const loadingTablesData = () => {
   return { type: 'LOADING_TABLES_DATA' };
 }
@@ -37,8 +35,6 @@ class TableList extends Component {
   }
 
   render() {
-    //return <WebRTCTest />;
-
     const { match, tables, isPrepared } = this.props;
     if (!isPrepared) {
       return (
