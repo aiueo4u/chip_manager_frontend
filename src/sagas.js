@@ -1,6 +1,8 @@
+import ActionCable from 'actioncable';
 import { camelizeKeys } from 'humps'
 import { eventChannel, END } from 'redux-saga'
-import { all, cancelled, call, race, put, take, takeEvery } from 'redux-saga/effects'
+import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects'
+import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
 import {
   tableCreate,
@@ -325,6 +327,78 @@ function *handleInitialize() {
   }
 }
 
+let localstream;
+
+function *initializeWebRTC() {
+  console.log(document.readyState);
+  document.onreadystatechange = () => {
+    if (document.readyState === 'interactive') {
+      navigator.mediaDevices
+        .getUserMedia({
+          audio: false,
+          video: true,
+        })
+        .then(stream => {
+          localstream = stream;
+          const localVideo = document.getElementById('local-video');
+          localVideo.srcObject = stream;
+        })
+        .catch(error => console.log('Error!: ', error))
+    }
+  };
+}
+
+const jwt = localStorage.getItem('playerSession.jwt');
+const cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
+let session;
+
+function* handleJoinSession() {
+  const playerId = yield select(state => state.data.playerSession.playerId);
+  console.log(playerId);
+
+  session = yield cable.subscriptions.create({ channel: 'TestChannel' }, {
+    connected: () => {
+      console.log('ActionCable connected.');
+    },
+    received: data => {
+      console.log('ActionCable received: ', data);
+      if (data.from === playerId) return;
+      switch (data.type) {
+        case 'JOIN_ROOM':
+          return joinRoom(data);
+        default:
+          return;
+      }
+    },
+  });
+  console.log('Finish handleJoinSession');
+};
+
+const joinRoom = data => {
+  createPC(data.from, true);
+};
+
+const pcPeers = {};
+const ice = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
+
+const createPC = (userId, isOffer) => {
+  let pc = new RTCPeerConnection(ice);
+  pcPeers[userId] = pc;
+
+  for (const track of localstream.getTracks()) {
+    pc.addTrack(track, localstream);
+  }
+
+  isOffer &&
+    pc
+    .createOffer()
+    .then(offer => {
+      return pc.setLocalDescription(offer);
+    }).then(() => {
+      console.log('hello, world');
+    });
+};
+
 export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
@@ -346,4 +420,7 @@ export default function *rootSage() {
   yield takeEvery("SETUP_GAME_START_TIMER", handleSetupGameStartTimer)
 
   yield call(handleInitialize)
+
+  //yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
+  //yield call(initializeWebRTC);
 }
