@@ -22,10 +22,10 @@ function App() {
     <Router>
       <div>
         <PrivateRoute exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <PrivateRoute path="/newTable" component={Lobby} />
+        <Route exact path="/login" component={Login} />
+        <PrivateRoute exact path="/newTable" component={Lobby} />
         <PrivateRoute exact path="/tables" component={TableList} />
-        <PrivateRoute path="/tables/:id" component={Room} />
+        <PrivateRoute exact path="/tables/:id" component={Room} />
       </div>
     </Router>
   )

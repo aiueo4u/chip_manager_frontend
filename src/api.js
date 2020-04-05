@@ -1,13 +1,12 @@
 import axios from 'axios'
 import { API_ENDPOINT } from './Configuration.js';
 
-const jwt = localStorage.getItem('playerSession.jwt')
 const ApiClient = axios.create({
   baseURL: API_ENDPOINT,
   headers: {
     Accept: 'application/json',
-    'PLAYER_JWT': jwt,
   },
+  withCredentials: true,
 });
 
 ApiClient.interceptors.response.use(response => {
@@ -23,9 +22,7 @@ ApiClient.interceptors.response.use(response => {
 
 export const postTest = data => {
   const body = new FormData();
-  Object.keys(data).map(key => {
-    body.append(key, data[key]);
-  });
+  Object.keys(data).map(key => body.append(key, data[key]));
   return ApiClient.post("tests", body);
 };
 
@@ -62,19 +59,23 @@ export const startToGameDealer = tableId => {
   return ApiClient.post('/game_dealer/start', body)
 }
 
-export const tableCreate = (tableName, sb, bb) => {
-  let body = new FormData();
-  body.append('table_name', tableName);
-  body.append('sb', sb);
-  body.append('bb', bb);
-  return ApiClient.post(`/tables`, body)
-}
+export const createTable = form => {
+  const { name, sb, bb } = form;
 
-export const submitLogin = (nickname) => {
   let body = new FormData();
-  body.append('nickname', nickname);
+  body.append('table[name]', name);
+  body.append('table[sb_size]', sb);
+  body.append('table[bb_size]', bb);
+  return ApiClient.post(`/tables`, body)
+};
+
+export const debugLogin = ({ name }) => {
+  let body = new FormData();
+  body.append('nickname', name);
   return ApiClient.post(`/session`, body)
-}
+};
 
 export const fetchCurrentUser = () => ApiClient.get(`/players/@me`)
 export const fetchTables = () => ApiClient.get(`/tables`)
+
+export const logout = () => ApiClient.delete(`/session`);

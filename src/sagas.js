@@ -5,8 +5,6 @@ import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-
 import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
 import {
-  tableCreate,
-  submitLogin,
   fetchCurrentUser,
   fetchTables,
   actionToGameDealer,
@@ -15,30 +13,6 @@ import {
   addNpcPlayer,
   postTest,
 } from './api';
-
-import { parseQueryString } from 'utils/url'
-
-function *handleRequestTableCreate(action) {
-  const { tableName, sb, bb } = action
-
-  try {
-    const response = yield call(tableCreate, tableName, sb, bb)
-    const { tableId }  = camelizeKeys(response.data)
-    yield put({ type: 'CREATE_TABLE_FORM_ON_SUCCESS', tableId })
-  } catch (error) {
-    yield put({ type: "CREATE_TABLE_FORM_ON_FAILURE" });
-  }
-}
-
-function *handleRequestLogin(action) {
-  const { nickname } = action
-
-  const response = yield call(submitLogin, nickname)
-  const data = camelizeKeys(response.data)
-
-  localStorage.setItem('playerSession.jwt', data.jwt) // TODO
-  yield put({ type: 'LOGIN_FORM_ON_SUCCESS', nickname: data.nickname, playerId: data.playerId })
-}
 
 function *handleRequestTables() {
   const response = yield call(fetchTables)
@@ -163,8 +137,7 @@ function *handleFetchPlayer() {
     const data = response.data
     const user = camelizeKeys(data)
     yield put({ type: "FETCH_PLAYER_SUCCEEDED", ...user })
-  } catch(error) {
-    console.error(error)
+  } catch (error) {
     // ログイン成功後のリダイレクト先を保存
     sessionStorage.setItem('redirectTo', window.location.href);
     yield put({ type: "FETCH_PLAYER_FAILED" });
@@ -299,29 +272,10 @@ function *handleSetupGameStartTimer(action) {
 }
 
 function *handleInitialize() {
-  let url = new URL(window.location.href);
-
-  if (url.searchParams) {
-    let jwt = url.searchParams.get('jwt')
-    if (jwt) {
-      localStorage.setItem('playerSession.jwt', jwt)
-      // ブラウザのアドレスバーからJWTパラメータを削除する
-      window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
-    }
-  } else {
-    let parsed = parseQueryString(window.location.href.split('?')[1])
-    if (parsed.jwt) {
-      localStorage.setItem('playerSession.jwt', parsed.jwt)
-      // ブラウザのアドレスバーからJWTパラメータを削除する
-      window.history.replaceState({}, "remove JWT", url.href.split('?')[0]);
-    }
-  }
-
   // ログイン前のページへとリダイレクトさせる
-  let jwt = localStorage.getItem('playerSession.jwt')
   let redirectTo = sessionStorage.getItem('redirectTo')
   sessionStorage.removeItem('redirectTo');
-  if (jwt && redirectTo) {
+  if (redirectTo) {
     window.location = redirectTo;
   } else {
     yield put({ type: "FETCH_PLAYER" })
@@ -330,7 +284,7 @@ function *handleInitialize() {
 
 let localstream;
 
-function *initializeWebRTC() {
+function initializeWebRTC() {
   //document.onreadystatechange = () => {
   //if (document.readyState === 'interactive') {
   navigator.mediaDevices
@@ -388,7 +342,7 @@ function* handleJoinSession() {
 
 let pcPeers = {};
 
-function *handleLeaveSession() {
+function handleLeaveSession() {
   for (const user in pcPeers) {
     pcPeers[user].close();
   }
@@ -525,8 +479,6 @@ const logError = error => console.log(error);
 
 export default function *rootSage() {
   yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
-  yield takeEvery("LOGIN_FORM_ON_SUBMIT", handleRequestLogin);
-  yield takeEvery("CREATE_TABLE_FORM_ON_SUBMIT", handleRequestTableCreate);
   yield takeEvery("FETCH_PLAYER", handleFetchPlayer);
   yield takeEvery("BET_ACTION", handleBetAction);
   yield takeEvery("CALL_ACTION", handleCallAction);

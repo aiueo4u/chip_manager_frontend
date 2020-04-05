@@ -6,7 +6,7 @@ function WebRTCTest() {
 
   useEffect(() => {
     dispatch({ type: 'INITIALIZE_WEBRTC' });
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
