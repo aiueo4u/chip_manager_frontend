@@ -1,4 +1,4 @@
-import RoomReducer from './components/Room/reducer.js';
+import RoomReducer from '../Room/reducer.js';
 
 const TablesReducer = (state = {}, action) => {
   return {

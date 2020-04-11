@@ -42,7 +42,6 @@ class Room extends Component {
       onGameHandActionReceived,
       onPlayerActionReceived,
       onDealtCardsReceived,
-      onShowResultDialogReceived,
     } = this.props;
 
     // action cable setup
@@ -70,8 +69,6 @@ class Room extends Component {
           onGameHandActionReceived(data);
         } else if (data.type === 'game_hand_finished') {
           onGameHandFinishedReceived(data)
-        } else if (data.type === 'show_result_dialog') {
-          onShowResultDialogReceived(data)
         }
       },
       rejected(data) { console.debug("Chip Channel rejected", data) },
@@ -222,9 +219,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onDealtCardsReceived: (data) => {
       dispatch(dealtCardsReceived(data));
-    },
-    onShowResultDialogReceived: (data) => {
-      dispatch(showResultDialogReceived(data))
     },
     onGameStart: () => {
       dispatch(gameStartButtonClicked(tableId));
