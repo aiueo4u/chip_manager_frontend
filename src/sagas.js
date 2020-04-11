@@ -298,11 +298,10 @@ function initializeWebRTC() {
 }
 
 const jwt = localStorage.getItem('playerSession.jwt');
-//const cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
+const cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
 let session;
 let playerId;
 
-/*
 function* handleJoinSession() {
   playerId = yield select(state => state.data.playerSession.playerId);
   playerId = `${playerId}`;
@@ -332,7 +331,6 @@ function* handleJoinSession() {
     },
   });
 };
-*/
 
 let pcPeers = {};
 
@@ -344,7 +342,7 @@ function handleLeaveSession() {
 
   session.unsubscribe();
 
-  const remoteVideoContainer = document.getElementById('remote-video-container');
+  const remoteVideoContainer = document.getElementById(`video-players-${playerId}`);
   remoteVideoContainer.innerHTML = '';
 
   broadcastData({
@@ -402,13 +400,13 @@ function createPC(userId, isOffer) {
 
   pc.ontrack = event => {
     if (event.track.kind === 'video') {
-      const element = document.createElement('video');
-      element.id = `remoteVideoContainer+${userId}`;
+      const element = document.getElementById(`video-player-${userId}`);
+      //const element = document.createElement('video');
+      //element.id = `remoteVideoContainer+${userId}`;
       element.autoplay = 'autoplay';
       element.srcObject = event.streams[0];
 
-      const remoteVideoContainer = document.getElementById('remote-video-container');
-      remoteVideoContainer.appendChild(element);
+      //remoteVideoContainer.appendChild(element);
     }
   };
 
@@ -490,7 +488,7 @@ export default function *rootSage() {
 
   yield call(handleInitialize)
 
-  //yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
+  yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
-  //yield takeEvery("INITIALIZE_WEBRTC", initializeWebRTC);
+  yield takeEvery("INITIALIZE_WEBRTC", initializeWebRTC);
 }

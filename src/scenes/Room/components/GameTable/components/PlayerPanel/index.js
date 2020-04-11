@@ -12,6 +12,7 @@ import EmptySeat from 'components/EmptySeat';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
+import WebRTCTest from 'components/WebRTCTest';
 
 import useGameTableState from 'hooks/useGameTableState';
 import useDialogState from 'hooks/useDialogState';
@@ -89,7 +90,10 @@ const PlayerPanel = ({
   return (
     <Box className={classes.panelContainer} onClick={openDialog}>
       <div>
-        <Avatar src={player.image_url} className={classes.avatar} alt="" />
+        {
+          //<Avatar src={player.image_url} className={classes.avatar} alt="" />
+        }
+        <WebRTCTest player={player} />
       </div>
       <div className={classes.statusCard}>
         {

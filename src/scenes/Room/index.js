@@ -20,7 +20,6 @@ import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
 import Loading from 'components/Loading'
 import TopInfobar from 'components/TopInfobar'
-//import WebRTCTest from 'components/WebRTCTest';
 
 import GameTable from './components/GameTable';
 
@@ -165,12 +164,6 @@ class Room extends Component {
               onBetAction={onBetAction}
             />
           </div>
-
-          {/*
-          <div style={{ 'height': '100vh', width: '30%', backgroundColor: 'red' }}>
-            <WebRTCTest />
-          </div>
-          */}
 
           {/* チップ量調整エリア */}
           <div style={{ 'height': '80px', maxWidth: '640px', width: '100%' }}>

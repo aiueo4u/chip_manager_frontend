@@ -18,6 +18,8 @@ function PlayerChipBetArea() {
   const player = players.find(player => player.id === session.playerId);
   const classes = useStyles({ player });
 
+  if (!player) return null;
+
   return (
     <div className={classes.playerChipBetArea}>
       {gameTable.gameHandState === 'finished' && player.amount_diff && (
