@@ -6,20 +6,12 @@ import { WEBSOCKET_ENDPOINT } from 'Configuration.js';
 
 import {
   fetchCurrentUser,
-  fetchTables,
   actionToGameDealer,
   startToGameDealer,
   takeSeatToGameDealer,
   addNpcPlayer,
   postTest,
 } from './api';
-
-function *handleRequestTables() {
-  const response = yield call(fetchTables)
-  const data = response.data
-  const tables = data.tables
-  yield put({ type: "LOADING_TABLES_DATA_ON_SUCCESS", tables })
-}
 
 function *handleCheckAction(action) {
   const { tableId, playerId } = action
@@ -306,10 +298,11 @@ function initializeWebRTC() {
 }
 
 const jwt = localStorage.getItem('playerSession.jwt');
-const cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
+//const cable = ActionCable.createConsumer(`${WEBSOCKET_ENDPOINT}/cable?jwt=${jwt}`);
 let session;
 let playerId;
 
+/*
 function* handleJoinSession() {
   playerId = yield select(state => state.data.playerSession.playerId);
   playerId = `${playerId}`;
@@ -339,6 +332,7 @@ function* handleJoinSession() {
     },
   });
 };
+*/
 
 let pcPeers = {};
 
@@ -478,7 +472,6 @@ function broadcastData(data) {
 const logError = error => console.log(error);
 
 export default function *rootSage() {
-  yield takeEvery("LOADING_TABLES_DATA", handleRequestTables);
   yield takeEvery("FETCH_PLAYER", handleFetchPlayer);
   yield takeEvery("BET_ACTION", handleBetAction);
   yield takeEvery("CALL_ACTION", handleCallAction);
@@ -497,7 +490,7 @@ export default function *rootSage() {
 
   yield call(handleInitialize)
 
-  yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
-  yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
-  yield takeEvery("INITIALIZE_WEBRTC", initializeWebRTC);
+  //yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
+  //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
+  //yield takeEvery("INITIALIZE_WEBRTC", initializeWebRTC);
 }

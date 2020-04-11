@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles'
 const styles = theme => ({
   plate: {
     width: '24px',
-    margin: 'auto',
+    margin: '0 auto',
     background: theme.palette.common.white,
     textAlign: 'center',
     borderRadius: '50%',

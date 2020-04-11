@@ -10,8 +10,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Home from './scenes/Home/index.js';
 import Login from './scenes/Login';
 import Lobby from './scenes/Lobby';
-import TableList from './scenes/Tables/components/TableList';
-import Room from './scenes/Tables/components/Room';
+import TableList from './scenes/TableList';
+import Room from './scenes/Room';
 
 function App() {
   const { isReady } = useSelector(state => state.data.playerSession)
