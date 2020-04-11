@@ -20,9 +20,9 @@ function WebRTCTest({ player, local }) {
       <Button onClick={() => dispatch({ type: 'HANDLE_JOIN_SESSION' })}>Join</Button>
       <Button onClick={() => dispatch({ type: 'HANDLE_LEAVE_SESSION' })}>Leave</Button>
       {local ? (
-        <video id='local-video' autoPlay className={classes.video}></video>
+        <video id='local-video' autoPlay playsInline className={classes.video}></video>
       ) : (
-        <video id={`video-player-${player.id}`} autoPlay className={classes.video}></video>
+        <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video}></video>
       )}
     </div>
   );
