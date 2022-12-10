@@ -8,7 +8,7 @@
     "actioncable": "^5.2.4-2",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "humps": "^2.0.1",
     "isomorphic-fetch": "^2.2.1",
     "morgan": "^1.10.0",
